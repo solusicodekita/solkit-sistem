@@ -12,7 +12,8 @@
                             <div class="row">
                                 <div class="col-md-9 mt-2">
                                     <h5 class="card-title" style="color: #000;">{{ $item->title }}</h5>
-                                    <p class="card-text" style="color: #000;">{{ $item->address. ', ' .$item->provinsi. ', ' .$item->kabupaten. ', ' .$item->kecamatan. ', ' .$item->pos }}</p>
+                                    <!-- <p class="card-text" style="color: #000;">{{ $item->address. ', ' .$item->provinsi. ', ' .$item->kabupaten. ', ' .$item->kecamatan. ', ' .$item->pos }}</p> -->
+                                    <p class="card-text" style="color: #000;">{{ $item->address }}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <button onclick="event.preventDefault(); document.getElementById('update_address-{{ $item->id }}').submit();" class="btn btn-primary" style="margin-top:2.5rem!important;"><i class="fas fa-fw fa-pencil"></i> Pilih</button>

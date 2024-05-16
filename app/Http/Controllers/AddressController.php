@@ -42,9 +42,9 @@ class AddressController extends Controller
         $atr->wa = $request->wa;
         $atr->phone = $request->phone;
         $atr->address = $request->address;
-        $atr->provinsi = strtoupper($request->provinsi);
-        $atr->kabupaten = strtoupper($request->kabupaten);
-        $atr->kecamatan = strtoupper($request->kecamatan);
+        // $atr->provinsi = strtoupper($request->provinsi);
+        // $atr->kabupaten = strtoupper($request->kabupaten);
+        // $atr->kecamatan = strtoupper($request->kecamatan);
         $atr->pos = $request->pos;
 
         if ($new) {
@@ -73,9 +73,9 @@ class AddressController extends Controller
         $atr->wa = $request->wa;
         $atr->phone = $request->phone;
         $atr->address = $request->address;
-        $atr->provinsi = strtoupper($request->provinsi);
-        $atr->kabupaten = strtoupper($request->kabupaten);
-        $atr->kecamatan = strtoupper($request->kecamatan);
+        // $atr->provinsi = strtoupper($request->provinsi);
+        // $atr->kabupaten = strtoupper($request->kabupaten);
+        // $atr->kecamatan = strtoupper($request->kecamatan);
         $atr->pos = $request->pos;
         $atr->save();
 

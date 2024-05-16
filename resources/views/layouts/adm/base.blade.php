@@ -26,7 +26,7 @@
             {{ Storage::disk('local')->url('public/images/setting/'.\Setting::getSetting()->logo) }}
             @endif
             " alt="AdminLTELogo" height="60" width="120"> --}}
-            <h1 class="animation__shake">Rumah Makan Mitra</h1>
+            <h1 class="animation__shake">Bu Een Catering</h1>
         </div>
 
         <!-- Navbar -->

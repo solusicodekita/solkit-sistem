@@ -49,7 +49,8 @@
                                             </p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p class="card-text" style="color: #000;">{{ $item->address. ', ' .$item->provinsi. ', ' .$item->kabupaten. ', ' .$item->kecamatan. ', ' .$item->pos }}</p>
+                                            <!-- <p class="card-text" style="color: #000;">{{ $item->address. ', ' .$item->provinsi. ', ' .$item->kabupaten. ', ' .$item->kecamatan. ', ' .$item->pos }}</p> -->
+                                            <p class="card-text" style="color: #000;">{{ $item->address}}</p>
                                         </div>
                                         <div class="col-md-3 d-flex justify-content-end">
                                             @if (strtoupper($item->type) == 'UMUM')
