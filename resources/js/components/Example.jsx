@@ -7,7 +7,7 @@ function Example() {
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
-                        <div className="card-header">RUMAH MAKAN MITRA</div>
+                        <div className="card-header">Bu Een Catering</div>
 
                         <div className="card-body">CONTENT</div>
                     </div>

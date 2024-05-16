@@ -35,7 +35,7 @@
                             <label for="phone" class="form-label">Alamat</label>
                             <textarea name="address" class="form-control" id="address" rows="10" placeholder="Detail Alamat"></textarea>
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="provinsi" class="form-label">Provinsi</label>
                             <select name="provinsi" class="form-select" id="provinsi" aria-label="Default select example">
                                 <option class="text-uppercase" value="DKI Jakarta" selected>DKI JAKARTA</option>
@@ -92,7 +92,7 @@
                         <div class="mb-3">
                             <label for="code_pos" class="form-label">Kode Pos</label>
                             <input name="pos" required type="number" class="form-control" id="code_pos" min="1" placeholder="13220">
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">BATAL</button>

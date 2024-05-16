@@ -13,7 +13,7 @@
                     <!-- Footer About Text-->
                     <div class="col-lg-10">
                         <p class="lead mb-0 mt-5">
-                            <span>Rumah Makan Mitra @ <script>document.write(new Date().getFullYear());</script></span>
+                            <span>Bu Een Catering @ <script>document.write(new Date().getFullYear());</script></span>
                             <br>
                             <a href="{{ url('/') }}" class="text-decoration-none text-dark">Syarat dan Ketentuan</a>
                             <br>
