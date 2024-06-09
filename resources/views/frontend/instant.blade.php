@@ -8,7 +8,7 @@
     <header class="masthead text-white text-center">
         <div class="container d-flex align-items-center flex-column">
             <!-- Sub Header Image-->
-            <img class="img-fluid img-thumbnail mb-5" src="{{ asset('frontend') }}/assets/img/sub-banner.png" alt="..." />
+            <img class="img-fluid img-thumbnail mb-5" src="{{ asset('frontend') }}/assets/img/sub-banner-green2.png" alt="..." />
         </div>
     </header>
 

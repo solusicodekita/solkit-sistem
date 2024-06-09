@@ -27,7 +27,10 @@ class FrontendController extends Controller
     {
         // $data = Product::all();
         // $data = Product::with('category')->orderBy('category_id')->get()->groupBy(function($data) { return $data->category->name; });
-        $data = Category::with('product')->orderBy('id')->get()->groupBy(function($data) { return $data->category->name; });
+        $data = Category::with('product')->orderBy('id')->get()->groupBy(function($data) { 
+            // dd($data->name);
+            return $data->name; 
+        });
         // foreach($products as $name => $product) {
         //     foreach($product as $item) {
         //         $data = $item;
@@ -265,145 +268,149 @@ class FrontendController extends Controller
         return back();
     }
 
-    // public function pay(Request $request, $id)
-    // {
-    //     Config::$serverKey = config('services.midtrans.serverKey');
-    //     Config::$isProduction = config('services.midtrans.isProduction');
-    //     Config::$isSanitized = config('services.midtrans.isSanitized');
-    //     Config::$is3ds = config('services.midtrans.is3ds');
-
-    //     // dd($request->all());
-    //     // $atr = Transaction::with('customer')->where([
-	// 	// 	['customer_id', Auth::user()->id],
-	// 	// 	['status', 'PENDING'],
-    //     //     ['type', $request->type],
-    //     //     ['id', $request->id],
-	// 	// ])->latest('id')->first();
-    //     $atr = Transaction::with('customer')->find($id);
-    //     $atr->total_harga = (int) $request->total_harga;
-    //     $atr->status = 'PROSES';
-    //     $atr->snap_token = $request->snap_token == NULL ? mt_rand(00000, 99999).time() : $request->snap_token;
-    //     $atr->update();
-
-    //     $carts = Cart::with('product')->where('customer_id', Auth::user()->id)->get();
-    //     foreach ($carts as $item) {
-
-    //         $op = new OrderProduct;
-    //         $op->transaction_id = $atr->id;
-    //         $op->product_id = $item->product->id;
-    //         $op->qty = $item->qty == NULL ? 1 : $item->qty;
-    //         $atr->type = $request->type;
-    //         $op->save();
-
-    //         Cart::destroy($item->id);
-    //     }
-
-    //     Alert::success('Silahkan Segera Proses Pembayaran Anda!');
-    //     return redirect()->route('fe.invoice', $atr->id);
-    // }
-
     public function pay(Request $request, $id)
     {
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
+
+        // dd($request->all());
+        // $atr = Transaction::with('customer')->where([
+		// 	['customer_id', Auth::user()->id],
+		// 	['status', 'PENDING'],
+        //     ['type', $request->type],
+        //     ['id', $request->id],
+		// ])->latest('id')->first();
         $atr = Transaction::with('customer')->find($id);
         $atr->total_harga = (int) $request->total_harga;
         $atr->status = 'PROSES';
         $atr->snap_token = $request->snap_token == NULL ? mt_rand(00000, 99999).time() : $request->snap_token;
-        $atr->type = $request->type;
         $atr->update();
+
         $carts = Cart::with('product')->where('customer_id', Auth::user()->id)->get();
-        foreach ($carts as $cart) {
+        foreach ($carts as $item) {
 
             $op = new OrderProduct;
             $op->transaction_id = $atr->id;
-            $op->product_id = $cart->product->id;
-            $op->qty = $cart->qty == NULL ? 1 : $cart->qty;
+            $op->product_id = $item->product->id;
+            $op->qty = $item->qty == NULL ? 1 : $item->qty;
+            $atr->type = $request->type;
             $op->save();
 
-            Cart::destroy($cart->id);
+            Cart::destroy($item->id);
         }
 
-        $transaction = Transaction::find($id);
-        $orders = $transaction->order_product;
-        $customer = $transaction->customer;
-
-        //Set Your server key
-        Config::$serverKey = SettingHelper::midtrans_api();
-        // Uncomment for production environment
-        // Config::$isProduction = true;
-        Config::$isSanitized = Config::$is3ds = true;
-        Config::$overrideNotifUrl = route('midtrans_notify');
-
-        $transaction_details = array(
-            'order_id' => $transaction->kode_transaksi,
-            'gross_amount' => round($transaction->total_harga),
-        );
-
-        $item_details = [];
-        foreach($orders as $order) {
-            $product = $order->product;
-            $item = array(
-                'id' => $product->id,
-                'price' => $product->price+$product->price*(10/100),
-                'quantity' => $order->qty,
-                'name' => $product->name
-            );
-            array_push($item_details, $item);
-        }
-
-        // Optional
-        // $billing_address = array(
-        //     'first_name'    => "Andri",
-        //     'last_name'     => "Litani",
-        //     'address'       => "Mangga 20",
-        //     'city'          => "Jakarta",
-        //     'postal_code'   => "16602",
-        //     'phone'         => "081122334455",
-        //     'country_code'  => 'IDN'
-        // );
-
-        // Optional
-        // $shipping_address = array(
-        //     'first_name'    => "Obet",
-        //     'last_name'     => "Supriadi",
-        //     'address'       => "Manggis 90",
-        //     'city'          => "Jakarta",
-        //     'postal_code'   => "16601",
-        //     'phone'         => "08113366345",
-        //     'country_code'  => 'IDN'
-        // );
-
-        $customer_details = array(
-            'first_name'    => $customer->firstname,
-            'last_name'     => $customer->lastname,
-            'email'         => $customer->email,
-            'phone'         => $customer->phone,
-        );
-
-        // Optional, remove this to display all available payment methods
-        // $enable_payments = array('credit_card','cimb_clicks','mandiri_clickpay','echannel');
-
-        $params = [
-            'transaction_details' => $transaction_details,
-            'item_details' => $item_details,
-            'customer_details' => $customer_details,
-            'callbacks' => [
-                'finish' => route('payments_finish')
-            ]
-        ];
-
-        try {
-          // Get Snap Payment Page URL
-          $paymentUrl = \Midtrans\Snap::createTransaction($params)->redirect_url;
-          $atr->link_pembayaran = $paymentUrl;
-          $atr->update();
-        //   dd($paymentUrl);
-          return redirect($paymentUrl);
-        }
-        catch (Exception $e) {
-            return dd($e->getMessage());
-        }
+        Alert::success('Silahkan Segera Proses Pembayaran Anda!');
+        return redirect()->route('fe.invoice', $atr->id);
     }
 
+    // public function pay(Request $request, $id)
+    // {
+        
+    //     $atr = Transaction::with('customer')->find($id);
+    //     $atr->total_harga = (int) $request->total_harga;
+    //     $atr->status = 'PROSES';
+    //     $atr->snap_token = $request->snap_token == NULL ? mt_rand(00000, 99999).time() : $request->snap_token;
+    //     $atr->type = $request->type;
+    //     $atr->update();
+    //     $carts = Cart::with('product')->where('customer_id', Auth::user()->id)->get();
+    //     foreach ($carts as $cart) {
+
+    //         $op = new OrderProduct;
+    //         $op->transaction_id = $atr->id;
+    //         $op->product_id = $cart->product->id;
+    //         $op->qty = $cart->qty == NULL ? 1 : $cart->qty;
+    //         $op->save();
+
+    //         Cart::destroy($cart->id);
+    //     }
+
+    //     $transaction = Transaction::find($id);
+    //     $orders = $transaction->order_product;
+    //     $customer = $transaction->customer;
+
+    //     //Set Your server key
+    //     Config::$serverKey = SettingHelper::midtrans_api();
+    //     // Uncomment for production environment
+    //     // Config::$isProduction = true;
+    //     Config::$isSanitized = Config::$is3ds = true;
+    //     Config::$overrideNotifUrl = route('midtrans_notify');
+
+    //     $transaction_details = array(
+    //         'order_id' => $transaction->kode_transaksi,
+    //         'gross_amount' => round($transaction->total_harga),
+    //     );
+
+    //     $item_details = [];
+    //     foreach($orders as $order) {
+    //         $product = $order->product;
+    //         $item = array(
+    //             'id' => $product->id,
+    //             'price' => $product->price+$product->price*(10/100),
+    //             'quantity' => $order->qty,
+    //             'name' => $product->name
+    //         );
+    //         array_push($item_details, $item);
+    //     }
+
+    //     // Optional
+    //     // $billing_address = array(
+    //     //     'first_name'    => "Andri",
+    //     //     'last_name'     => "Litani",
+    //     //     'address'       => "Mangga 20",
+    //     //     'city'          => "Jakarta",
+    //     //     'postal_code'   => "16602",
+    //     //     'phone'         => "081122334455",
+    //     //     'country_code'  => 'IDN'
+    //     // );
+
+    //     // Optional
+    //     // $shipping_address = array(
+    //     //     'first_name'    => "Obet",
+    //     //     'last_name'     => "Supriadi",
+    //     //     'address'       => "Manggis 90",
+    //     //     'city'          => "Jakarta",
+    //     //     'postal_code'   => "16601",
+    //     //     'phone'         => "08113366345",
+    //     //     'country_code'  => 'IDN'
+    //     // );
+
+    //     $customer_details = array(
+    //         'first_name'    => $customer->firstname,
+    //         'last_name'     => $customer->lastname,
+    //         'email'         => $customer->email,
+    //         'phone'         => $customer->phone,
+    //     );
+
+    //     // Optional, remove this to display all available payment methods
+    //     // $enable_payments = array('credit_card','cimb_clicks','mandiri_clickpay','echannel');
+
+    //     $params = [
+    //         'transaction_details' => $transaction_details,
+    //         'item_details' => $item_details,
+    //         'customer_details' => $customer_details,
+    //         'callbacks' => [
+    //             'finish' => route('payments_finish')
+    //         ]
+    //     ];
+
+    //     try {
+    //       // Get Snap Payment Page URL
+    //       $paymentUrl = \Midtrans\Snap::createTransaction($params)->redirect_url;
+    //       $atr->link_pembayaran = $paymentUrl;
+    //       $atr->update();
+    //     //   dd($paymentUrl);
+    //       return redirect($paymentUrl);
+    //     }
+    //     catch (Exception $e) {
+    //         return dd($e->getMessage());
+    //     }
+    // }
+
+    // public function pay(Request $request, $id) {
+        
+    // }
     public function invoice(Request $request, $id)
     {
         $data['transaksi'] = Transaction::with('customer')->where([
