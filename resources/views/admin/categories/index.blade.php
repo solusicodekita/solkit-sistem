@@ -46,21 +46,21 @@
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
                                 </div>
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-4">
                                     <button class="btn btn-danger btn-sm" type="submit">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                </div>
+                                </div> -->
                             </form>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <tr>
+                    <!-- <tr>
                         <th>Nama</th>
                         <th>{{ trans('global.actions') }}</th>
-                    </tr>
+                    </tr> -->
                 </tfoot>
             </table>
         </div>
