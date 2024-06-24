@@ -50,7 +50,8 @@
                             @elseif ($dt->status == 'SUCCESS')
                                 <a href="{{ route('admin.transactions.status', $dt->id) }}" class="btn btn-success">{{ $dt->status }}</a>
                             @else
-                                <a href="{{ route('admin.transactions.status', $dt->id) }}" class="btn btn-danger">{{ $dt->status }}</a>
+                                <!-- <a href="{{ route('admin.transactions.status', $dt->id) }}" class="btn btn-danger">{{ $dt->status }}</a> -->
+                                <a href="#" class="btn btn-danger">{{ $dt->status }}</a>
                             @endif
                         </td>
                         <td>{{ $dt->updated_at ? $dt->updated_at : $dt->created_at }}</td>
@@ -68,11 +69,14 @@
                                         <i class="fas fa-clipboard-list"></i>
                                     </a>
                                 </div>
-                                {{-- <div class="col-md-3">
+                                <div class="col-md-3">
+                                @if ($dt->status != 'CANCEL' && $dt->payment_status != 4)
                                     <button class="btn btn-danger btn-sm" type="submit">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                </div> --}}
+                                @endif
+                                </div>
+
                             </form>
                         </td>
                     </tr>

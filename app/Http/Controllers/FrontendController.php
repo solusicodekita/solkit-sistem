@@ -123,6 +123,14 @@ class FrontendController extends Controller
         return view('frontend.riwayat', $data);
     }
 
+    public function mdlRiwayat($id)
+    {
+        $html = view('frontend.mdlRiwayat', [
+            'id' => $id
+        ])->render();
+        return response()->json(['html' => $html]);
+    }
+
     public function bantuan()
     {
         $data['title'] = 'Bantuan';
