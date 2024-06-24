@@ -42,6 +42,7 @@ Route::middleware(['xss'])->group(function () {
                         Route::get('/password', 'password')->name('password');
                         Route::put('/password', 'update_password')->name('update_password');
                         Route::get('/riwayat', 'riwayat')->name('riwayat');
+                        Route::get('mdlRiwayat/{id?}', 'mdlRiwayat')->name('mdlRiwayat');
                         Route::get('/bantuan', 'bantuan')->name('bantuan');
 
                         Route::post('/cart', 'post_cart')->name('post_cart');

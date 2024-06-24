@@ -24,7 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->string('type')->nullable(); // katering and instan
             $table->string('note')->nullable();
             $table->string('status', 100)->default('PENDING')->comment('PENDING, PROSES, SUCCESS', 'CANCEL');
-            $table->enum('payment_status', ['1', '2', '3'])->comment('1=menunggu pembayaran, 2=sudah dibayar, 3=kadaluarsa')->default(1);
+            $table->enum('payment_status', ['1', '2', '3', '4'])->comment('1=menunggu pembayaran, 2=sudah dibayar, 3=kadaluarsa, 4=gagal')->default(1);
             $table->string('snap_token', 36)->nullable();
             $table->string('link_pembayaran')->nullable();
             $table->timestamp('tgl_pesanan')->nullable();
