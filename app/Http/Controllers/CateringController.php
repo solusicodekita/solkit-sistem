@@ -35,7 +35,7 @@ class CateringController extends Controller
 			['status', 'PENDING'],
 			['type', 'katering'],
 		])->latest('id')->first();
-        $today = $data['day']->tgl_pesanan;
+        $today = !empty($data['day']->tgl_pesanan) ? $data['day']->tgl_pesanan : now();
         $dd = Carbon::parse($today)->format('d');
         $mm = Carbon::parse($today)->format('m');
         $yyyy = Carbon::parse($today)->format('Y');

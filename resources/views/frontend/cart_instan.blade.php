@@ -82,13 +82,13 @@
                             <div class="col-md-2">{{ __('Rp.').number_format($total,2,',','.') }}</div>
                         </div>
                         <div class="row">
-                            <div class="col-md-10">Biaya Pelayanan</div>
+                            <div class="col-md-10">Ongkos Kirim</div>
                             <div class="col-md-2">{{ __('Rp.').number_format($total*(10/100),2,',','.') }}</div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-10">Ongkos Kirim</div>
                             <div class="col-md-2">Rp.0</div>
-                        </div>
+                        </div> -->
                         <hr style="color:#000;opacity:unset;">
                         <div class="row fw-bold">
                             <div class="col-md-10">Total Harga</div>
