@@ -2,14 +2,14 @@
     <p>Silahkan melakukan pembayaran sesuai dengan tagihan anda ketikan checkout pesanan, dengan mentransfer ke</p>
     <p class="account-details"><b>No. Rekening: 5803045086<br>Dana: 085767113554</b></p>
     <p>Apabila anda telah melakukan pembayaran maka anda dapat mengupload bukti transfer tersebut pada halaman ini agar pesanan anda segera di proses jangan lupa untuk menyertakan nama pemesan.</p>
-    <form id="formUpload" action="#" method="POST" enctype="multipart/form-data" class="form">
-        {{ csrf_field() }}
+    <form id="formUploadInstan" action="#" method="POST" enctype="multipart/form-data" class="form">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <input type="file" name="bukti_transfer" required>
         <br>
         <br>
             <div class="mb-3 row">
-                <!-- <label for="txtNama" class="col-sm-2 col-form-label">Nama Pemesanan</label> -->
+                <label for="txtNama" class="col-sm-2 col-form-label">Nama Pemesanan</label>
                 <div class="col-sm-10">
                     <!-- <input type="text" class="form-control" id="txtNama" name="txtNama"> -->
                     <input type="hidden" class="form-control" id="id" name="id" value="{{$id}}">

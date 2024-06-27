@@ -1,5 +1,54 @@
 @extends('layouts.fe.base')
+@section('js')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    function mdlPembayaranInstan(id) {
+        $('#mdlPembayaranInstan').modal('show');
+        $('#titlePembayaranInstan').html('Upload bukti pembayaran');
+        $('#bodyPembayaranInstan').html('');
+        $.ajax({
+            url: "{{ route('fe.mdlCartInstan', ['id' => '']) }}/" + id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log(response.html);
+                $('#bodyPembayaranInstan').html(response.html);
+                $('#footerPembayaranInstan').html(
+                    '<button class="btn btn-danger btn-hover-scale me-5" type="button" onclick="uploadInstan('+id+')">Upload</button>' +
+                    '<button class="btn btn-light btn-hover-scale me-5" data-bs-dismiss="modal" type="button">Cancel</button>'
+                );
+            }
+        });
+    }
 
+    function uploadInstan(id) {
+        let total_harga = $("#total_harga").val();
+        let type = $("#type").val();
+        let csrfToken = $('meta[name="csrf-token"]').attr('content');
+        
+        let formData = new FormData();
+        formData.append('_token', csrfToken); // Sertakan token CSRF
+        formData.append('id', id);
+        formData.append('total_harga', total_harga);
+        formData.append('type', type);
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('fe.uploadInstan') }}",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                location.reload(); 
+            },
+            error: function(request, status, error) {
+                errorMessage(request);
+                
+            }
+        });
+    }
+</script>
+
+@endsection
 @section('content')
 
         @include('layouts.fe.navbar.subnav')
@@ -105,11 +154,30 @@
                         <form class="modal-body row" action="{{ route('fe.pay', $adr->id) }}" method="POST">
                             @method('PUT')
                             @csrf
-                            <input type="hidden" name="id" value="{{ $adr->id }}">
-                            <input type="hidden" name="total_harga" value="{{ $total+($total*(10/100)) }}">
-                            <input type="hidden" name="type" value="{{ $adr->type }}">
+                            <input type="hidden" name="id" id="id" value="{{ $adr->id }}">
+                            <input type="hidden" name="total_harga" id="total_harga" value="{{ $total+($total*(10/100)) }}">
+                            <input type="hidden" name="type" id="type" value="{{ $adr->type }}">
                             <button type="submit" class="btn btn-outline-dark" {{ \Setting::getDisable() }} {{ $total+($total*(10/100)) == 0 ? 'disabled' : '' }}>Pembayaran</button>
                         </form>
+                        <!-- <button type="button" class="btn btn-outline-dark" onclick="mdlPembayaranInstan('{{ $adr->id }}')">Pembayaran</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="mdlPembayaranInstan" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title text-success" id="titlePembayaranInstan"></h3>
+                            <!--begin::Close-->
+                            <!--end::Close-->
+                        </div>
+                        <div class="modal-body" id="bodyPembayaranInstan" style="overflow-y:auto;">
+
+                        </div>
+                        <div class="modal-footer" id="footerPembayaranInstan">
+
+                        </div>
                     </div>
                 </div>
             </div>

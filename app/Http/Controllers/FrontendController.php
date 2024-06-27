@@ -131,6 +131,64 @@ class FrontendController extends Controller
         return response()->json(['html' => $html]);
     }
 
+    public function upload(Request $request)
+    {
+
+        // Store the uploaded file
+        $path = $request->file('bukti_transfer')->store('images/avatar', 'public');;
+
+        // Retrieve the transaction
+        $transaction = Transaction::with('customer', 'order_product')->findOrFail($request->id);
+
+        // Update the transaction
+        $transaction->update([
+            'payment_status' => 2,
+            'status' => 'SUCCESS',
+            'gambar' => $path,
+        ]);
+
+        return back()->with('success', 'Payment proof uploaded successfully!');
+    
+    }
+
+    public function mdlCartInstan($id)
+    {
+        $html = view('frontend.mdlCartInstan', [
+            'id' => $id
+        ])->render();
+        return response()->json(['html' => $html]);
+    }
+
+    public function uploadInstan(Request $request)
+    {
+        // dd($request->input());
+        // Store the uploaded file
+        $path = $request->file('bukti_transfer')->store('images/avatar', 'public');;
+
+        // Retrieve the transaction
+        $atr = Transaction::with('customer')->find($request->id);
+        $atr->total_harga = (int) $request->total_harga;
+        $atr->status = 'SUCCESS';
+        $atr->snap_token = $request->snap_token == NULL ? mt_rand(00000, 99999).time() : $request->snap_token;
+        $atr->gambar = $path;
+        $atr->update();
+
+        $carts = Cart::with('product')->where('customer_id', Auth::user()->id)->get();
+        foreach ($carts as $item) {
+
+            $op = new OrderProduct;
+            $op->transaction_id = $atr->id;
+            $op->product_id = $item->product->id;
+            $op->qty = $item->qty == NULL ? 1 : $item->qty;
+            $atr->type = $request->type;
+            $op->save();
+
+            Cart::destroy($item->id);
+        }
+        return back()->with('success', 'Payment proof uploaded successfully!');
+    
+    }
+
     public function bantuan()
     {
         $data['title'] = 'Bantuan';
