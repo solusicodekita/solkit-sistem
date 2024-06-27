@@ -42,8 +42,12 @@ Route::middleware(['xss'])->group(function () {
                         Route::get('/password', 'password')->name('password');
                         Route::put('/password', 'update_password')->name('update_password');
                         Route::get('/riwayat', 'riwayat')->name('riwayat');
-                        Route::get('mdlRiwayat/{id?}', 'mdlRiwayat')->name('mdlRiwayat');
                         Route::get('/bantuan', 'bantuan')->name('bantuan');
+
+                        Route::get('mdlRiwayat/{id?}', 'mdlRiwayat')->name('mdlRiwayat');
+                        Route::post('upload', 'upload')->name('upload');
+                        Route::get('mdlCartInstan/{id?}', 'mdlCartInstan')->name('mdlCartInstan');
+                        Route::post('uploadInstan', 'uploadInstan')->name('uploadInstan');
 
                         Route::post('/cart', 'post_cart')->name('post_cart');
                         Route::put('/minus/{id}', 'minus')->name('minus');

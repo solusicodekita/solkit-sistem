@@ -28,6 +28,7 @@
                         <th>Customer</th>
                         <th>Order by</th>
                         <th>Total Harga</th>
+                        <th>Bukti Pembayaran</th>
                         <th>Alamat</th>
                         <th>Status</th>
                         <th>Tanggal</th>
@@ -41,6 +42,7 @@
                         <td>{{ $dt->customer->fullname }}</td>
                         <td>{{ strtoupper($dt->type) }}</td>
                         <td>{{ __('Rp.').number_format($dt->total_harga,2,',','.') }}</td>
+                        <td><img src="{{ asset('storage/'. $dt->gambar) }}"style="max-width: 100%; height: auto;"></td>
                         <td>{{ $dt->address->title }}</td>
                         <td>
                             @if ($dt->status == 'PENDING')

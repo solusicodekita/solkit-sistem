@@ -2,22 +2,43 @@
 @section('js')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
-function mdlPembayaran(id) {
-    $('#mdlPembayaran').modal('show');
-    $('#titlePembayaran').html('Upload bukti pembayaran');
-    $('#bodyPembayaran').html('');
-    $.ajax({
+    function mdlPembayaran(id) {
+        $('#mdlPembayaran').modal('show');
+        $('#titlePembayaran').html('Upload bukti pembayaran');
+        $('#bodyPembayaran').html('');
+        $.ajax({
             url: "{{ route('fe.mdlRiwayat', ['id' => '']) }}/" + id,
             type: 'GET',
             dataType: 'json',
             success: function(response) {
                 $('#bodyPembayaran').html(response.html);
                 $('#footerPembayaran').html(
-                    '<button class="btn btn-danger btn-hover-scale me-5" type="button" onclick="upload()">Upload</button>'
+                    '<button class="btn btn-danger btn-hover-scale me-5" type="button" onclick="upload('+id+')">Upload</button>' +
+                    '<button class="btn btn-light btn-hover-scale me-5" data-bs-dismiss="modal" type="button">Cancel</button>'
                 );
             }
         });
-}
+    }
+
+    function upload(id) {
+        let myForm = document.getElementById('formUpload');
+        let formData = new FormData(myForm);
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('fe.upload') }}",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                location.reload(); 
+            },
+            error: function(request, status, error) {
+                errorMessage(request);
+                
+            }
+        });
+    }
 </script>
 
 @endsection
@@ -172,22 +193,22 @@ function mdlPembayaran(id) {
     </div>
 </header>
 <div class="modal fade" id="mdlPembayaran" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title text-success" id="titlePembayaran"></h3>
-                    <!--begin::Close-->
-                    <!--end::Close-->
-                </div>
-                <div class="modal-body" id="bodyPembayaran" style="overflow-y:auto;">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-success" id="titlePembayaran"></h3>
+                <!--begin::Close-->
+                <!--end::Close-->
+            </div>
+            <div class="modal-body" id="bodyPembayaran" style="overflow-y:auto;">
 
-                </div>
-                <div class="modal-footer" id="footerPembayaran">
+            </div>
+            <div class="modal-footer" id="footerPembayaran">
 
-                </div>
             </div>
         </div>
     </div>
+</div>
 @include('layouts.fe.modal.menu')
 @include('layouts.fe.modal.profile')
 
