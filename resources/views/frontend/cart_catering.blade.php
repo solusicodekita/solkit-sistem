@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-body row">
                         <h5 class="col-md-10 card-title" style="color: #000;">Pengiriman</h5>
-                        <button data-bs-toggle="modal" data-bs-target="#hari" class="col-md-2 btn btn-sm btn-primary text-decoration-none fw-bold">Order min H-1</button>
+                        <button data-bs-toggle="modal" data-bs-target="#hari" class="col-md-2 btn btn-sm btn-primary text-decoration-none fw-bold">Order min H-4</button>
                         <a data-bs-toggle="modal" data-bs-target="#alamat" class="col-md-12 card-text text-decoration-underline" style="color: #000;">{{ $adr->address->title }}</a>
                         <p class="col-md-12 card-text" style="color: #000;">{{ $adr->address->address. ', ' .$adr->address->provinsi. ', ' .$adr->address->kabupaten. ', ' .$adr->address->kecamatan. ', ' .$adr->address->pos }}</p>
                         <form class="input-group mb-3" action="{{ route('fe.update_note', $adr->id) }}" method="POST">

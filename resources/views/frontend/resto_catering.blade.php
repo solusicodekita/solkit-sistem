@@ -9,11 +9,11 @@
             <div class="container">
                 <div class="card border-0">
                     <div class="card-body">
-                        <h5 class="card-title" style="color: #000;">Rumah Makan Padang Sari Indah</h5>
+                        <h5 class="card-title" style="color: #000;">Rumah Makan Bu Een</h5>
                         <p class="card-text" style="color: #000;">Makanan Berat, Minuman, Nasi</p>
                         <div class="row text-dark">
-                            <div class="col-md-2"><i class="fas fa-star star-active"></i> 4.7</div>
-                            <div class="col-md-2"><button data-bs-toggle="modal" data-bs-target="#hari" class="btn btn-sm btn-primary text-decoration-none fw-bold">Order min H-1</button></div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-2"><button data-bs-toggle="modal" data-bs-target="#hari" class="btn btn-sm btn-primary text-decoration-none fw-bold">Order min H-4</button></div>
                         </div>
                     </div>
                 </div>

@@ -54,7 +54,7 @@
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
                 <!-- Favorite Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Makanan Terfavorit</h2>
+                <!-- <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Makanan Terfavorit</h2> -->
                 <!-- Icon Divider-->
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
@@ -76,7 +76,7 @@
                                     <h5 class="card-title text-dark">Nasi Ayam Bakar</h5>
                                     <p class="card-text text-dark">Nasi, Sayur Komplit, Sambal Ijo Ayam Bakar</p>
                                     <div class="text-dark">
-                                        <i class="fas fa-star star-active"></i> 4.7
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                     <h5 class="card-title text-dark">Nasi Ayam Bakar</h5>
                                     <p class="card-text text-dark">Nasi, Sayur Komplit, Sambal Ijo Ayam Bakar</p>
                                     <div class="text-dark">
-                                        <i class="fas fa-star star-active"></i> 4.7
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@
                                     <h5 class="card-title text-dark">Nasi Ayam Bakar</h5>
                                     <p class="card-text text-dark">Nasi, Sayur Komplit, Sambal Ijo Ayam Bakar</p>
                                     <div class="text-dark">
-                                        <i class="fas fa-star star-active"></i> 4.7
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                                     <h5 class="card-title text-dark">Nasi Ayam Bakar</h5>
                                     <p class="card-text text-dark">Nasi, Sayur Komplit, Sambal Ijo Ayam Bakar</p>
                                     <div class="text-dark">
-                                        <i class="fas fa-star star-active"></i> 4.7
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +161,7 @@
                                                 <h5 class="card-title">{{ $item->name }}</h5>
                                                 <p class="card-text">{{ $item->body }}</p>
                                                 <div class="text-dark">
-                                                    <i class="fas fa-star star-active"></i> 4.7
+                                                    
                                                 </div>
                                             </div>
                                         </div>
