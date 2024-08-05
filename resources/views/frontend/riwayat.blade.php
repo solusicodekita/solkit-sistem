@@ -156,7 +156,7 @@
                                             @method('PUT')
                                             @csrf
                                             <input type="hidden" name="order_id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-sm rounded btn-outline-warning">Menunggu Pembayaran</button>
+                                            <button type="button" class="btn btn-sm rounded btn-outline-warning" onclick="mdlPembayaran('{{ $item->id }}')">Menunggu Pembayaran</button>
                                         </form>
                                         @elseif ($item->payment_status == 2)
                                         <form action="{{ route('fe.invoices') }}" method="GET">

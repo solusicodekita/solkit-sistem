@@ -318,6 +318,31 @@ class FrontendController extends Controller
         return back();
     }
 
+    public function check(Request $request)
+    {
+        // Get all input data
+        // dd($request->all());
+        $input = $request->all();
+
+        // Ensure that idItem and qty have the same number of elements
+        if(count($input['idItem']) !== count($input['itemQty'])) {
+            return back()->withErrors('The number of items does not match the number of quantities provided.');
+        }
+
+        // Loop through each item
+        for ($i = 0; $i < count($input['idItem']); $i++) {
+            $cartItem = Cart::findOrFail($input['idItem'][$i]);
+            
+            // Update the quantity
+            $cartItem->qty = $input['itemQty'][$i];
+            $cartItem->save();
+        }
+
+        // Display success message
+        Alert::success('Data Berhasil Diubah');
+        return back();
+    }
+
     public function delete_cart($id)
     {
         Cart::destroy($id);
