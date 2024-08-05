@@ -52,6 +52,7 @@ Route::middleware(['xss'])->group(function () {
                         Route::post('/cart', 'post_cart')->name('post_cart');
                         Route::put('/minus/{id}', 'minus')->name('minus');
                         Route::put('/plus/{id}', 'plus')->name('plus');
+                        Route::post('/check', 'check')->name('check');
                         Route::put('/cart/{id}', 'update_cart')->name('update_cart');
                         Route::delete('/cart/delete/{id}', 'delete_cart')->name('delete_cart');
                         Route::put('/update_note/{id}', 'update_note')->name('update_note');

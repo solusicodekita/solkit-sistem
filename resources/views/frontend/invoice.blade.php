@@ -62,6 +62,16 @@
                         </div>
                         <div class="row">
                             <div class="col-xl-10">
+                                <p><b><u>Informasi Pengirim</u></b></p>
+                            </div>
+                            <div class="col-xl-2">
+                                <p class="float-end">Nama Pengirim : {{ $transaksi->customer->firstname }}</p>
+                                <p class="float-end">Whatsapps : {{$transaksi->customer->phone }}</p>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-10">
                                 <p><b><u>Informasi Catatan</u></b></p>
                             </div>
                             <div class="col-xl-2">

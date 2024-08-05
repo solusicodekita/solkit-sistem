@@ -43,6 +43,7 @@
                                                         <div class="card-body">
                                                             <h5 class="card-title">{{ $item->name }}</h5>
                                                             <p class="card-text">{{ $item->body }}</p>
+                                                            <p class="card-text">Jumlah  yang Tersedia : <b>{{ $item->stok }}</b></p>
                                                             <div class="row">
                                                                 <p class="card-text col-md-6"><b>{{ __('Rp.').number_format($item->price,2,',','.') }}</b></p>
                                                                 <div class="col-md-6">
