@@ -27,6 +27,7 @@
                     <th style="min-width: 150px;">Nama</th>
                     <th style="min-width: 150px;">Kategori</th>
                     <th style="min-width: 150px;">Harga</th>
+                    <th style="min-width: 150px;">Stok</th>
                     <th style="min-width: 150px;">Thumbnail</th>
                     <th style="min-width: 200px;">Detail</th>
                     <th style="min-width: 150px;">{{ trans('global.actions') }}</th>
@@ -38,6 +39,7 @@
                     <td>{{ $dt->name }}</td>
                     <td>{{ $dt->category->name }}</td>
                     <td>{{ __('Rp.').number_format($dt->price,2,',','.') }}</td>
+                    <td>{{ $dt->stok }}</td>
                     <td>
                         <a href="{{ asset('frontend/assets/img/product') . "/" . $dt->thumbnail }}" target="_blank" rel="noopener noreferrer">
                             <img src="{{ asset('frontend/assets/img/product') . "/" . $dt->thumbnail }}" class="img-fluid rounded-start w-25" alt="Thumbnail">

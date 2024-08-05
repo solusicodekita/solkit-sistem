@@ -30,6 +30,10 @@
                     {{ __('Rp.').number_format($dt->price,2,',','.') }}
                 </div>
                 <div class="form-group">
+                    <strong>Stok : </strong>
+                    {{ $dt->stok }}
+                </div>
+                <div class="form-group">
                     <strong>Detail : </strong>
                     {{ $dt->body == null ? '-' : $dt->body }}
                 </div>

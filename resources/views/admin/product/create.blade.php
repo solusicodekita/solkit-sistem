@@ -58,6 +58,10 @@
                 {!! Form::number('price', null, array('required','min' => '0','placeholder' => 'Price','class' => 'form-control')) !!}
             </div>
             <div class="form-group">
+                <strong>Stok:</strong>
+                {!! Form::number('stok', null, array('required','min' => '0','placeholder' => 'Stok','class' => 'form-control')) !!}
+            </div>
+            <div class="form-group">
                 <strong>Thumbnail:</strong>
                 <div class="custom-file">
                     {!! Form::file('thumbnail', array('class' => 'custom-file-input')) !!}

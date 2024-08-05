@@ -133,12 +133,17 @@ class FrontendController extends Controller
 
     public function upload(Request $request)
     {
+       
 
         // Store the uploaded file
         $path = $request->file('bukti_transfer')->store('images/avatar', 'public');;
 
         // Retrieve the transaction
         $transaction = Transaction::with('customer', 'order_product')->findOrFail($request->id);
+        $order = OrderProduct::where('transaction_id',$request->id)->first();
+        $product = Product::find($order->product_id);
+        $product->stok = (int) $product->stok - (int)$order->qty;
+        $product->save();
 
         // Update the transaction
         $transaction->update([
@@ -161,7 +166,7 @@ class FrontendController extends Controller
 
     public function uploadInstan(Request $request)
     {
-        // dd($request->input());
+     
         // Store the uploaded file
         $path = $request->file('bukti_transfer')->store('images/avatar', 'public');;
 
@@ -171,17 +176,22 @@ class FrontendController extends Controller
         $atr->status = 'SUCCESS';
         $atr->snap_token = $request->snap_token == NULL ? mt_rand(00000, 99999).time() : $request->snap_token;
         $atr->gambar = $path;
-        $atr->update();
+        // $atr->update();
 
         $carts = Cart::with('product')->where('customer_id', Auth::user()->id)->get();
         foreach ($carts as $item) {
-
+           
             $op = new OrderProduct;
             $op->transaction_id = $atr->id;
             $op->product_id = $item->product->id;
             $op->qty = $item->qty == NULL ? 1 : $item->qty;
             $atr->type = $request->type;
             $op->save();
+
+            $product = Product::find($item->product->id);
+            $product->stok = (int) $product->stok - (int)$item->qty;
+            $product->save();
+    
 
             Cart::destroy($item->id);
         }
@@ -363,6 +373,10 @@ class FrontendController extends Controller
             $op->qty = $item->qty == NULL ? 1 : $item->qty;
             $atr->type = $request->type;
             $op->save();
+
+            $product = Product::find($item->product->id);
+            $product->stok = (int) $product->stok - (int)$item->qty;
+            $product->save();
 
             Cart::destroy($item->id);
         }
@@ -566,7 +580,14 @@ class FrontendController extends Controller
             // ['kode_transaksi', $request->order_id,],
             // ['status', Str::upper($request->transaction_status)],
         ])->first();
-        // dd($data['transaksi']);
+
+        $order = OrderProduct::where('transaction_id',$request->order_id)->first();
+        // dd($order);
+        $product = Product::find($order->product_id);
+        $product->stok = (int) $product->stok - (int)$order->qty;
+        $product->save();
+
+        
         $data['transaksi']->update([
             'payment_status' => 2,
             'status' => 'SUCCESS'

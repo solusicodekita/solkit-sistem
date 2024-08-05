@@ -45,6 +45,7 @@ class ProductController extends Controller
             'category_id' => 'required',
             'name' => 'required',
             'body' => 'required',
+            'stok' => 'required',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -53,6 +54,7 @@ class ProductController extends Controller
         $dt->name = Str::ucfirst($request->name);
         $dt->price = $request->price;
         $dt->body = $request->body;
+        $dt->stok = $request->stok;
         $dt->created_at = now();
         if ($thumbnail = $request->file('thumbnail')) {
             $destinationPath = 'frontend/assets/img/product/';
@@ -104,6 +106,7 @@ class ProductController extends Controller
             'category_id' => 'required',
             'name' => 'required',
             'body' => 'required',
+            'stok' => 'required',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -112,6 +115,7 @@ class ProductController extends Controller
         $dt->name = Str::ucfirst($request->name);
         $dt->price = $request->price;
         $dt->body = $request->body;
+        $dt->stok = $request->stok;
         $dt->updated_at = now();
         if ($thumbnail = $request->file('thumbnail')) {
             $destinationPath = 'frontend/assets/img/product/';

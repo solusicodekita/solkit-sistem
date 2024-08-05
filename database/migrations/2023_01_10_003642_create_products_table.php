@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->string('name');
+            $table->integer('stok');
             $table->string('thumbnail');
             $table->bigInteger('price');
             $table->text('body');

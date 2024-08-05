@@ -21,6 +21,7 @@ class ProductSeeder extends Seeder
             'price'         => 15000,
             'body'          => 'Nasi, Sambal Ijo, Ayam Bakar',
             'favorite'      => 'true',
+            'stok'          => 100,
         ]);
         Product::create([
             'category_id'   => 1,
@@ -29,6 +30,7 @@ class ProductSeeder extends Seeder
             'price'         => 15000,
             'body'          => 'Nasi, Sambal Ijo, Ayam Gulai',
             'favorite'      => 'false',
+            'stok'          => 100,
         ]);
         Product::create([
             'category_id'   => 1,
@@ -37,6 +39,7 @@ class ProductSeeder extends Seeder
             'price'         => 15000,
             'body'          => 'Nasi, Sambal Ijo Ayam Bakar',
             'favorite'      => 'true',
+            'stok'          => 100,
         ]);
         Product::create([
             'category_id'   => 2,
@@ -45,6 +48,7 @@ class ProductSeeder extends Seeder
             'price'         => 2000,
             'body'          => 'Perkedel',
             'favorite'      => 'false',
+            'stok'          => 100,
         ]);
         Product::create([
             'category_id'   => 3,
@@ -53,6 +57,7 @@ class ProductSeeder extends Seeder
             'price'         => 8000,
             'body'          => 'Ayam Bakar',
             'favorite'      => 'false',
+            'stok'          => 100,
         ]);
         Product::create([
             'category_id'   => 5,
@@ -61,6 +66,7 @@ class ProductSeeder extends Seeder
             'price'         => 2000,
             'body'          => 'Es atau Panas Teh Tawar',
             'favorite'      => 'false',
+            'stok'          => 100,
         ]);
         Product::create([
             'category_id'   => 5,
@@ -69,6 +75,7 @@ class ProductSeeder extends Seeder
             'price'         => 3000,
             'body'          => 'Es atau Panas Teh Manis',
             'favorite'      => 'true',
+            'stok'          => 100,
         ]);
         Product::create([
             'category_id'   => 5,
@@ -77,6 +84,7 @@ class ProductSeeder extends Seeder
             'price'         => 5000,
             'body'          => 'Es atau Panas Jeruk',
             'favorite'      => 'false',
+            'stok'          => 100,
         ]);
     }
 }

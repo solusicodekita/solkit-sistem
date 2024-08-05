@@ -16,29 +16,37 @@ class RiwayatController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request->all());
         $day = Carbon::now()->format('d');
-        $month = Carbon::now()->addMonth(1)->format('m');
+        $month = Carbon::now()->format('m');
         $year = Carbon::now()->format('Y');
-        if ($request->day) {
-            $data['data'] = Transaction::whereDate($day);
-        } elseif ($request->month) {
-            $data['data'] = Transaction::with('customer')->where('MONTH(tgl_penjemputan)', $month )->latest('id')->get();
-        } elseif ($request->year) {
-            $data['data'] = Transaction::with('customer')->where('YEAR(tgl_penjemputan)', $year )->latest('id')->get();
-        } else {
-            $data['data'] = Transaction::with('customer')->where('status', 'SUCCESS')->latest('id')->get();
+        
+        $query = Transaction::with('customer');
+
+        // Apply filters
+        if ($request->has('type') && $request->type) {
+            $query->where('type', $request->type);
         }
 
-        $data['total'] = 0;
-        foreach ($data['data'] as $item) {
-            $data['total'] += $item->total;
+        if ($request->has('tgl') && $request->tgl) {
+            $selectedDate = Carbon::parse($request->tgl);
+            $query->whereDate('created_at', $selectedDate);
+        } elseif ($request->day) {
+            $query->whereDate('created_at', $day);
+        } elseif ($request->month) {
+            $query->whereMonth('tgl_penjemputan', $month);
+        } elseif ($request->year) {
+            $query->whereYear('tgl_penjemputan', $year);
+        } else {
+            $query->where('status', 'SUCCESS');
         }
-        return view('admin.riwayat.index', $data, [
-            'day' => $day,
-            'month' => $month,
-            'year' => $year,
-        ]);
+
+        $data['data'] = $query->latest('id')->get();
+        
+        $total = $data['data']->sum('total_harga');
+        $typekatering = $data['data']->where('type', 'katering')->count();
+        $typeinstan = $data['data']->where('type', 'instan')->count();
+
+        return view('admin.riwayat.index', compact('data', 'total', 'typekatering', 'typeinstan', 'day', 'month', 'year'));
     }
 
     /**
