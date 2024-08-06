@@ -34,10 +34,14 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="kecamatam" class="form-label">Kecamatan</label>
+                            <input name="kecamatam" required type="text" class="form-control" id="kecamatam" value="{{ $item->kecamatan }}" readonly>
+                        </div>
+                        <div class="mb-3">
                             <label for="address" class="form-label">Alamat</label>
                             <textarea name="address" class="form-control" id="address" rows="10" placeholder="Detail Alamat">{{ $item->address }}</textarea>
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="provinsi" class="form-label">Provinsi</label>
                             <select name="provinsi" class="form-select" id="provinsi" aria-label="Default select example">
                                 <option class="text-uppercase" value="{{ $item->provinsi }}" selected>{{ $item->provinsi }}</option>
@@ -93,11 +97,11 @@
                                     <option class="text-uppercase" value="1">{{ $kecamatan->name }}</option>
                                 @endforeach --}}
                             </select>
-                        </div>
-                        <div class="mb-3">
+                        </div> -->
+                        <!-- <div class="mb-3">
                             <label for="code_pos" class="form-label">Kode Pos</label>
                             <input name="pos" required type="number" class="form-control" id="code_pos" min="1" value="{{ $item->pos }}">
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">BATAL</button>

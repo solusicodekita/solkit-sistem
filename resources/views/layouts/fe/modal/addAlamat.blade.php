@@ -32,6 +32,10 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label for="kecamatan" class="form-label">Nama Lengkap</label>
+                            <input name="kecamatan" required type="text" class="form-control" id="kecamatan" value="Rancaekek " readonly>
+                        </div>
+                        <div class="mb-3">
                             <label for="phone" class="form-label">Alamat</label>
                             <textarea name="address" class="form-control" id="address" rows="10" placeholder="Detail Alamat"></textarea>
                         </div>

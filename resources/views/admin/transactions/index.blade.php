@@ -20,19 +20,19 @@
             </div> --}}
         </div>
         <!-- /.card-header -->
-        <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
+        <div class="card-body" style="overflow-x:auto;">
+        <table id="example1" class="table table-bordered table-striped" style="width: 1000px;">
                 <thead>
                     <tr>
-                        <th>Code</th>
-                        <th>Customer</th>
-                        <th>Order by</th>
-                        <th>Total Harga</th>
-                        <th>Bukti Pembayaran</th>
-                        <th>Alamat</th>
-                        <th>Status</th>
-                        <th>Tanggal</th>
-                        <th>{{ trans('global.actions') }}</th>
+                        <th style="min-width: 150px;">Code</th>
+                        <th style="min-width: 150px;">Customer</th>
+                        <th style="min-width: 150px;">Order by</th>
+                        <th style="min-width: 150px;">Total Harga</th>
+                        <th style="min-width: 150px;">Bukti Pembayaran</th>
+                        <th style="min-width: 150px;">Alamat</th>
+                        <th style="min-width: 150px;">Status</th>
+                        <th style="min-width: 150px;">Tanggal</th>
+                        <th style="min-width: 150px;">{{ trans('global.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,7 +42,12 @@
                         <td>{{ $dt->customer->fullname }}</td>
                         <td>{{ strtoupper($dt->type) }}</td>
                         <td>{{ __('Rp.').number_format($dt->total_harga,2,',','.') }}</td>
-                        <td><img src="{{ asset('storage/'. $dt->gambar) }}"style="max-width: 100%; height: auto;"></td>
+                        <td>
+                            <a href="{{ asset('storage/'. $dt->gambar) }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ asset('storage/'. $dt->gambar) }}" class="img-fluid rounded-start w-25" alt="Thumbnail">
+                            </a>
+                        </td>
+                        <!-- <td><img src="{{ asset('storage/'. $dt->gambar) }}"style="max-width: 100%; height: auto;"></td> -->
                         <td>{{ $dt->address->title }}</td>
                         <td>
                             @if ($dt->status == 'PENDING')
