@@ -323,7 +323,6 @@ class FrontendController extends Controller
         // Get all input data
         // dd($request->all());
         $input = $request->all();
-
         // Ensure that idItem and qty have the same number of elements
         if(count($input['idItem']) !== count($input['itemQty'])) {
             return back()->withErrors('The number of items does not match the number of quantities provided.');
@@ -333,9 +332,13 @@ class FrontendController extends Controller
         for ($i = 0; $i < count($input['idItem']); $i++) {
             $cartItem = Cart::findOrFail($input['idItem'][$i]);
             
+            if ($input['itemQty'][$i] == 0) {
+                $cartItem->delete();
+            }else{
+                $cartItem->qty = $input['itemQty'][$i];
+                $cartItem->save();
+            }
             // Update the quantity
-            $cartItem->qty = $input['itemQty'][$i];
-            $cartItem->save();
         }
 
         // Display success message

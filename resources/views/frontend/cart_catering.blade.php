@@ -105,7 +105,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-10">Ongkos Kirim</div>
-                    <div class="col-md-2">{{ __('Rp.').number_format($total*(10/100),2,',','.') }}</div>
+                    <div class="col-md-2">{{ __('Rp.').number_format($total*(5/100),2,',','.') }}</div>
                 </div>
                 <!-- <div class="row">
                             <div class="col-md-10">Ongkos Kirim</div>
