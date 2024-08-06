@@ -17,6 +17,7 @@
                     <strong>Type:</strong>
                     <select name="type" id="type" class="form-control">
                         <option value="">Please Select Type!</option>
+                        <option value="all" {{ request('type') == 'all' ? 'selected' : '' }}>Semua Type Transaksi</option>
                         <option value="instan" {{ request('type') == 'instan' ? 'selected' : '' }}>Instan</option>
                         <option value="katering" {{ request('type') == 'katering' ? 'selected' : '' }}>Katering</option>
                     </select>
