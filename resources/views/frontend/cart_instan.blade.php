@@ -158,23 +158,23 @@
                 <hr style="color:#000;opacity:unset;">
                 <div class="row fw-bold">
                     <div class="col-md-10">Total Harga</div>
-                    <div class="col-md-2">{{ __('Rp.').number_format($total+($total*(10/100)),2,',','.') }}</div>
+                    <div class="col-md-2">{{ __('Rp.').number_format($total+($total*(5/100)),2,',','.') }}</div>
                 </div>
             </div>
         </div>
         <div class="row fw-bold mb-5">
             <div class="col-md-10">
                 Total
-                <h5>{{ __('Rp.').number_format($total+($total*(10/100)),2,',','.') }}</h5>
+                <h5>{{ __('Rp.').number_format($total+($total*(5/100)),2,',','.') }}</h5>
             </div>
             <div class="col-md-2">
                 <form class="modal-body row" action="{{ route('fe.pay', $adr->id) }}" method="POST">
                     @method('PUT')
                     @csrf
                     <input type="hidden" name="id" id="id" value="{{ $adr->id }}">
-                    <input type="hidden" name="total_harga" id="total_harga" value="{{ $total+($total*(10/100)) }}">
+                    <input type="hidden" name="total_harga" id="total_harga" value="{{ $total+($total*(5/100)) }}">
                     <input type="hidden" name="type" id="type" value="{{ $adr->type }}">
-                    <button type="submit" class="btn btn-outline-dark" {{ \Setting::getDisable() }} {{ $total+($total*(10/100)) == 0 ? 'disabled' : '' }}>Pembayaran</button>
+                    <button type="submit" class="btn btn-outline-dark" {{ \Setting::getDisable() }} {{ $total+($total*(5/100)) == 0 ? 'disabled' : '' }}>Pembayaran</button>
                 </form>
                 <!-- <button type="button" class="btn btn-outline-dark" onclick="mdlPembayaranInstan('{{ $adr->id }}')">Pembayaran</button> -->
             </div>

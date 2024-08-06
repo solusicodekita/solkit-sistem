@@ -114,14 +114,14 @@
                 <hr style="color:#000;opacity:unset;">
                 <div class="row fw-bold">
                     <div class="col-md-10">Total Harga</div>
-                    <div class="col-md-2">{{ __('Rp.').number_format($total+($total*(10/100)),2,',','.') }}</div>
+                    <div class="col-md-2">{{ __('Rp.').number_format($total+($total*(5/100)),2,',','.') }}</div>
                 </div>
             </div>
         </div>
         <div class="row fw-bold mb-5">
             <div class="col-md-10">
                 Total
-                <h5>{{ __('Rp.').number_format($total+($total*(10/100)),2,',','.') }}</h5>
+                <h5>{{ __('Rp.').number_format($total+($total*(5/100)),2,',','.') }}</h5>
             </div>
             <div class="col-md-2">
                 <form class="modal-body row" action="{{ route('fe.pay', $adr->id) }}" method="POST">
@@ -129,8 +129,8 @@
                     @csrf
                     <input type="hidden" name="id" value="{{ $adr->id }}">
                     <input type="hidden" name="type" value="{{ $adr->type }}">
-                    <input type="hidden" name="total_harga" value="{{ $total+($total*(10/100)) }}">
-                    <button type="submit" class="btn btn-outline-dark" {{ $total+($total*(10/100)) == 0 ? 'disabled' : '' }}>Pembayaran</button>
+                    <input type="hidden" name="total_harga" value="{{ $total+($total*(5/100)) }}">
+                    <button type="submit" class="btn btn-outline-dark" {{ $total+($total*(5/100)) == 0 ? 'disabled' : '' }}>Pembayaran</button>
                 </form>
             </div>
         </div>
