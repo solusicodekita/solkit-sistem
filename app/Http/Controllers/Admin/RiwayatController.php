@@ -24,8 +24,16 @@ class RiwayatController extends Controller
 
         // Apply filters
         if ($request->has('type') && $request->type) {
-            $query->where('type', $request->type);
+            if ($request->type == 'all') {
+                $query->where(function($q) {
+                    $q->where('type', 'instan')
+                      ->orWhere('type', 'katering');
+                });
+            } else {
+                $query->where('type', $request->type);
+            }
         }
+        
 
         if ($request->has('tgl') && $request->tgl) {
             $selectedDate = Carbon::parse($request->tgl);
