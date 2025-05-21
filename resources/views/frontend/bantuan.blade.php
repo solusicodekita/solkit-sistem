@@ -19,12 +19,12 @@
                                     <div class="accordion-item border-0 border-bottom">
                                         <h2 class="accordion-header" id="headingOne">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                Apa itu Bu Een Catering?
+                                                Apa itu Nita Jaya Catering?
                                             </button>
                                         </h2>
                                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
-                                                Apa itu Bu Een Catering?
+                                                Apa itu Nita Jaya Catering?
                                             </div>
                                         </div>
                                     </div>
@@ -67,12 +67,12 @@
                                     <div class="accordion-item border-0 border-bottom">
                                         <h2 class="accordion-header" id="headingFive">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                                Bagaimana cara melakukan pembayaran di Bu Een Catering?
+                                                Bagaimana cara melakukan pembayaran di Nita Jaya Catering?
                                             </button>
                                         </h2>
                                         <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
-                                                Bagaimana cara melakukan pembayaran di Bu Een Catering?
+                                                Bagaimana cara melakukan pembayaran di Nita Jaya Catering?
                                             </div>
                                         </div>
                                     </div>

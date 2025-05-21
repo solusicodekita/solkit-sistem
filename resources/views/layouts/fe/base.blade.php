@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta name="description" content="Bu Een Catering" />
+        <meta name="description" content="Nita Jaya Catering" />
         <meta name="author" content="Abdurrahman GM" />
 
         <title>{{ \Setting::getSetting()->title_web }}</title>

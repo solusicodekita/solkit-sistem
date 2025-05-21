@@ -15,7 +15,7 @@
       localStorage.setItem('AdminLTE:Demo:MessageShowed', (Date.now()) + (15 * 60 * 1000))
       // eslint-disable-next-line no-alert
       // alert('You load AdminLTE\'s "demo.js", \nthis file is only created for testing purposes!')
-      alert('You reload page My Website, \nWelcome to the Bu Een Catering!')
+      alert('You reload page My Website, \nWelcome to the Nita Jaya Catering!')
     }
   }, 1000)
 

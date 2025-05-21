@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="card border-0">
                     <div class="card-body">
-                        <h5 class="card-title" style="color: #000;">Rumah Makan Bu Een</h5>
+                        <h5 class="card-title" style="color: #000;">Rumah Makan Nita Jaya</h5>
                         <p class="card-text" style="color: #000;">Makanan Berat, Minuman, Nasi</p>
                         <div class="row text-dark">
                             <div class="col-md-2"></div>
