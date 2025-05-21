@@ -1,63 +1,43 @@
 @extends('layouts.adm.base')
-@section('title','Setting Website')
-
-@push('style')
-
-    <!-- summernote -->
-    <link rel="stylesheet" href="{{ asset('plugins') }}/summernote/summernote-bs4.min.css">
-    <!-- Select2 -->
-    <link rel="stylesheet" href="{{ asset('plugins') }}/select2/css/select2.min.css">
-    <link rel="stylesheet" href="{{ asset('plugins') }}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/dropify') }}/dist/css/dropify.min.css">
-
-@endpush
+@section('title','Dashboard')
 
 @section('content')
-
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="dashboard-card" style="background:linear-gradient(135deg,#1976d2 60%,#1a237e 100%);color:#fff;">
+            <div class="d-flex align-items-center">
+                <div style="font-size:2.5rem;margin-right:1rem;"><i class="fa-solid fa-users"></i></div>
+                <div>
+                    <div class="card-title">Data User</div>
+                    <div class="card-value">2</div>
+                </div>
+            </div>
+            <div class="card-desc mt-2">Tampilkan Data <i class="fa fa-arrow-right"></i></div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="dashboard-card" style="background:linear-gradient(135deg,#00bcd4 60%,#1976d2 100%);color:#fff;">
+            <div class="d-flex align-items-center">
+                <div style="font-size:2.5rem;margin-right:1rem;"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div>
+                    <div class="card-title">Data Transaction</div>
+                    <div class="card-value">0</div>
+                </div>
+            </div>
+            <div class="card-desc mt-2">Tampilkan Data <i class="fa fa-arrow-right"></i></div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="dashboard-card" style="background:linear-gradient(135deg,#43a047 60%,#ffc107 100%);color:#fff;">
+            <div class="d-flex align-items-center">
+                <div style="font-size:2.5rem;margin-right:1rem;"><i class="fa-solid fa-dollar-sign"></i></div>
+                <div>
+                    <div class="card-title">Data Income</div>
+                    <div class="card-value">Rp.0,00</div>
+                </div>
+            </div>
+            <div class="card-desc mt-2">Tampilkan Data <i class="fa fa-arrow-right"></i></div>
+        </div>
+    </div>
+</div>
 @endsection
-
-@push('scripts')
-
-    <!-- summernote -->
-    <script src="{{ asset('plugins') }}/summernote/summernote-bs4.min.js"></script>
-    <!-- Select2 -->
-    <script src="{{ asset('plugins') }}/select2/js/select2.full.min.js"></script>
-    <script type="text/javascript" src="{{ asset('plugins/dropify') }}/dist/js/dropify.min.js"></script>
-    <script type="text/javascript">
-        $(".summernote").summernote({
-            height:200,
-            callbacks: {
-            // callback for pasting text only (no formatting)
-                onPaste: function (e) {
-                var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
-                e.preventDefault();
-                bufferText = bufferText.replace(/\r?\n/g, '<br>');
-                document.execCommand('insertHtml', false, bufferText);
-                }
-            }
-        })
-        $(".summernote").on("summernote.enter", function(we, e) {
-            $(this).summernote("pasteHTML", "<br><br>");
-            e.preventDefault();
-        });
-        //Initialize Select2 Elements
-        $('.select2').select2()
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-        theme: 'bootstrap4'
-        })
-        $('.dropify').dropify({
-            messages: {
-                default: 'Pilih Gambar',
-                replace: 'Ganti',
-                remove:  'Hapus',
-                error:   'error'
-            }
-        });
-        $('.title').keyup(function(){
-            var title = $(this).val().toLowerCase().replace(/[&\/\\#^, +()$~%.'":*?<>{}]/g,'-');
-            $('.slug').val(title);
-        });
-    </script>
-
-@endpush

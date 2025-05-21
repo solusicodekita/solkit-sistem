@@ -5,6 +5,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
 // Route::get('/', function () { return view('welcome'); });
+Route::get('/', function () {
+    // Jika belum login, redirect ke /admin
+    if (!Auth::check()) {
+        return redirect('/login');
+    }
+    // Jika sudah login, bisa diarahkan ke dashboard atau halaman lain
+    return redirect('/dashboard');
+});
+
 
 Route::middleware(['xss'])->group(function () {
     Route::name('fe.')->group(function () {
@@ -82,6 +91,7 @@ Route::middleware(['xss'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::controller(App\Http\Controllers\ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
             Route::get('/', 'edit')->name('edit');
             Route::put('/', 'update')->name('update');
@@ -109,14 +119,17 @@ Route::middleware(['xss'])->group(function () {
             Route::put('website/{admin_website}', 'update')->name('update');
         });
 
-        Route::get('/clear', function () {
+        Route::get('/clear-cache', function () {
             Artisan::call('cache:clear');
             Artisan::call('config:clear');
-            Artisan::call('config:cache');
+            Artisan::call('route:clear');
             Artisan::call('view:clear');
-            Artisan::call('optimize');
+            Artisan::call('optimize:clear');
+            return back()->with('success', 'Cache, config, route, dan view berhasil dibersihkan!');
+        })->name('admin.clearcache');
 
-            return redirect()->back()->with('success', 'Cleared!');
-        })->name('clear');
+        // Route untuk clear cache Laravel (hanya untuk admin/development)
+        
     });
 });
+

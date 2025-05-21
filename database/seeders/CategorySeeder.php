@@ -16,11 +16,9 @@ class CategorySeeder extends Seeder
     public function run()
     {
         $items = [
-            'MAKANAN BERAT',
-            'MAKANAN RINGAN',
-            'LAUK PAUK',
-            'SAYURAN',
-            'MINUMAN',
+            'BAHAN BASAH',
+            'BAHAN KERING',
+            'BAHAN PENOLONG',
         ];
 
         foreach ($items as $item) {

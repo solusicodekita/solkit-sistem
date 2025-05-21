@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Resources\ProductResource;
 
-class FrontendController extends BaseController
+class FrontendController extends Controller
 {
     public function list()
     {

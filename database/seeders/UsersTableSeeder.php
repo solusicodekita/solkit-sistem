@@ -21,10 +21,10 @@ class UsersTableSeeder extends Seeder
     {
         $admin = User::create([
             'firstname' => 'Admin',
-            'lastname' => 'Account',
+            'lastname' => 'Nita Jaya Catering',
             'username' => 'admin',
-            'email' => 'admin@test.com',
-            'password' => bcrypt('password'),
+            'email' => 'admin@nitajayacatering.com',
+            'password' => bcrypt('admin123'),
             'phone' => '85767113554',
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),

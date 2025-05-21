@@ -50,7 +50,10 @@ class FrontendController extends Controller
         $data['categories'] = Category::all();
         $data['items'] = Product::latest('id')->get();
         $data['favorite'] = Product::where('favorite', 'true')->paginate(4);
-        $data['products'] = Product::with('category')->orderBy('category_id')->get()->groupBy(function($data) { return $data->category->name; });
+        $data['products'] = Product::with('category')->orderBy('category_id')->get()
+            ->groupBy(function($data) { 
+                return $data->category ? $data->category->name : 'Tanpa Kategori'; 
+            });
         // foreach($data['products'] as $name => $product) {
         //     echo '<ul>';
         //         echo '<li>' . $name . '</li>';
