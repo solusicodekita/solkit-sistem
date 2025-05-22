@@ -1,5 +1,5 @@
 @extends('layouts.adm.base')
-@section('title', trans('menu.category.title'))
+@section('title', trans('menu.item.title'))
 @section('content')
     <div class="app-content">
         <div class="container-fluid">
@@ -9,10 +9,10 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="card-title">Tabel Kategori</h3>
+                                    <h3 class="card-title">Tabel Bahan</h3>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{  route('admin.category.create')  }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah</a>
+                                    <a href="{{  route('admin.items.create')  }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah</a>
                                 </div>
                             </div>
                         </div>
@@ -21,9 +21,11 @@
                                 <thead>
                                     <tr>
                                         <th width="5%" class="text-center">No</th>
-                                        <th width="10%" class="text-center">Kode</th>
-                                        <th width="35%" class="text-center">Nama Kategori</th>
-                                        <th width="35%" class="text-center">Slug</th>
+                                        <th width="15%" class="text-center">Kategori</th>
+                                        <th width="15%" class="text-center">Kode Bahan</th>
+                                        <th width="25%" class="text-center">Nama Bahan</th>
+                                        <th width="10%" class="text-center">Unit</th>
+                                        <th width="15%" class="text-center">Harga</th>
                                         <th width="15%" class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -31,11 +33,13 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ $item->category->name }}</td>
                                             <td class="text-center">{{ $item->code }}</td>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->slug }}</td>
+                                            <td>{{ $item->unit }}</td>
+                                            <td class="text-center">Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
                                             <td class="text-center">
-                                                <a href="{{ route('admin.category.edit', $item->id) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                                <a href="{{ route('admin.items.edit', $item->id) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
                                                 <button onclick="hapus('{{ $item->id }}')" class="btn btn-danger"><i
                                                         class="fas fa-trash"></i></button>
                                             </td>
@@ -51,5 +55,5 @@
     </div>
 @endsection
 @push('scripts')
-    @include('admin.categories.script')
+    @include('admin.items.script')
 @endpush

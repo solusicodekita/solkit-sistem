@@ -16,15 +16,16 @@ class CategorySeeder extends Seeder
     public function run()
     {
         $items = [
-            'BAHAN BASAH',
-            'BAHAN KERING',
-            'BAHAN PENOLONG',
+            ['name' => 'BAHAN BASAH', 'code' => 'BB'],
+            ['name' => 'BAHAN KERING', 'code' => 'BK'], 
+            ['name' => 'BAHAN PENOLONG', 'code' => 'BP'],
         ];
 
         foreach ($items as $item) {
             Category::create([
-                'name' => $item,
-                'slug' => Str::slug($item),
+                'name' => $item['name'],
+                'code' => $item['code'],
+                'slug' => strtolower(str_replace(' ', '-', $item['name'])),
             ]);
         }
     }

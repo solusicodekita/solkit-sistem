@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <style>
         body {
             background: #f5f7fa;
@@ -24,6 +25,22 @@
             display: flex;
             flex-direction: column;
             z-index: 100;
+            overflow-y: auto;
+            max-height: 100vh; /* Membatasi tinggi maksimum */
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
         }
         .sidebar .logo {
             text-align: center;
@@ -50,6 +67,7 @@
         .sidebar nav {
             flex: 1;
             margin-top: 2rem;
+            overflow-y: auto; /* Menambahkan scroll pada nav */
         }
         .sidebar .nav-link {
             color: #fff;
@@ -132,7 +150,11 @@
             box-shadow: 0 4px 24px #ffc10755, 0 2px 0 #fff;
             transform: scale(1.05);
         }
-    </style>
+        /* Menambahkan style untuk submenu */
+        .collapse .nav-link {
+            padding-left: 3.5rem !important; /* Menambah padding kiri untuk submenu */
+        }
+</style>
     @stack('styles')
 </head>
 <body>
@@ -144,19 +166,67 @@
             <div class="brand">NITA JAYA CATERING</div>
         </div>
         <nav>
-            <a href="#" class="nav-link active">
+            <a href="{{ route('home') }}" class="nav-link {{ Request::is('home*') ? 'active' : '' }}">
                 <i class="fa-solid fa-gauge"></i> <span>Dashboard</span>
             </a>
-            <a href="#" class="nav-link ">
-                <i class="fa-solid fa-utensils"></i> <span>Menu Item</span>
-            </a>
-            <a href="#" class="nav-link ">
-                <i class="fa-solid fa-cart-shopping"></i> <span>Menu Transaksi</span>
-            </a>
-            <a href="#" class="nav-link ">
-                <i class="fa-solid fa-users"></i> <span>Menu User</span>
-            </a>
+            <div class="nav-item">
+                <a href="#" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}" onclick="toggleMenu('masterMenu', event)">
+                    <i class="fa-solid fa-database"></i>
+                    <span>Master</span>
+                    <i class="fa-solid fa-angle-down float-right mt-1"></i>
+                </a>
+                <div id="masterMenu" class="collapse {{ Request::is('admin/category*') || Request::is('admin/items*') ? 'show' : '' }}">
+                    <a href="{{ route('admin.category.index') }}" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-tags"></i> <span>Kategori</span>
+                    </a>
+                    <a href="{{ route('admin.items.index') }}" class="nav-link {{ Request::is('admin/items*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-box"></i> <span>Bahan</span>
+                    </a>
+                    <a href="#" class="nav-link {{ Request::is('admin/locations*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-location-dot"></i> <span>Lokasi</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                <a href="#" class="nav-link {{ Request::is('admin/transactions*') ? 'active' : '' }}" onclick="toggleMenu('transaksiMenu', event)">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Transaksi</span>
+                    <i class="fa-solid fa-angle-down float-right mt-1"></i>
+                </a>
+                <div id="transaksiMenu" class="collapse {{ Request::is('admin/transactions*') ? 'show' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('admin/transactions/items*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-utensils"></i> <span>Menu Item</span>
+                    </a>
+                    <a href="#" class="nav-link {{ Request::is('admin/transactions/orders*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Menu Transaksi</span>
+                    </a>
+                    <a href="#" class="nav-link {{ Request::is('admin/transactions/users*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-users"></i> <span>Menu User</span>
+                    </a>
+                </div>
+            </div>
         </nav>
+
+        <script>
+        function toggleMenu(menuId, event) {
+            event.preventDefault();
+            const allMenus = document.querySelectorAll('.collapse');
+            const clickedMenu = document.getElementById(menuId);
+            
+            // Close all other menus
+            allMenus.forEach(menu => {
+                if (menu.id !== menuId && menu.classList.contains('show')) {
+                    menu.classList.remove('show');
+                }
+            });
+
+            // Toggle clicked menu
+            if (clickedMenu) {
+                clickedMenu.classList.toggle('show');
+            }
+        }
+        </script>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="logout-btn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
@@ -169,5 +239,23 @@
         @yield('content')
     </div>
     @stack('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example1').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true
+            });
+        });
+    </script>
 </body>
 </html>
