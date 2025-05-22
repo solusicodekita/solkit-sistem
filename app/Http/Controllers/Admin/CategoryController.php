@@ -6,6 +6,8 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -38,18 +40,44 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'name' => 'required',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string|max:255',
+                'code' => 'required|string|max:255',
+            ],
+            [
+                'name.required' => 'Nama kategori wajib diisi.',
+                'code.required' => 'Kode kategori wajib diisi.',
+            ]
+        );
 
-        $dt = new Category;
-        $dt->name = strtoupper($request->name);
-        $dt->slug = Str::slug($request->name);
-        $dt->created_at = now();
-        $dt->save();
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-        return redirect()->route('admin.categories.index')
-                        ->with('success','Category created successfully.');
+        try {
+            DB::beginTransaction();
+            $kategori = new Category();
+            $kategori->name = $request->input('name');
+            $kategori->code = $request->input('code');
+            $kategori->slug = strtolower(str_replace(' ', '-', $request->input('name')));
+            $kategori->save();
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data kategori berhasil di Simpan',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 400,
+                'message' => 'Gagal menyimpan data. Pesan Kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -85,18 +113,43 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        request()->validate([
-            'name' => 'required',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string|max:255',
+                'slug' => 'required|string|max:255',
+            ],
+            [
+                'name.required' => 'Nama kategori wajib diisi.',
+                'slug.required' => 'Slug wajib diisi.',
+            ]
+        );
 
-        $dt = Category::find($id);
-        $dt->name = strtoupper($request->name);
-        $dt->slug = Str::slug($request->name);
-        $dt->updated_at = now();
-        $dt->update();
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-        return redirect()->route('admin.categories.index')
-                        ->with('success','Category updated successfully');
+        try {
+            DB::beginTransaction();
+            $kategori = Category::find($request->input('id'));
+            $kategori->name = $request->input('name');
+            $kategori->slug = $request->input('slug');
+            $kategori->save();
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data kategori berhasil diubah',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 400,
+                'message' => 'Gagal menyimpan data. Pesan Kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -107,10 +160,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
-        $category->delete();
-
-        return redirect()->route('admin.categories.index')
-                        ->with('success','Category deleted successfully');
+        $kategori = Category::find($id);
+        $kategori->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Data kategori berhasil dihapus',
+        ]);
     }
 }

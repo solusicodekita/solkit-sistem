@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ItemController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -96,22 +98,22 @@ Route::middleware(['xss'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+        // Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-        Route::controller(App\Http\Controllers\ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
-            Route::get('/', 'edit')->name('edit');
-            Route::put('/', 'update')->name('update');
-            Route::post('upload', 'upload')->name('upload');
-            Route::put('password', 'password')->name('password');
-        });
+        // Route::controller(App\Http\Controllers\ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
+        //     Route::get('/', 'edit')->name('edit');
+        //     Route::put('/', 'update')->name('update');
+        //     Route::post('upload', 'upload')->name('upload');
+        //     Route::put('password', 'password')->name('password');
+        // });
 
-        Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
-        Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
-        Route::resource('transactions', App\Http\Controllers\Admin\TransactionController::class);
-        Route::resource('order_products', App\Http\Controllers\Admin\OrderProductController::class);
-        Route::resource('transactions_instant', App\Http\Controllers\Admin\InstantController::class);
-        Route::resource('transactions_catering', App\Http\Controllers\Admin\CateringController::class);
-        Route::resource('riwayat', App\Http\Controllers\Admin\RiwayatController::class);
+        // Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+        // Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
+        // Route::resource('transactions', App\Http\Controllers\Admin\TransactionController::class);
+        // Route::resource('order_products', App\Http\Controllers\Admin\OrderProductController::class);
+        // Route::resource('transactions_instant', App\Http\Controllers\Admin\InstantController::class);
+        // Route::resource('transactions_catering', App\Http\Controllers\Admin\CateringController::class);
+        // Route::resource('riwayat', App\Http\Controllers\Admin\RiwayatController::class);
 
         Route::controller(App\Http\Controllers\Admin\TransactionController::class)->name('transactions.')->group(function () {
             Route::get('/status/{id}', 'status')->name('status');
@@ -126,13 +128,31 @@ Route::middleware(['xss'])->group(function () {
             Route::put('website/{admin_website}', 'update')->name('update');
         });
 
-        Route::get('/clear-cache', function () {
-            Artisan::call('cache:clear');
-            Artisan::call('config:clear');
-            Artisan::call('route:clear');
-            Artisan::call('view:clear');
-            Artisan::call('optimize:clear');
-            return back()->with('success', 'Cache, config, route, dan view berhasil dibersihkan!');
-        })->name('admin.clearcache');
+        // Route::get('/clear-cache', function () {
+        //     Artisan::call('cache:clear');
+        //     Artisan::call('config:clear');
+        //     Artisan::call('route:clear');
+        //     Artisan::call('view:clear');
+        //     Artisan::call('optimize:clear');
+        //     return back()->with('success', 'Cache, config, route, dan view berhasil dibersihkan!');
+        // })->name('admin.clearcache');
+
+        Route::group(['prefix' => 'category/', 'as' => 'category.'], function () {
+            Route::get('index', [CategoryController::class, 'index'])->name('index');
+            Route::get('create', [CategoryController::class, 'create'])->name('create');
+            Route::post('store', [CategoryController::class, 'store'])->name('store');
+            Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit');
+            Route::post('update/{id}', [CategoryController::class, 'update'])->name('update');
+            Route::delete('destroy/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+        });
+        Route::group(['prefix' => 'items/', 'as' => 'items.'], function () {
+            Route::get('index', [ItemController::class, 'index'])->name('index');
+            Route::get('create', [ItemController::class, 'create'])->name('create');
+            Route::post('store', [ItemController::class, 'store'])->name('store');
+            Route::get('edit/{id}', [ItemController::class, 'edit'])->name('edit');
+            Route::post('update/{id}', [ItemController::class, 'update'])->name('update');
+            Route::delete('destroy/{id}', [ItemController::class, 'destroy'])->name('destroy');
+        });
     });
+
 });
