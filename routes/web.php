@@ -8,6 +8,15 @@ Route::get('/', function () {
     return Auth::check() ? redirect('/home') : redirect('/login');
 });
 
+Route::get('/clear-cache', function () {
+            Artisan::call('cache:clear');
+            Artisan::call('config:clear');
+            Artisan::call('route:clear');
+            Artisan::call('view:clear');
+            // Artisan::call('optimize:clear');
+            return back()->with('success', 'Cache, config, route, dan view berhasil dibersihkan!');
+ });
+
 Route::middleware(['xss'])->group(function () {
     Route::name('fe.')->group(function () {
         Route::controller(App\Http\Controllers\FrontendController::class)->group(function () {
