@@ -25,16 +25,19 @@
                                     <input type="text" class="form-control" name="name" id="name"
                                         placeholder="Ketikkan Nama Kategori" autocomplete="off"
                                         value="{{ $category->name }}">
+                                    <small id="nameHelp" class="form-text text-danger" style="display: none;">
+                                        Nama kategori harus minimal 2 kata
+                                    </small>
                                     <input type="text" class="form-control" name="id" id="id" hidden
                                         autocomplete="off" value="{{ $category->id }}">
                                 </div>
                                 <div class="form-group" style="margin-bottom: 10px;">
-                                    <label for="slug">Slug</label>
-                                    <input type="text" class="form-control" name="slug" id="slug"
-                                        placeholder="Ketikkan Slug" autocomplete="off" value="{{ $category->slug }}">
+                                    <label for="code">Kode Kategori</label>
+                                    <input type="text" class="form-control" name="code" id="code" maxlength="2"
+                                        placeholder="Kode akan terisi otomatis" autocomplete="off" readonly value="{{ $category->code }}">
                                 </div>
                                 <hr>
-                                <button type="submit" class="btn btn-success" onclick="update(event)">
+                                <button type="submit" class="btn btn-success" id="btnSimpan" onclick="update(event)">
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </form>
@@ -49,6 +52,17 @@
     <script>
         document.getElementById('name').addEventListener('input', function() {
             this.value = this.value.toUpperCase();
+            const words = this.value.trim().split(/\s+/);
+            if (words.length >= 2) {
+                const code = words[0][0] + words[1][0];
+                document.getElementById('code').value = code;
+                document.getElementById('nameHelp').style.display = 'none';
+                document.getElementById('btnSimpan').disabled = false;
+            } else {
+                document.getElementById('code').value = '';
+                document.getElementById('nameHelp').style.display = 'block';
+                document.getElementById('btnSimpan').disabled = true;
+            }
         });
     </script>
     @include('admin.categories.script')

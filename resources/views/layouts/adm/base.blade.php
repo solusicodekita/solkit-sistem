@@ -172,18 +172,18 @@
             <div class="nav-item">
                 <a href="#" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}" onclick="toggleMenu('masterMenu', event)">
                     <i class="fa-solid fa-database"></i>
-                    <span>Master</span>
+                    <span>Master &nbsp;</span>
                     <i class="fa-solid fa-angle-down float-right mt-1"></i>
                 </a>
-                <div id="masterMenu" class="collapse {{ Request::is('admin/category*') || Request::is('admin/items*') ? 'show' : '' }}">
+                <div id="masterMenu" class="collapse {{ Request::is('admin/category*') || Request::is('admin/items*') || Request::is('admin/warehouse*') ? 'show' : '' }}">
                     <a href="{{ route('admin.category.index') }}" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}">
                         <i class="fa-solid fa-tags"></i> <span>Kategori</span>
                     </a>
+                    <a href="{{ route('admin.warehouse.index') }}" class="nav-link {{ Request::is('admin/warehouse*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-location-dot"></i> <span>Lokasi</span>
+                    </a>
                     <a href="{{ route('admin.items.index') }}" class="nav-link {{ Request::is('admin/items*') ? 'active' : '' }}">
                         <i class="fa-solid fa-box"></i> <span>Bahan</span>
-                    </a>
-                    <a href="#" class="nav-link {{ Request::is('admin/locations*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-location-dot"></i> <span>Lokasi</span>
                     </a>
                 </div>
             </div>
@@ -191,7 +191,7 @@
             <div class="nav-item">
                 <a href="#" class="nav-link {{ Request::is('admin/transactions*') ? 'active' : '' }}" onclick="toggleMenu('transaksiMenu', event)">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Transaksi</span>
+                    <span>Transaksi&nbsp;</span>
                     <i class="fa-solid fa-angle-down float-right mt-1"></i>
                 </a>
                 <div id="transaksiMenu" class="collapse {{ Request::is('admin/transactions*') ? 'show' : '' }}">

@@ -1,7 +1,7 @@
 <script>
     function simpan(event) {
         event.preventDefault();
-        let myForm = document.getElementById('formKategori');
+        let myForm = document.getElementById('formLokasi');
         let formData = new FormData(myForm);
         Swal.fire({
             title: 'Sedang diproses',
@@ -14,7 +14,7 @@
             },
         })
         $.ajax({
-            url: "{{ route('admin.category.store') }}",
+            url: "{{ route('admin.warehouse.store') }}",
             type: 'POST',
             data: formData,
             contentType: false,
@@ -30,19 +30,19 @@
                             confirmButton: "btn btn-success"
                         }
                     }).then(function(result) {
-                        location.href = "{{ route('admin.category.index') }}";
+                        location.href = "{{ route('admin.warehouse.index') }}";
                     });
                 } else if (data.status == 400) {
                     Swal.fire({
-                        text: data.msg,
+                        text: data.message,
                         icon: "error",
                         buttonsStyling: false,
-                        confirmButtonText: "Selesai",
+                        confirmButtonText: "OK",
                         customClass: {
-                            confirmButton: "btn btn-success"
+                            confirmButton: "btn btn-danger"
                         }
                     })
-                }
+                } 
             },
             error: function(request, status, error) {
                 if (request.status === 422) {
@@ -61,7 +61,7 @@
                             confirmButton: "btn btn-danger"
                         }
                     });
-                }else if (request.status == 500) {
+                } else if (request.status == 500) {
                     Swal.fire({
                         text: request.responseJSON.message,
                         icon: "error",
@@ -81,7 +81,7 @@
 
     function update(event) {
         event.preventDefault();
-        let myForm = document.getElementById('formKategori');
+        let myForm = document.getElementById('formLokasi');
         let formData = new FormData(myForm);
         Swal.fire({
             title: 'Sedang diproses',
@@ -94,7 +94,7 @@
             },
         })
         $.ajax({
-            url: "{{ route('admin.category.update', ':id') }}".replace(':id', id),
+            url: "{{ route('admin.warehouse.update', ':id') }}".replace(':id', id),
             type: 'POST',
             data: formData,
             contentType: false,
@@ -110,7 +110,7 @@
                             confirmButton: "btn btn-success"
                         }
                     }).then(function(result) {
-                        location.href = "{{ route('admin.category.index') }}";
+                        location.href = "{{ route('admin.warehouse.index') }}";
                     });
                 } else if (data.status == 400) {
                     Swal.fire({
@@ -173,7 +173,7 @@
         }).then(function(result) {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ route('admin.category.destroy', ':id') }}".replace(':id', id),
+                    url: "{{ route('admin.warehouse.destroy', ':id') }}".replace(':id', id),
                     type: 'DELETE', 
                     data: {
                         "_token": "{{ csrf_token() }}"
@@ -188,7 +188,7 @@
                                 confirmButton: 'btn btn-success'
                             }
                         }).then(function(result) {
-                            location.href = "{{ route('admin.category.index') }}";
+                            location.href = "{{ route('admin.warehouse.index') }}";
                         });
                     },
                     error: function(xhr, status, error) {
