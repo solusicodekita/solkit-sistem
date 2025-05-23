@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\ItemController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\admin\WareHousesController;
+use App\Http\Controllers\Admin\WareHousesController;
 
 Route::get('/', function () {
     return Auth::check() ? redirect('/home') : redirect('/login');
