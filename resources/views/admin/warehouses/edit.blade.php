@@ -9,32 +9,34 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="card-title">Form Tambah Kategori</h3>
+                                    <h3 class="card-title">Form Edit Lokasi</h3>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{ route('admin.category.index') }}" class="btn btn-primary"><i
+                                    <a href="{{ route('admin.warehouse.index') }}" class="btn btn-primary"><i
                                             class="fas fa-arrow-left"></i> Kembali</a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body p-3">
-                            <form id="formKategori" enctype="multipart/form-data">
+                            <form id="formLokasi" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group" style="margin-bottom: 10px;">
-                                    <label for="name">Nama Kategori</label>
+                                    <label for="name">Nama Lokasi</label>
                                     <input type="text" class="form-control" name="name" id="name"
-                                        placeholder="Ketikkan Nama Kategori (minimal 2 kata)" autocomplete="off">
+                                        placeholder="Ketikkan Nama Lokasi" autocomplete="off" value="{{ $lokasi->name }}">
                                     <small id="nameHelp" class="form-text text-danger" style="display: none;">
-                                        Nama kategori harus minimal 2 kata
+                                        Nama lokasi harus minimal 2 kata
                                     </small>
+                                    <input type="text" class="form-control" name="id" id="id" hidden
+                                        autocomplete="off" value="{{ $lokasi->id }}">
                                 </div>
                                 <div class="form-group" style="margin-bottom: 10px;">
-                                    <label for="code">Kode Kategori</label>
+                                    <label for="code">Kode Lokasi</label>
                                     <input type="text" class="form-control" name="code" id="code" maxlength="2"
-                                        placeholder="Kode akan terisi otomatis" autocomplete="off" readonly>
+                                        placeholder="Kode akan terisi otomatis" autocomplete="off" readonly value="{{ $lokasi->code }}">
                                 </div>
                                 <hr>
-                                <button type="submit" class="btn btn-success" id="btnSimpan" onclick="simpan(event)" disabled>
+                                <button type="submit" class="btn btn-success" id="btnSimpan" onclick="update(event)">
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </form>
@@ -62,5 +64,5 @@
             }
         });
     </script>
-    @include('admin.categories.script')
+    @include('admin.warehouses.script')
 @endpush

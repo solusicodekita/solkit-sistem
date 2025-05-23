@@ -17,6 +17,7 @@ class CreateWarehousesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('location')->nullable();
+            $table->string('code')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();    
             $table->timestamps();

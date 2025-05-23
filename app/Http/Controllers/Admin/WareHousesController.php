@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
-use App\Models\Category;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use App\Models\Warehouse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
-class CategoryController extends Controller
+class WareHousesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +17,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = Category::latest('id')->get();
-        return view('admin.categories.index',compact('data'));
+        $data = Warehouse::latest('id')->get();
+        return view('admin.warehouses.index',compact('data'));
     }
 
     /**
@@ -29,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.warehouses.create');
     }
 
     /**
@@ -59,25 +58,24 @@ class CategoryController extends Controller
             ], 422);
         }
 
-        $check = Category::where('name', $request->input('name'))->exists();
+        $check = Warehouse::where('name', $request->input('name'))->exists();
         if ($check) {
             return response()->json([
                 'status' => 500,
-                'message' => 'Nama kategori sudah ada dalam database'
+                'message' => 'Nama lokasi sudah ada dalam database'
             ], 500);
         }
 
         try {
             DB::beginTransaction();
-            $kategori = new Category();
-            $kategori->name = $request->input('name');
-            $kategori->code = $request->input('code');
-            $kategori->slug = strtolower(str_replace(' ', '-', $request->input('name')));
-            $kategori->save();
+            $lokasi = new Warehouse();
+            $lokasi->name = $request->input('name');
+            $lokasi->code = $request->input('code');
+            $lokasi->save();
             DB::commit();
             return response()->json([
                 'status' => 200,
-                'message' => 'Data kategori berhasil di Simpan',
+                'message' => 'Data lokasi berhasil di Simpan',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -96,8 +94,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::find($id);
-        return view('admin.categories.show',compact('category'));
+        $lokasi = Warehouse::find($id);
+        return view('admin.warehouses.show',compact('lokasi'));
     }
 
     /**
@@ -108,8 +106,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        return view('admin.categories.edit',compact('category'));
+        $lokasi = Warehouse::find($id);
+        return view('admin.warehouses.edit',compact('lokasi'));
     }
 
     /**
@@ -139,33 +137,32 @@ class CategoryController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
-
-        $cekDataLama = Category::find($request->input('id'));
+        
+        $cekDataLama = Warehouse::find($request->input('id'));
 
         if ($cekDataLama->name == $request->input('name')) {
             $check = false;
         } else {
-            $check = Category::where('name', $request->input('name'))->where('id', '!=', $id)->exists();
+            $check = Warehouse::where('name', $request->input('name'))->where('id', '!=', $id)->exists();
         }
 
         if ($check) {
             return response()->json([
                 'status' => 500,
-                'message' => 'Nama kategori sudah ada dalam database'
+                'message' => 'Nama lokasi sudah ada dalam database'
             ], 500);
         }
 
         try {
             DB::beginTransaction();
-            $kategori = Category::find($request->input('id'));
-            $kategori->name = $request->input('name');
-            $kategori->code = $request->input('code');
-            $kategori->slug = strtolower(str_replace(' ', '-', $request->input('name')));
-            $kategori->save();
+            $lokasi = Warehouse::find($request->input('id'));
+            $lokasi->name = $request->input('name');
+            $lokasi->code = $request->input('code');
+            $lokasi->save();
             DB::commit();
             return response()->json([
                 'status' => 200,
-                'message' => 'Data kategori berhasil diubah',
+                'message' => 'Data lokasi berhasil diubah',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -184,11 +181,19 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $kategori = Category::find($id);
-        $kategori->delete();
+        $lokasi = Warehouse::find($id);
+        $lokasi->delete();
         return response()->json([
             'status' => 200,
-            'message' => 'Data kategori berhasil dihapus',
+            'message' => 'Data lokasi berhasil dihapus',
         ]);
+    }
+
+    public function checkName(Request $request)
+    {
+        dd($request->all());
+        $name = $request->input('name');
+        $exists = Warehouse::where('name', $name)->exists();
+        return response()->json(['exists' => $exists]);
     }
 }

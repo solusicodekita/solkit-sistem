@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ItemController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\admin\WareHousesController;
 
 Route::get('/', function () {
     return Auth::check() ? redirect('/home') : redirect('/login');
@@ -152,6 +153,15 @@ Route::middleware(['xss'])->group(function () {
             Route::get('edit/{id}', [ItemController::class, 'edit'])->name('edit');
             Route::post('update/{id}', [ItemController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [ItemController::class, 'destroy'])->name('destroy');
+        });
+        Route::group(['prefix' => 'warehouse/', 'as' => 'warehouse.'], function () {
+            Route::get('index', [WareHousesController::class, 'index'])->name('index');
+            Route::get('create', [WareHousesController::class, 'create'])->name('create');
+            Route::post('store', [WareHousesController::class, 'store'])->name('store');
+            Route::get('edit/{id}', [WareHousesController::class, 'edit'])->name('edit');
+            Route::post('update/{id}', [WareHousesController::class, 'update'])->name('update');
+            Route::delete('destroy/{id}', [WareHousesController::class, 'destroy'])->name('destroy');
+            Route::post('check-name', [WareHousesController::class, 'checkName'])->name('checkName');
         });
     });
 
