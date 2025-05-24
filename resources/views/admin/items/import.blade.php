@@ -58,6 +58,20 @@
         event.preventDefault();
         let myForm = document.getElementById('formItemImport');
         let formData = new FormData(myForm);
+        let fileInput = document.getElementById('file');
+
+        if (!fileInput.files.length) {
+            Swal.fire({
+                text: "File wajib diisi",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "OK",
+                customClass: {
+                    confirmButton: "btn btn-danger"
+                }
+            });
+            return;
+        }
 
         Swal.fire({
             title: 'Sedang diproses',
