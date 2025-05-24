@@ -153,6 +153,8 @@ Route::middleware(['xss'])->group(function () {
             Route::get('edit/{id}', [ItemController::class, 'edit'])->name('edit');
             Route::post('update/{id}', [ItemController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [ItemController::class, 'destroy'])->name('destroy');
+            Route::get('import', [ItemController::class, 'import'])->name('import');
+            Route::post('importData', [ItemController::class, 'importData'])->name('importData');
         });
         Route::group(['prefix' => 'warehouse/', 'as' => 'warehouse.'], function () {
             Route::get('index', [WareHousesController::class, 'index'])->name('index');
