@@ -8,6 +8,8 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Imports\ItemImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
 {
@@ -197,21 +199,57 @@ class ItemController extends Controller
 
     public function generateKode($categoryCode)
     {
-        // Get latest item code for this category
         $latestItem = Item::where('code', 'like', $categoryCode . '%')
             ->orderBy('code', 'desc')
             ->first();
 
         if (!$latestItem) {
-            // If no items exist for this category, start with 00001
             return $categoryCode . '00001';
         }
 
-        // Extract the numeric part and increment
         $numericPart = substr($latestItem->code, strlen($categoryCode));
         $nextNumber = intval($numericPart) + 1;
 
-        // Pad with zeros to maintain 5 digit format
         return $categoryCode . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+    }
+
+    public function import()
+    {
+        $data = Category::latest('id')->get();
+        return view('admin.items.import', compact('data'));
+    }
+
+    public function importData(Request $request)
+    {
+       $validator = Validator::make(
+            $request->all(),
+            [
+                'file' => 'required|mimes:xlsx,xls',
+            ],
+            [
+                'file.required' => 'File wajib diisi.',
+                'file.mimes' => 'File harus berupa xlsx atau xls.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        
+        try {
+            Excel::import(new ItemImport, $request->file('file'));
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data berhasil diimport',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -12,7 +12,7 @@
                                     <h3 class="card-title">Form Edit Lokasi</h3>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{ route('admin.warehouse.index') }}" class="btn btn-primary"><i
+                                    <a href="{{ route('admin.warehouse.index') }}" class="btn btn-outline-primary"><i
                                             class="fas fa-arrow-left"></i> Kembali</a>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                                         placeholder="Kode akan terisi otomatis" autocomplete="off" readonly value="{{ $lokasi->code }}">
                                 </div>
                                 <hr>
-                                <button type="submit" class="btn btn-success" id="btnSimpan" onclick="update(event)">
+                                <button type="submit" class="btn btn-outline-success" id="btnSimpan" onclick="update(event)">
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </form>

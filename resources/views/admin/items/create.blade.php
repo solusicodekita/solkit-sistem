@@ -12,7 +12,7 @@
                                     <h3 class="card-title">Form Tambah Bahan</h3>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{ route('admin.items.index') }}" class="btn btn-primary"><i
+                                    <a href="{{ route('admin.items.index') }}" class="btn btn-outline-primary"><i
                                             class="fas fa-arrow-left"></i> Kembali</a>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                         placeholder="Ketikkan Harga" autocomplete="off">
                                 </div>
                                 <hr>
-                                <button type="submit" class="btn btn-success" onclick="simpan(event)">
+                                <button type="submit" class="btn btn-outline-success" onclick="simpan(event)">
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </form>
