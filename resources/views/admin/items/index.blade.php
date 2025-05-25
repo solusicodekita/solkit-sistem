@@ -1,5 +1,5 @@
 @extends('layouts.adm.base')
-@section('title', trans('menu.item.title'))
+@section('title', 'Bahan')
 @section('content')
     <div class="app-content">
         <div class="container-fluid">
