@@ -9,8 +9,15 @@ class StockTransaction extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function stock()
     {
         return $this->belongsTo(Stock::class);
+    }
+
+    public function stockTransactionDetails()
+    {
+        return $this->hasMany(StockTransactionDetail::class);
     }
 }

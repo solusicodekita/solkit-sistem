@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset('admin') }}/plugins/select2/css/select2.css">
     <style>
         body {
             background: #f5f7fa;
@@ -194,16 +195,25 @@
                     <span>Transaksi&nbsp;</span>
                     <i class="fa-solid fa-angle-down float-right mt-1"></i>
                 </a>
-                <div id="transaksiMenu" class="collapse {{ Request::is('admin/transactions*') ? 'show' : '' }}">
-                    <a href="#" class="nav-link {{ Request::is('admin/transactions/items*') ? 'active' : '' }}">
+                <div id="transaksiMenu" class="collapse {{ Request::is('admin/stock*') || Request::is('admin/in_stock*') || Request::is('admin/live_stock*') || Request::is('admin/out_stock*') ? 'show' : '' }}">
+                    <a href="{{ route('admin.live_stock.index') }}" class="nav-link {{ Request::is('admin/live_stock*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Live Stock</span>
+                    </a>
+                    <a href="{{ route('admin.in_stock.index') }}" class="nav-link {{ Request::is('admin/in_stock*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Stok Masuk</span>
+                    </a>
+                    <a href="{{ route('admin.out_stock.index') }}" class="nav-link {{ Request::is('admin/out_stock*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Stok Keluar</span>
+                    </a>
+                    <a href="{{ route('admin.stock.index') }}" class="nav-link {{ Request::is('admin/stock*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Stok Opname</span>
+                    </a>
+                    {{-- <a href="#" class="nav-link {{ Request::is('admin/transactions/items*') ? 'active' : '' }}">
                         <i class="fa-solid fa-utensils"></i> <span>Menu Item</span>
-                    </a>
-                    <a href="#" class="nav-link {{ Request::is('admin/transactions/orders*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-cart-shopping"></i> <span>Menu Transaksi</span>
-                    </a>
-                    <a href="#" class="nav-link {{ Request::is('admin/transactions/users*') ? 'active' : '' }}">
+                    </a> --}}
+                    {{-- <a href="#" class="nav-link {{ Request::is('admin/transactions/users*') ? 'active' : '' }}">
                         <i class="fa-solid fa-users"></i> <span>Menu User</span>
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </nav>
@@ -229,7 +239,7 @@
         </script>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="logout-btn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+            <button type="submit" class="logout-btn btn-sm"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
         </form>
         <div class="copyright">
             &copy; {{ date('Y') }} <span style="color:#ffc107;">Nita Jaya Catering</span>
@@ -238,12 +248,12 @@
     <div class="main-content">
         @yield('content')
     </div>
-    @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('admin') }}/plugins/select2/js/select2.js"></script>
     <script>
         $(document).ready(function() {
             $('#example1').DataTable({
@@ -256,6 +266,27 @@
                 "responsive": true
             });
         });
+
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: "{{ session('error') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
     </script>
+    @stack('scripts')
 </body>
 </html>

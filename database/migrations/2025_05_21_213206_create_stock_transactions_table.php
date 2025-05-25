@@ -15,12 +15,9 @@ class CreateStockTransactionsTable extends Migration
     {
         Schema::create('stock_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('stock_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['in', 'out']);
-            $table->decimal('quantity', 15, 2);
-            $table->decimal('price', 15, 2)->nullable();
-            $table->date('date');
-            $table->string('description')->nullable();
+            $table->dateTime('date');
+            $table->decimal('total_harga_keseluruhan', 15, 2)->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();    
             $table->timestamps();
