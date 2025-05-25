@@ -12,7 +12,8 @@
                                     <h3 class="card-title">Tabel Bahan</h3>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{  route('admin.items.create')  }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah</a>
+                                    <a href="{{  route('admin.items.import')  }}" class="btn btn-outline-success"><i class="fas fa-file-import"></i> Import</a>
+                                    <a href="{{  route('admin.items.create')  }}" class="btn btn-outline-primary"><i class="fas fa-plus"></i> Tambah</a>
                                 </div>
                             </div>
                         </div>
@@ -39,8 +40,8 @@
                                             <td>{{ $item->unit }}</td>
                                             <td class="text-center">Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
                                             <td class="text-center">
-                                                <a href="{{ route('admin.items.edit', $item->id) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                                                <button onclick="hapus('{{ $item->id }}')" class="btn btn-danger"><i
+                                                <a href="{{ route('admin.items.edit', $item->id) }}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
+                                                <button onclick="hapus('{{ $item->id }}')" class="btn btn-outline-danger"><i
                                                         class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
