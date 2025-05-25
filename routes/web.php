@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\WareHousesController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockOutController;
+use App\Http\Controllers\StokInController;
 
 Route::get('/', function () {
     return Auth::check() ? redirect('/home') : redirect('/login');
@@ -164,6 +167,33 @@ Route::middleware(['xss'])->group(function () {
             Route::post('update/{id}', [WareHousesController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [WareHousesController::class, 'destroy'])->name('destroy');
             Route::post('check-name', [WareHousesController::class, 'checkName'])->name('checkName');
+        });
+
+        Route::group(['prefix' => 'stock/', 'as' => 'stock.'], function () {
+            Route::get('index', [StockController::class, 'index'])->name('index');
+            Route::get('create', [StockController::class, 'create'])->name('create');
+            Route::post('store', [StockController::class, 'store'])->name('store');
+            Route::get('cek-stok-akhir', [StockController::class, 'cekStokAkhir'])->name('cekStokAkhir');
+        });
+
+        Route::group(['prefix' => 'live_stock/', 'as' => 'live_stock.'], function () {
+            Route::get('index', [StockController::class, 'live_stock'])->name('index');
+        });
+
+        Route::group(['prefix' => 'in_stock/', 'as' => 'in_stock.'], function () {
+            Route::get('index', [StokInController::class, 'index'])->name('index');
+            Route::get('create', [StokInController::class, 'create'])->name('create');
+            Route::post('store', [StokInController::class, 'store'])->name('store');
+            Route::get('get_harga_satuan', [StokInController::class, 'getHargaSatuan'])->name('getHargaSatuan');
+            Route::get('get_warehouse', [StokInController::class, 'getWarehouse'])->name('getWarehouse');
+        });
+
+        Route::group(['prefix' => 'out_stock/', 'as' => 'out_stock.'], function () {
+            Route::get('index', [StockOutController::class, 'index'])->name('index');
+            Route::get('create', [StockOutController::class, 'create'])->name('create');
+            Route::post('store', [StockOutController::class, 'store'])->name('store');
+            Route::get('get_harga_satuan', [StockOutController::class, 'getHargaSatuan'])->name('getHargaSatuan');
+            Route::get('get_warehouse', [StokInController::class, 'getWarehouse'])->name('getWarehouse');
         });
     });
 
