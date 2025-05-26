@@ -37,7 +37,8 @@
                                         <tr>
                                             <td>1</td>
                                             <td>
-                                                <select class="form-control item_id" name="item[1][item_id]" onchange="getHargaSatuan(this)">
+                                                <select class="form-control item_id" name="item[1][item_id]"
+                                                    onchange="getHargaSatuan(this)">
                                                     <option value="" disabled selected>-- Pilih Item --</option>
                                                     @foreach ($item as $row)
                                                         <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -45,25 +46,30 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <select class="form-control warehouse_id" name="item[1][warehouse_id]"></select>
+                                                <select class="form-control warehouse_id"
+                                                    name="item[1][warehouse_id]"></select>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control harga_satuan" name="item[1][harga_satuan]" id="harga_satuan" readonly value="0">
+                                                <input type="text" class="form-control harga_satuan ribuan"
+                                                    name="item[1][harga_satuan]" id="harga_satuan" onblur="totalHargaItem(this)" value="0">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control quantity" name="item[1][quantity]" id="quantity" onblur="totalHargaItem(this)"
-                                                    placeholder="..." autocomplete="off">
+                                                <input type="text" class="form-control quantity" name="item[1][quantity]"
+                                                    id="quantity" onblur="totalHargaItem(this)" placeholder="..."
+                                                    autocomplete="off">
                                             </td>
                                             <td>
-                                                <input type="text" name="item[1][total_harga_item]" id="total_harga_item" value="0" class="form-control total_harga_item" value="0" readonly>
+                                                <input type="text" name="item[1][total_harga_item]" id="total_harga_item"
+                                                    value="0" class="form-control total_harga_item" value="0"
+                                                    readonly>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" name="item[1][description]" id="description"
-                                                    placeholder="Ketikkan Keterangan" autocomplete="off">
+                                                <input type="text" class="form-control" name="item[1][description]"
+                                                    id="description" placeholder="Ketikkan Keterangan" autocomplete="off">
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary btn-sm" onclick="addItem(this)"><i
-                                                        class="fas fa-plus"></i></button>
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="addItem(this)"><i class="fas fa-plus"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -71,10 +77,12 @@
                                         <tr>
                                             <td colspan="4" style="text-align: right;vertical-align: middle;">Total</td>
                                             <td>
-                                                <input type="text" class="form-control" name="total_harga_keseluruhan" id="total_harga_keseluruhan" value="0" readonly>
+                                                <input type="text" class="form-control" name="total_harga_keseluruhan"
+                                                    id="total_harga_keseluruhan" value="0" readonly>
                                             </td>
                                             <td colspan="3" style="text-align: left;vertical-align: middle;">
-                                                <button type="button" class="btn btn-primary btn-sm" onclick="simpanTransaksi()"><i class="fas fa-save"></i> Simpan</button>
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="simpanTransaksi()"><i class="fas fa-save"></i> Simpan</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -102,15 +110,38 @@
                 }
                 return true;
             });
+
+            $('.ribuan').on('keyup', function() {
+                var val = $(this).val();
+                $(this).val(formatRupiah(val));
+            })
         });
 
+        function formatRupiah(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
 
         function getHargaSatuan(obj) {
             var item_id = $(obj).val();
             $.ajax({
                 url: "{{ route('admin.in_stock.getHargaSatuan') }}",
                 type: "GET",
-                data: { item_id: item_id },
+                data: {
+                    item_id: item_id
+                },
                 success: function(response) {
                     let harga_satuan = parseFloat(response.harga_satuan);
                     if (Number.isInteger(harga_satuan)) {
@@ -223,7 +254,9 @@
             $.ajax({
                 url: "{{ route('admin.in_stock.getWarehouse') }}",
                 type: "GET",
-                data: { item_id: item_id },
+                data: {
+                    item_id: item_id
+                },
                 dataType: "json",
                 success: function(response) {
                     $(obj).parents('tr').find('.warehouse_id').html(response);

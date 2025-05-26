@@ -12,7 +12,7 @@
         <select class="form-control warehouse_id" name="item[{{ $no }}][warehouse_id]"></select>
     </td>
     <td>
-        <input type="text" class="form-control harga_satuan" name="item[{{ $no }}][harga_satuan]" id="harga_satuan" readonly value="0">
+        <input type="text" class="form-control harga_satuan ribuan" name="item[{{ $no }}][harga_satuan]" id="harga_satuan" onblur="totalHargaItem(this)" value="0">
     </td>
     <td>
         <input type="text" class="form-control desimal quantity" name="item[{{ $no }}][quantity]" id="quantity" onblur="totalHargaItem(this)"
