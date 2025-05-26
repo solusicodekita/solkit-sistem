@@ -55,7 +55,7 @@ class StokInController extends Controller
             ]);
 
             foreach ($request->item as $value) {
-                StockTransactionDetail::create([
+                $modDetail = StockTransactionDetail::create([
                     'stock_transaction_id' => $stock->id,
                     'item_id' => $value['item_id'],
                     'warehouse_id' => $value['warehouse_id'],
@@ -66,6 +66,11 @@ class StokInController extends Controller
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
                 ]);
+
+                $modItem = Item::where('id', $value['item_id'])->first();
+                $modItem->price = $modDetail->harga_satuan;
+                $modItem->updated_by = Auth::user()->id;
+                $modItem->save();
             }
 
             DB::commit();

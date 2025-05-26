@@ -9,7 +9,7 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="card-title">Form Tambah Stok In</h3>
+                                    <h3 class="card-title">Form Tambah Stok Out</h3>
                                 </div>
                                 <div class="col-auto">
                                     <a href="{{ route('admin.out_stock.index') }}" class="btn btn-primary"><i
@@ -48,7 +48,7 @@
                                                 <select class="form-control warehouse_id" name="item[1][warehouse_id]"></select>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control harga_satuan" name="item[1][harga_satuan]" id="harga_satuan" readonly value="0">
+                                                <input type="text" class="form-control harga_satuan ribuan" name="item[1][harga_satuan]" id="harga_satuan" onblur="totalHargaItem(this)" value="0">
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control quantity" name="item[1][quantity]" id="quantity" onblur="totalHargaItem(this)"
@@ -102,8 +102,29 @@
                 }
                 return true;
             });
+
+            $(document).on('keyup', '.ribuan', function() {
+                var val = $(this).val();
+                $(this).val(formatRupiah(val));
+            })
         });
 
+        function formatRupiah(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
 
         function getHargaSatuan(obj) {
             var item_id = $(obj).val();

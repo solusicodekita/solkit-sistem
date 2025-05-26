@@ -32,16 +32,26 @@
                                     @forelse ($model as $row)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ date('d-m-Y', strtotime($row->date)) }}</td>
+                                            <td>{{ date('d-m-Y H:i', strtotime($row->date)) }}</td>
                                             <td style="text-align: left;">
                                                 <ul>
                                                     @foreach ($row->stockTransactionDetails as $item)
-                                                        <li>{{ $item->item->name }} - {{ rtrim(number_format($item->quantity, 2, ',', '.'), ',00') }} {{ $item->item->unit }} - {{ $item->warehouse->name }}</li>
+                                                        <li>{{ $item->item->name }} -
+                                                            {{ floatval($item->quantity) }}
+                                                            {{ $item->item->unit }} - {{ $item->warehouse->name }}</li>
                                                     @endforeach
                                                 </ul>
                                             </td>
                                             <td>Rp {{ number_format($row->total_harga_keseluruhan, 2, ',', '.') }}</td>
-                                            <td>{{ $row->description }}</td>
+                                            <td>
+                                                @if ($row->stockTransactionDetails->isNotEmpty())
+                                                    @foreach ($row->stockTransactionDetails as $item)
+                                                        {{ $item->description ?? '-' }}
+                                                    @endforeach
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
