@@ -14,7 +14,7 @@ class StockOutController extends Controller
 {
     public function index()
     {
-        $model = StockTransaction::where('type', 'out')->orderBy('id', 'desc')->get();
+        $model = StockTransaction::where('type', 'out')->where('is_adjustment', false)->orderBy('id', 'desc')->get();
         return view('admin.stock_out.index', compact('model'));
     }
 
@@ -89,5 +89,10 @@ class StockOutController extends Controller
             $data .= '<option value="'.$row->warehouse_id.'">'.$row->warehouse->name.'</option>';
         }
         return response()->json($data);
+    }
+
+    public function cekLiveStok(Request $request) {
+        $jumlah = Stock::liveStock($request->item_id, $request->warehouse_id);
+        return response()->json($jumlah);
     }
 }

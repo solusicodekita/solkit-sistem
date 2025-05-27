@@ -17,6 +17,7 @@
         "laravelcollective/html": "^6.3",
         "maatwebsite/excel": "^3.1",
         "midtrans/midtrans-php": "*",
+        "mpdf/mpdf": "^8.2",
         "realrashid/sweet-alert": "^5.1",
         "spatie/laravel-permission": "^5.7",
         "vlucas/phpdotenv": "^5.5"

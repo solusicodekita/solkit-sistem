@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\WareHousesController;
+use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockOutController;
 use App\Http\Controllers\StokInController;
@@ -178,6 +179,8 @@ Route::middleware(['xss'])->group(function () {
 
         Route::group(['prefix' => 'live_stock/', 'as' => 'live_stock.'], function () {
             Route::get('index', [StockController::class, 'live_stock'])->name('index');
+            Route::get('export_excel', [StockController::class, 'export_excel'])->name('export_excel');
+            Route::get('export_pdf', [StockController::class, 'export_pdf'])->name('export_pdf');
         });
 
         Route::group(['prefix' => 'in_stock/', 'as' => 'in_stock.'], function () {
@@ -194,6 +197,15 @@ Route::middleware(['xss'])->group(function () {
             Route::post('store', [StockOutController::class, 'store'])->name('store');
             Route::get('get_harga_satuan', [StockOutController::class, 'getHargaSatuan'])->name('getHargaSatuan');
             Route::get('get_warehouse', [StokInController::class, 'getWarehouse'])->name('getWarehouse');
+            Route::get('cek_live_stok', [StockOutController::class, 'cekLiveStok'])->name('cekLiveStok');
+        });
+
+        Route::group(['prefix' => 'adjustment_stock/', 'as' => 'adjustment_stock.'], function () {
+            Route::get('index', [StockAdjustmentController::class, 'index'])->name('index');
+            Route::get('create', [StockAdjustmentController::class, 'create'])->name('create');
+            Route::post('store', [StockAdjustmentController::class, 'store'])->name('store');
+            Route::get('cek_jumlah_terakhir', [StockAdjustmentController::class, 'cekJumlahTerakhir'])->name('cekJumlahTerakhir');
+            Route::get('get_warehouse', [StockAdjustmentController::class, 'getWarehouse'])->name('getWarehouse');
         });
     });
 

@@ -1,5 +1,50 @@
 @extends('layouts.adm.base')
 @section('title', 'Create Stock Opname')
+@push('styles')
+<style>
+    /* Custom Select2 Styles */
+    .select2-container {
+        width: 100% !important;
+    }
+    
+    .select2-container--default .select2-selection--single {
+        height: 38px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.375rem !important;
+        padding: 6px 12px !important;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 24px !important;
+        padding-left: 0 !important;
+        color: #495057 !important;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px !important;
+        right: 10px !important;
+    }
+    
+    .select2-dropdown {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.375rem !important;
+    }
+    
+    .select2-container--default .select2-selection--single:focus {
+        border-color: #80bdff !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    }
+    
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+    
+    .table td {
+        vertical-align: middle !important;
+    }
+</style>
+@endpush
 @section('content')
     <div class="app-content">
         <div class="container-fluid">
@@ -27,6 +72,7 @@
                                             <th class="text-center">Item</th>
                                             <th class="text-center">Lokasi Item</th>
                                             <th class="text-center">Harga Satuan</th>
+                                            <th class="text-center">Live Stok</th>
                                             <th class="text-center">Jumlah Satuan</th>
                                             <th class="text-center">Total Harga Item</th>
                                             <th class="text-center">Keterangan</th>
@@ -37,7 +83,8 @@
                                         <tr>
                                             <td>1</td>
                                             <td>
-                                                <select class="form-control item_id" name="item[1][item_id]" onchange="getHargaSatuan(this)">
+                                                <select class="form-control item_id select2-item" name="item[1][item_id]"
+                                                    onchange="getHargaSatuan(this)">
                                                     <option value="" disabled selected>-- Pilih Item --</option>
                                                     @foreach ($item as $row)
                                                         <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -45,10 +92,14 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <select class="form-control warehouse_id" name="item[1][warehouse_id]"></select>
+                                                <select class="form-control warehouse_id select2-warehouse"
+                                                    name="item[1][warehouse_id]" onchange="cekLiveStok(this)"></select>
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control harga_satuan ribuan" name="item[1][harga_satuan]" id="harga_satuan" onblur="totalHargaItem(this)" value="0">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control live_stok" name="item[1][live_stok]" id="live_stok" value="0" readonly>
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control quantity" name="item[1][quantity]" id="quantity" onblur="totalHargaItem(this)"
@@ -69,11 +120,11 @@
                                     </tbody>
                                     <tbody id="trTotal">
                                         <tr>
-                                            <td colspan="4" style="text-align: right;vertical-align: middle;">Total</td>
+                                            <td colspan="6" style="text-align: right;vertical-align: middle;">Total</td>
                                             <td>
                                                 <input type="text" class="form-control" name="total_harga_keseluruhan" id="total_harga_keseluruhan" value="0" readonly>
                                             </td>
-                                            <td colspan="3" style="text-align: left;vertical-align: middle;">
+                                            <td colspan="2" style="text-align: left;vertical-align: middle;">
                                                 <button type="button" class="btn btn-primary btn-sm" onclick="simpanTransaksi()"><i class="fas fa-save"></i> Simpan</button>
                                             </td>
                                         </tr>
@@ -90,6 +141,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            initializeSelect2();
             $(".desimal").keypress(function(e) {
                 var charCode = (e.which) ? e.which : event.keyCode;
                 var value = $(this).val();
@@ -108,6 +160,31 @@
                 $(this).val(formatRupiah(val));
             })
         });
+
+        function initializeSelect2() {
+            try {
+                $('.select2-item').select2('destroy');
+                $('.select2-warehouse').select2('destroy');
+            } catch (e) {
+                // kosong
+            }
+            
+            $('.select2-item').select2({
+                placeholder: "-- Pilih Item --",
+                allowClear: false,
+                width: '100%',
+                theme: 'default',
+                dropdownParent: $('body')
+            });
+
+            $('.select2-warehouse').select2({
+                placeholder: "-- Pilih Lokasi --",
+                allowClear: false,
+                width: '100%',
+                theme: 'default',
+                dropdownParent: $('body')
+            });
+        }
 
         function formatRupiah(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -167,17 +244,28 @@
                 }
             }
             totalKeseluruhan();
+            setTimeout(() => {
+                cekLiveStok(obj);
+            }, 100);
         }
 
         function addItem(obj) {
             let no = $('#trTransaksi > tr').length + 1;
             let tr = `@include('admin.stock_out.trCreate', ['no' => '${no}', 'item' => $item])`;
             $(obj).parents('table').find('#trTransaksi').append(tr);
+
+            setTimeout(function() {
+                initializeSelect2();
+            }, 100);
         }
 
         function deleteItem(obj) {
             $(obj).parents('tr').remove();
             totalKeseluruhan();
+
+            setTimeout(function() {
+                initializeSelect2();
+            }, 100);
         }
 
         function totalKeseluruhan() {
@@ -248,6 +336,21 @@
                 dataType: "json",
                 success: function(response) {
                     $(obj).parents('tr').find('.warehouse_id').html(response);
+                }
+            });
+        }
+
+        function cekLiveStok(obj) {
+            console.log('masuk sini');
+            
+            let item_id = $(obj).parents('tr').find('.item_id').val();
+            let warehouse_id = $(obj).parents('tr').find('.warehouse_id').val();
+            $.ajax({
+                url: "{{ route('admin.out_stock.cekLiveStok') }}",
+                type: "GET",
+                data: { item_id: item_id, warehouse_id: warehouse_id },
+                success: function(response) {
+                    $(obj).parents('tr').find('.live_stok').val(response);
                 }
             });
         }

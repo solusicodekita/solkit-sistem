@@ -1,7 +1,7 @@
 <tr>
     <td>{{ $no }}</td>
     <td>
-        <select class="form-control ubahSelect" name="item[{{ $no }}][item_id]" id="item_id" onchange="getHargaSatuan(this)">
+        <select class="form-control item_id select2-item" name="item[{{ $no }}][item_id]" onchange="getHargaSatuan(this)">
             <option value="">-- Pilih Item --</option>
             @foreach ($item as $row)
                 <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -9,10 +9,13 @@
         </select>
     </td>
     <td>
-        <select class="form-control warehouse_id" name="item[{{ $no }}][warehouse_id]"></select>
+        <select class="form-control warehouse_id select2-warehouse" name="item[{{ $no }}][warehouse_id]"></select>
     </td>
     <td>
         <input type="text" class="form-control harga_satuan ribuan" name="item[{{ $no }}][harga_satuan]" id="harga_satuan" onblur="totalHargaItem(this)" value="0">
+    </td>
+    <td>
+        <input type="text" class="form-control live_stok" name="item[{{ $no }}][live_stok]" id="live_stok" value="0" readonly>
     </td>
     <td>
         <input type="text" class="form-control desimal quantity" name="item[{{ $no }}][quantity]" id="quantity" onblur="totalHargaItem(this)"

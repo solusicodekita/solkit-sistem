@@ -16,6 +16,8 @@ class CreateStockTransactionsTable extends Migration
         Schema::create('stock_transactions', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['in', 'out']);
+            $table->boolean('is_adjustment')->nullable();
+            $table->text('alasan_adjustment')->nullable();
             $table->dateTime('date');
             $table->decimal('total_harga_keseluruhan', 15, 2)->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
