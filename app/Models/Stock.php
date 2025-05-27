@@ -43,6 +43,7 @@ class Stock extends Model
             ->where('stock_transactions.type', 'out')
             ->whereBetween('stock_transactions.date', [$model->date_opname, date('Y-m-d H:i:s')])
             ->sum('stock_transaction_details.quantity');
+            
         $jumlah = $model->final_stock + $barangMasuk - $barangKeluar;
         return $jumlah;
     }

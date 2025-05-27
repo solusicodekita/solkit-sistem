@@ -1,5 +1,5 @@
 @extends('layouts.adm.base')
-@section('title', 'Menu Stock')
+@section('title', 'Adjustment Stock')
 @section('content')
     <div class="app-content">
         <div class="container-fluid">
@@ -9,10 +9,10 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="card-title">Riwayat Stok Opname</h3>
+                                    <h3 class="card-title">Adjustment Stock</h3>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{ route('admin.stock.create') }}" class="btn btn-primary"><i
+                                    <a href="{{ route('admin.adjustment_stock.create') }}" class="btn btn-primary"><i
                                             class="fas fa-plus"></i> Tambah</a>
                                 </div>
                             </div>
@@ -24,30 +24,24 @@
                                         <th class="text-center">No</th>
                                         <th class="text-center">Item</th>
                                         <th class="text-center">Lokasi Item</th>
-                                        <th class="text-center">Stok Awal</th>
-                                        <th class="text-center">Stok Akhir</th>
-                                        <th class="text-center">Satuan</th>
-                                        <th class="text-center">Tanggal Opname</th>
+                                        <th class="text-center">Jumlah</th>
+                                        <th class="text-center">Satuan / Unit</th>
+                                        <th class="text-center">Alasan Adjust</th>
+                                        <th class="text-center">Tanggal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($model as $row)
+                                    @foreach ($model as $row)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $row->item->name }}</td>
                                             <td>{{ $row->warehouse->name }}</td>
-                                            <td>{{ $row->initial_stock == 0 ? '0' : floatval($row->initial_stock) }}
-                                            </td>
-                                            <td>{{ $row->final_stock == 0 ? '0' : floatval($row->final_stock) }}
-                                            </td>
+                                            <td>{{ floatval($row->quantity) }}</td>
                                             <td>{{ $row->item->unit }}</td>
-                                            <td>{{ date('d-m-Y H:i', strtotime($row->date_opname)) }}</td>
+                                            <td>{{ $row->description }}</td>
+                                            <td>{{ date('d-m-Y H:i', strtotime($row->stockTransaction->date)) }}</td>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center">Tidak ada data</td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -59,18 +53,6 @@
 @endsection
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            @if (count($model) > 0)
-                $('#tabelStock').DataTable({
-                    "paging": true,
-                    "lengthChange": true,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "autoWidth": false,
-                    "responsive": true
-                });
-            @endif
-        });
+        
     </script>
 @endpush

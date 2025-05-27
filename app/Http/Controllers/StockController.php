@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LiveStockExport;
 use App\Models\Item;
 use App\Models\Stock;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Mpdf\Mpdf;
 
 class StockController extends Controller
 {
@@ -70,5 +73,30 @@ class StockController extends Controller
             ->groupBy('item_id', 'warehouse_id')
             ->get();
         return view('admin.live_stock.index', compact('model'));
+    }
+
+    public function export_excel()
+    {
+        $current_time = now()->format('Ymd_His');
+        return Excel::download(new LiveStockExport(), 'live_stock_' . $current_time . '.xlsx');
+    }
+
+    public function export_pdf()
+    {
+        $mpdf = new Mpdf();
+
+        $model = Stock::select('item_id', 'warehouse_id')
+            ->groupBy('item_id', 'warehouse_id')
+            ->get();
+
+        $data = [
+            'model' => $model,
+            'title' => 'Laporan Live Stock',
+        ];
+
+        $html = view('admin.live_stock.pdf', $data)->render();
+        $mpdf->WriteHTML($html);
+        return response($mpdf->Output('', 'S'))
+            ->header('Content-Type', 'application/pdf');
     }
 }

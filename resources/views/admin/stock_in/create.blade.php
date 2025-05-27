@@ -1,5 +1,52 @@
 @extends('layouts.adm.base')
 @section('title', 'Create Stock Opname')
+
+@push('styles')
+<style>
+    /* Custom Select2 Styles */
+    .select2-container {
+        width: 100% !important;
+    }
+    
+    .select2-container--default .select2-selection--single {
+        height: 38px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.375rem !important;
+        padding: 6px 12px !important;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 24px !important;
+        padding-left: 0 !important;
+        color: #495057 !important;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px !important;
+        right: 10px !important;
+    }
+    
+    .select2-dropdown {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.375rem !important;
+    }
+    
+    .select2-container--default .select2-selection--single:focus {
+        border-color: #80bdff !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    }
+    
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+    
+    .table td {
+        vertical-align: middle !important;
+    }
+</style>
+@endpush
+
 @section('content')
     <div class="app-content">
         <div class="container-fluid">
@@ -37,7 +84,7 @@
                                         <tr>
                                             <td>1</td>
                                             <td>
-                                                <select class="form-control item_id" name="item[1][item_id]"
+                                                <select class="form-control item_id select2-item" name="item[1][item_id]"
                                                     onchange="getHargaSatuan(this)">
                                                     <option value="" disabled selected>-- Pilih Item --</option>
                                                     @foreach ($item as $row)
@@ -46,12 +93,13 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <select class="form-control warehouse_id"
+                                                <select class="form-control warehouse_id select2-warehouse"
                                                     name="item[1][warehouse_id]"></select>
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control harga_satuan ribuan"
-                                                    name="item[1][harga_satuan]" id="harga_satuan" onblur="totalHargaItem(this)" value="0">
+                                                    name="item[1][harga_satuan]" id="harga_satuan"
+                                                    onblur="totalHargaItem(this)" value="0">
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control quantity" name="item[1][quantity]"
@@ -95,9 +143,12 @@
         </div>
     </div>
 @endsection
+
 @push('scripts')
     <script>
         $(document).ready(function() {
+            initializeSelect2();
+
             $(".desimal").keypress(function(e) {
                 var charCode = (e.which) ? e.which : event.keyCode;
                 var value = $(this).val();
@@ -116,6 +167,31 @@
                 $(this).val(formatRupiah(val));
             })
         });
+
+        function initializeSelect2() {
+            try {
+                $('.select2-item').select2('destroy');
+                $('.select2-warehouse').select2('destroy');
+            } catch (e) {
+                // kosong
+            }
+            
+            $('.select2-item').select2({
+                placeholder: "-- Pilih Item --",
+                allowClear: false,
+                width: '100%',
+                theme: 'default',
+                dropdownParent: $('body')
+            });
+
+            $('.select2-warehouse').select2({
+                placeholder: "-- Pilih Lokasi --",
+                allowClear: false,
+                width: '100%',
+                theme: 'default',
+                dropdownParent: $('body')
+            });
+        }
 
         function formatRupiah(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -183,11 +259,19 @@
             let no = $('#trTransaksi > tr').length + 1;
             let tr = `@include('admin.stock_in.trCreate', ['no' => '${no}', 'item' => $item])`;
             $(obj).parents('table').find('#trTransaksi').append(tr);
+
+            setTimeout(function() {
+                initializeSelect2();
+            }, 100);
         }
 
         function deleteItem(obj) {
             $(obj).parents('tr').remove();
             totalKeseluruhan();
+
+            setTimeout(function() {
+                initializeSelect2();
+            }, 100);
         }
 
         function totalKeseluruhan() {
@@ -259,7 +343,26 @@
                 },
                 dataType: "json",
                 success: function(response) {
-                    $(obj).parents('tr').find('.warehouse_id').html(response);
+                    var $warehouseSelect = $(obj).parents('tr').find('.warehouse_id');
+                    
+                    // Destroy existing Select2 instance
+                    try {
+                        $warehouseSelect.select2('destroy');
+                    } catch (e) {
+                        // Ignore if not initialized
+                    }
+                    
+                    // Update HTML content
+                    $warehouseSelect.html(response);
+                    
+                    // Re-initialize Select2 for the updated warehouse dropdown
+                    $warehouseSelect.select2({
+                        placeholder: "-- Pilih Lokasi --",
+                        allowClear: false,
+                        width: '100%',
+                        theme: 'default',
+                        dropdownParent: $('body')
+                    });
                 }
             });
         }

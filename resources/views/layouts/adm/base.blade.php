@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="{{ asset('admin') }}/plugins/select2/css/select2.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             background: #f5f7fa;
@@ -195,7 +195,7 @@
                     <span>Transaksi&nbsp;</span>
                     <i class="fa-solid fa-angle-down float-right mt-1"></i>
                 </a>
-                <div id="transaksiMenu" class="collapse {{ Request::is('admin/stock*') || Request::is('admin/in_stock*') || Request::is('admin/live_stock*') || Request::is('admin/out_stock*') ? 'show' : '' }}">
+                <div id="transaksiMenu" class="collapse {{ Request::is('admin/stock*') || Request::is('admin/in_stock*') || Request::is('admin/live_stock*') || Request::is('admin/out_stock*') || Request::is('admin/adjustment_stock*') ? 'show' : '' }}">
                     <a href="{{ route('admin.live_stock.index') }}" class="nav-link {{ Request::is('admin/live_stock*') ? 'active' : '' }}">
                         <i class="fa-solid fa-cart-shopping"></i> <span>Live Stock</span>
                     </a>
@@ -207,6 +207,9 @@
                     </a>
                     <a href="{{ route('admin.stock.index') }}" class="nav-link {{ Request::is('admin/stock*') ? 'active' : '' }}">
                         <i class="fa-solid fa-cart-shopping"></i> <span>Stok Opname</span>
+                    </a>
+                    <a href="{{ route('admin.adjustment_stock.index') }}" class="nav-link {{ Request::is('admin/adjustment_stock*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Adjustment Stock</span>
                     </a>
                     {{-- <a href="#" class="nav-link {{ Request::is('admin/transactions/items*') ? 'active' : '' }}">
                         <i class="fa-solid fa-utensils"></i> <span>Menu Item</span>
@@ -253,7 +256,7 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="{{ asset('admin') }}/plugins/select2/js/select2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#example1').DataTable({
