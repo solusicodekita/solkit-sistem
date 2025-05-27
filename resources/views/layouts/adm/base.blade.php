@@ -126,6 +126,13 @@
             }
             .main-content {
                 margin-left: 70px;
+                padding: 1rem 0.5rem 0.5rem 0.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .main-content {
+                margin-left: 0;
+                padding: 0.5rem 0.2rem 0.2rem 0.2rem;
             }
         }
         .logo-circle {
@@ -155,10 +162,49 @@
         .collapse .nav-link {
             padding-left: 3.5rem !important; /* Menambah padding kiri untuk submenu */
         }
-</style>
+        .sidebar-toggle {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 200;
+            background: #1a237e;
+            color: #ffc107;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 8px #1a237e33;
+            display: none;
+        }
+        @media (max-width: 900px) {
+            .sidebar-toggle {
+                display: block;
+            }
+            .sidebar {
+                left: -250px;
+                transition: left 0.3s;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0 !important;
+                transition: filter 0.3s;
+            }
+            .main-content.sidebar-open {
+                filter: blur(2px);
+                pointer-events: none;
+                user-select: none;
+            }
+        }
+    </style>
     @stack('styles')
 </head>
 <body>
+    <!-- Hamburger Toggle Button -->
+    <button class="sidebar-toggle d-block d-md-none" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+        <i class="fa fa-bars"></i>
+    </button>
     <div class="sidebar">
         <div class="logo">
             <div class="logo-circle">
@@ -286,6 +332,29 @@
                 showConfirmButton: false
             });
         @endif
+    </script>
+    <script>
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        sidebar.classList.toggle('active');
+        mainContent.classList.toggle('sidebar-open');
+        // Optional: close sidebar when clicking outside
+        if (sidebar.classList.contains('active')) {
+            document.body.addEventListener('click', closeSidebarOnClickOutside, true);
+        } else {
+            document.body.removeEventListener('click', closeSidebarOnClickOutside, true);
+        }
+    }
+    function closeSidebarOnClickOutside(e) {
+        const sidebar = document.querySelector('.sidebar');
+        const toggleBtn = document.querySelector('.sidebar-toggle');
+        if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+            sidebar.classList.remove('active');
+            document.querySelector('.main-content').classList.remove('sidebar-open');
+            document.body.removeEventListener('click', closeSidebarOnClickOutside, true);
+        }
+    }
     </script>
     @stack('scripts')
 </body>
