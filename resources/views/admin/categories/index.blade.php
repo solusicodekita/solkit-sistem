@@ -16,7 +16,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body p-3">
+                        <div class="card-body p-3 table-responsive" >
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>

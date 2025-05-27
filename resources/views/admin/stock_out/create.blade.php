@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body p-3">
+                        <div class="card-body p-3 table-responsive">
                             <form id="formStockIn" action="{{ route('admin.out_stock.store') }}" method="post">
                                 @csrf
                                 <table id="tabelStock" class="table table-bordered table-striped text-center">

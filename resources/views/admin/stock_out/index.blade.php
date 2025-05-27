@@ -17,7 +17,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body p-3">
+                        <div class="card-body p-3 table-responsive">
                             <table id="tabelStock" class="table table-bordered table-striped text-center">
                                 <thead>
                                     <tr>

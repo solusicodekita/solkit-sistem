@@ -15,19 +15,60 @@
             font-family: 'Nunito', sans-serif;
         }
         .sidebar {
-            background: #1a237e;
-            min-height: 100vh;
-            color: #fff;
-            width: 250px;
             position: fixed;
-            left: 0;
             top: 0;
+            left: -260px;
+            width: 250px;
+            height: 100vh;
+            background: #1a237e;
+            z-index: 200;
+            transition: left 0.3s;
             box-shadow: 2px 0 8px rgba(26,35,126,0.08);
             display: flex;
             flex-direction: column;
-            z-index: 100;
-            overflow-y: auto;
-            max-height: 100vh; /* Membatasi tinggi maksimum */
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 199;
+        }
+        .sidebar.active ~ .sidebar-overlay {
+            display: block;
+        }
+        @media (min-width: 900px) {
+            .sidebar { left: 0; width: 250px; }
+            .sidebar-overlay { display: none !important; }
+            .sidebar-toggle { display: none; }
+        }
+        .sidebar-toggle {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 300;
+            background: #1a237e;
+            color: #ffc107;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 8px #1a237e33;
+            display: block;
+        }
+        .sidebar-close {
+            display: block;
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: #ffc107;
+            font-size: 2rem;
+            z-index: 201;
         }
         .sidebar::-webkit-scrollbar {
             width: 6px;
@@ -66,9 +107,9 @@
             font-family: 'Nunito', sans-serif;
         }
         .sidebar nav {
-            flex: 1;
+            flex: 1 1 auto;
             margin-top: 2rem;
-            overflow-y: auto; /* Menambahkan scroll pada nav */
+            overflow-y: auto;
         }
         .sidebar .nav-link {
             color: #fff;
@@ -107,7 +148,7 @@
             color: #fff;
             text-align: center;
             font-size: 0.9rem;
-            margin-bottom: 1rem;
+            margin-top: auto;
         }
         .main-content {
             margin-left: 250px;
@@ -116,23 +157,76 @@
         }
         @media (max-width: 900px) {
             .sidebar {
-                width: 70px;
+                top: 56px;
+                height: calc(100vh - 56px);
+                padding-top: 0;
+                overflow-y: auto;
             }
-            .sidebar .brand, .sidebar .nav-link span, .sidebar .copyright, .sidebar .logout-btn {
-                display: none;
+            .sidebar.active {
+                left: 0;
             }
-            .sidebar .logo img {
-                height: 40px;
+            .sidebar .logo {
+                padding-top: 1.2rem;
+                text-align: center;
+            }
+            .sidebar .logo-circle {
+                width: 44px;
+                height: 44px;
+                margin-bottom: 0.3rem;
+            }
+            .sidebar .brand {
+                color: #ffc107;
+                font-size: 1.2rem;
+                font-weight: 900;
+                letter-spacing: 2px;
+                margin-bottom: 0.5rem;
+            }
+            .sidebar .nav-link {
+                border-radius: 8px;
+                margin: 0.2rem 0;
+                transition: background 0.2s, color 0.2s;
+            }
+            .sidebar .nav-link.active, .sidebar .nav-link:hover {
+                background: #fff3cd;
+                color: #1a237e;
+                border-left: 4px solid #ffc107;
+            }
+            .sidebar .logout-btn {
+                background: linear-gradient(90deg, #e53935 70%, #ff7043 100%);
+                color: #fff;
+                border-radius: 12px;
+                font-size: 1.1rem;
+                font-weight: bold;
+                margin: 2rem 1rem 1rem 1rem;
+                padding: 0.8rem 0;
+                box-shadow: 0 2px 8px #e5393533;
+                transition: background 0.2s, transform 0.2s;
+            }
+            .sidebar .logout-btn:hover {
+                background: #b71c1c;
+                transform: scale(1.03);
+            }
+            .mobile-header {
+                z-index: 401;
+            }
+            .sidebar-toggle {
+                position: static;
+                margin-left: 0;
+                margin-right: 0;
+                box-shadow: none;
+                background: none;
+                padding: 0;
             }
             .main-content {
-                margin-left: 70px;
-                padding: 1rem 0.5rem 0.5rem 0.5rem;
+                padding-top: 56px !important;
+                margin-top: 12px;
             }
         }
         @media (max-width: 600px) {
             .main-content {
                 margin-left: 0;
-                padding: 0.5rem 0.2rem 0.2rem 0.2rem;
+                padding: 56px 0.2rem 0.2rem 0.2rem !important;
+                margin-top: 12px;
             }
         }
         .logo-circle {
@@ -158,54 +252,72 @@
             box-shadow: 0 4px 24px #ffc10755, 0 2px 0 #fff;
             transform: scale(1.05);
         }
-        /* Menambahkan style untuk submenu */
         .collapse .nav-link {
-            padding-left: 3.5rem !important; /* Menambah padding kiri untuk submenu */
+            padding-left: 3.5rem !important;
         }
-        .sidebar-toggle {
+        .mobile-header {
             position: fixed;
-            top: 18px;
-            left: 18px;
-            z-index: 200;
-            background: #1a237e;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: linear-gradient(90deg, #1a237e 70%, #1976d2 100%);
             color: #ffc107;
+            display: flex;
+            align-items: center;
+            z-index: 401;
+            box-shadow: 0 2px 8px rgba(26,35,126,0.10);
+            padding: 0;
+        }
+        .mobile-header .sidebar-toggle,
+        .mobile-header-spacer {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: none;
             border: none;
-            border-radius: 6px;
-            padding: 10px 14px;
-            font-size: 1.5rem;
-            box-shadow: 0 2px 8px #1a237e33;
-            display: none;
+            font-size: 2.2rem;
+            color: #ffc107;
+            z-index: 2;
         }
-        @media (max-width: 900px) {
-            .sidebar-toggle {
-                display: block;
-            }
-            .sidebar {
-                left: -250px;
-                transition: left 0.3s;
-            }
-            .sidebar.active {
-                left: 0;
-            }
-            .main-content {
-                margin-left: 0 !important;
-                transition: filter 0.3s;
-            }
-            .main-content.sidebar-open {
-                filter: blur(2px);
-                pointer-events: none;
-                user-select: none;
-            }
+        .mobile-header-title {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            z-index: 1;
+            background: transparent;
+            margin-top: -45px;
+            font-size: 1.3rem;
         }
+        @media (min-width: 900px) {
+            .mobile-header { display: none !important; }
+        }
+        
     </style>
     @stack('styles')
 </head>
 <body>
-    <!-- Hamburger Toggle Button -->
-    <button class="sidebar-toggle d-block d-md-none" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
-        <i class="fa fa-bars"></i>
-    </button>
+    <!-- Mobile Header Bar -->
+    <div class="mobile-header d-block d-md-none">
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+            <i class="fa fa-bars"></i>
+        </button>
+        <span class="mobile-header-title">@yield('title', 'Dashboard')</span>
+        <span class="mobile-header-spacer"></span>
+    </div>
     <div class="sidebar">
+        <button class="sidebar-close d-block d-md-none" onclick="toggleSidebar()" aria-label="Close Sidebar">&times;</button>
         <div class="logo">
             <div class="logo-circle">
                 <img src="{{ asset('images/nitajaya.png') }}" alt="Logo Nita Jaya Catering">
@@ -219,7 +331,7 @@
             <div class="nav-item">
                 <a href="#" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}" onclick="toggleMenu('masterMenu', event)">
                     <i class="fa-solid fa-database"></i>
-                    <span>Master &nbsp;</span>
+                    <span>Master</span>
                     <i class="fa-solid fa-angle-down float-right mt-1"></i>
                 </a>
                 <div id="masterMenu" class="collapse {{ Request::is('admin/category*') || Request::is('admin/items*') || Request::is('admin/warehouse*') ? 'show' : '' }}">
@@ -234,11 +346,10 @@
                     </a>
                 </div>
             </div>
-
             <div class="nav-item">
                 <a href="#" class="nav-link {{ Request::is('admin/transactions*') ? 'active' : '' }}" onclick="toggleMenu('transaksiMenu', event)">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Transaksi&nbsp;</span>
+                    <span>Transaksi</span>
                     <i class="fa-solid fa-angle-down float-right mt-1"></i>
                 </a>
                 <div id="transaksiMenu" class="collapse {{ Request::is('admin/stock*') || Request::is('admin/in_stock*') || Request::is('admin/live_stock*') || Request::is('admin/out_stock*') || Request::is('admin/adjustment_stock*') ? 'show' : '' }}">
@@ -266,26 +377,6 @@
                 </div>
             </div>
         </nav>
-
-        <script>
-        function toggleMenu(menuId, event) {
-            event.preventDefault();
-            const allMenus = document.querySelectorAll('.collapse');
-            const clickedMenu = document.getElementById(menuId);
-            
-            // Close all other menus
-            allMenus.forEach(menu => {
-                if (menu.id !== menuId && menu.classList.contains('show')) {
-                    menu.classList.remove('show');
-                }
-            });
-
-            // Toggle clicked menu
-            if (clickedMenu) {
-                clickedMenu.classList.toggle('show');
-            }
-        }
-        </script>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="logout-btn btn-sm"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
@@ -339,23 +430,24 @@
     <script>
     function toggleSidebar() {
         const sidebar = document.querySelector('.sidebar');
-        const mainContent = document.querySelector('.main-content');
+        const overlay = document.querySelector('.sidebar-overlay');
+        const toggleBtn = document.querySelector('.sidebar-toggle');
         sidebar.classList.toggle('active');
-        mainContent.classList.toggle('sidebar-open');
-        // Optional: close sidebar when clicking outside
+        overlay.classList.toggle('active');
         if (sidebar.classList.contains('active')) {
-            document.body.addEventListener('click', closeSidebarOnClickOutside, true);
+            toggleBtn.innerHTML = '<i class=\"fa fa-times\"></i>';
+            toggleBtn.style.display = 'block';
         } else {
-            document.body.removeEventListener('click', closeSidebarOnClickOutside, true);
+            toggleBtn.innerHTML = '<i class=\"fa fa-bars\"></i>';
+            toggleBtn.style.display = 'block';
         }
     }
-    function closeSidebarOnClickOutside(e) {
-        const sidebar = document.querySelector('.sidebar');
-        const toggleBtn = document.querySelector('.sidebar-toggle');
-        if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-            sidebar.classList.remove('active');
-            document.querySelector('.main-content').classList.remove('sidebar-open');
-            document.body.removeEventListener('click', closeSidebarOnClickOutside, true);
+    // Toggle menu dropdown (Master, Transaksi)
+    function toggleMenu(menuId, event) {
+        event.preventDefault();
+        const menu = document.getElementById(menuId);
+        if (menu) {
+            menu.classList.toggle('show');
         }
     }
     </script>
