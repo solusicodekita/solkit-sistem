@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Category;
+use App\Models\Item;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\OrderProduct;
+use App\Models\Warehouse;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,6 +67,30 @@ class HomeController extends Controller
             $pending = Transaction::where('status', 'PENDING')->sum('total_harga');
             $proses = Transaction::where('status', 'PROSES')->sum('total_harga');
             $fail = Transaction::whereNotIn('status', ['SUCCESS','PENDING','PROSES'])->sum('total_harga');
+            $total_kategori = Category::count();
+            $total_lokasi = Warehouse::count();
+            $total_item = Item::count();
+        // dd($total_kategori);
+
+            // Ambil semua warehouse
+            $warehouses = \App\Models\Warehouse::all();
+
+            // Untuk setiap warehouse, hitung jumlah item dengan stok > 0
+            $warehouse_stocks = [];
+            foreach ($warehouses as $warehouse) {
+                $item_count = Stock::where('warehouse_id', $warehouse->id)
+                    ->where('final_stock', '>', 0)
+                    ->count();
+                $warehouse_stocks[] = [
+                    'name' => $warehouse->name,
+                    'item_count' => $item_count,
+                ];
+            }
+
+            // Ambil item habis (stok 0 di semua warehouse)
+            $empty_items = Stock::where('final_stock', '<=', 0)
+                ->with('item', 'warehouse')
+                ->get();
 
             return view('admin.dashboard.index',[
                 'title' => 'Dashboard',
@@ -76,6 +104,11 @@ class HomeController extends Controller
                 'pending' => $pending,
                 'proses' => $proses,
                 'fail' => $fail,
+                'total_kategori' => $total_kategori,
+                'total_lokasi' => $total_lokasi,
+                'total_item' => $total_item,
+                'warehouse_stocks' => $warehouse_stocks,
+                'empty_items' => $empty_items,
             ]);
         }
         elseif (auth()->user()->hasRole('customer')) {

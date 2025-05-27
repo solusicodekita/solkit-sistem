@@ -57,45 +57,131 @@
     .card-user { background: linear-gradient(120deg,#1976d2 60%,#1a237e 100%); }
     .card-transaction { background: linear-gradient(120deg,#00bcd4 60%,#1976d2 100%); }
     .card-income { background: linear-gradient(120deg,#43a047 60%,#ffc107 100%); }
+    @media (max-width: 900px) {
+        .dashboard-card {
+            padding: 1.2rem 1rem 1rem 1rem;
+            min-height: 120px;
+        }
+        .dashboard-card .icon-main {
+            font-size: 1.5rem;
+            margin-right: 0.7rem;
+        }
+        .dashboard-card .card-title {
+            font-size: 1rem;
+        }
+        .dashboard-card .card-value {
+            font-size: 1.3rem;
+        }
+        .dashboard-card .card-desc {
+            font-size: 0.95rem;
+        }
+    }
+    @media (max-width: 600px) {
+        .dashboard-card {
+            padding: 1rem 0.7rem 0.7rem 0.7rem;
+            min-height: 90px;
+        }
+        .dashboard-card .icon-main {
+            font-size: 1.1rem;
+            margin-right: 0.5rem;
+        }
+        .dashboard-card .card-title {
+            font-size: 0.95rem;
+        }
+        .dashboard-card .card-value {
+            font-size: 1.1rem;
+        }
+        .dashboard-card .card-desc {
+            font-size: 0.9rem;
+        }
+    }
 </style>
 <div class="row">
     <div class="col-md-4 mb-4">
         <div class="dashboard-card card-user">
-            <span class="icon-bg"><i class="fa-solid fa-users"></i></span>
+            <span class="icon-bg"><i class="fa-solid fa-tags"></i></span>
             <div class="d-flex align-items-center" style="z-index:2;position:relative;">
-                <div class="icon-main"><i class="fa-solid fa-users"></i></div>
+                <div class="icon-main"><i class="fa-solid fa-tags"></i></div>
                 <div>
-                    <div class="card-title">Data User</div>
-                    <div class="card-value">2</div>
+                    <div class="card-title">Kategori</div>
+                    <div class="card-value">{{ $total_kategori }}</div>
                 </div>
             </div>
-            <div class="card-desc">Tampilkan Data <i class="fa fa-arrow-right"></i></div>
+            <div class="card-desc"> 
+                <a style="text-decoration: none;" href="{{ route('admin.category.index') }}" class="card-desc"> Tampilkan Data <i class="fa fa-arrow-right"></i></a>
+            </div>
         </div>
     </div>
     <div class="col-md-4 mb-4">
         <div class="dashboard-card card-transaction">
-            <span class="icon-bg"><i class="fa-solid fa-cart-shopping"></i></span>
+            <span class="icon-bg"><i class="fa-solid fa-location-dot"></i></span>
             <div class="d-flex align-items-center" style="z-index:2;position:relative;">
-                <div class="icon-main"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div class="icon-main"><i class="fa-solid fa-location-dot"></i></div>
                 <div>
-                    <div class="card-title">Data Transaction</div>
-                    <div class="card-value">0</div>
+                    <div class="card-title">Lokasi</div>
+                    <div class="card-value">{{ $total_lokasi }}</div>
                 </div>
             </div>
-            <div class="card-desc">Tampilkan Data <i class="fa fa-arrow-right"></i></div>
+            <div class="card-desc">
+                 <a style="text-decoration: none;" href="{{ route('admin.warehouse.index') }}" class="card-desc"> Tampilkan Data <i class="fa fa-arrow-right"></i></a>
+            </div>
         </div>
     </div>
     <div class="col-md-4 mb-4">
         <div class="dashboard-card card-income">
-            <span class="icon-bg"><i class="fa-solid fa-dollar-sign"></i></span>
+            <span class="icon-bg"><i class="fa-solid fa-box"></i></span>
             <div class="d-flex align-items-center" style="z-index:2;position:relative;">
-                <div class="icon-main"><i class="fa-solid fa-dollar-sign"></i></div>
+                <div class="icon-main"><i class="fa-solid fa-box"></i></div>
                 <div>
-                    <div class="card-title">Data Income</div>
-                    <div class="card-value">Rp.0,00</div>
+                    <div class="card-title">Bahan/Item</div>
+                    <div class="card-value">{{ $total_item }}</div>
                 </div>
             </div>
-            <div class="card-desc">Tampilkan Data <i class="fa fa-arrow-right"></i></div>
+            <div class="card-desc">
+                 <a style="text-decoration: none;" href="{{ route('admin.items.index') }}" class="card-desc"> Tampilkan Data <i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    @foreach($warehouse_stocks as $ws)
+    <div class="col-12 col-md-3 mb-3">
+        <div class="card shadow-sm h-100" style="border-radius:16px;">
+            <div class="card-body text-center">
+                <div class="fw-bold" style="font-size:1.1rem;">{{ $ws['name'] }}</div>
+                <div class="display-5 fw-bold text-primary">{{ $ws['item_count'] }}</div>
+                <div class="text-muted">Item</div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+
+<div class="card shadow-sm mb-4" style="border-radius:16px;">
+    <div class="card-header bg-light fw-bold" style="font-size:1.1rem;">Item Habis</div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Lokasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($empty_items as $stock)
+                    <tr>
+                        <td>{{ $stock->item->name ?? '-' }}</td>
+                        <td>{{ $stock->warehouse->name ?? '-' }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="2" class="text-center text-muted">Tidak ada item habis</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
