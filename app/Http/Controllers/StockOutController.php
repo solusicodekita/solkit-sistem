@@ -14,7 +14,10 @@ class StockOutController extends Controller
 {
     public function index()
     {
-        $model = StockTransaction::where('type', 'out')->where('is_adjustment', false)->orderBy('id', 'desc')->get();
+        $model = StockTransaction::where('type', 'out')->where(function($query) {
+            $query->where('is_adjustment', false)
+                  ->orWhereNull('is_adjustment');
+        })->orderBy('id', 'desc')->get();
         return view('admin.stock_out.index', compact('model'));
     }
 

@@ -50,6 +50,16 @@ class StockController extends Controller
 
     public function cekStokAkhir(Request $request)
     {
+        $existingStock = Stock::where('item_id', $request->item_id)
+            ->where('warehouse_id', $request->warehouse_id)
+            ->exists();
+
+        if ($existingStock) {
+            return response()->json([
+                'status' => 2,
+                'msg' => 'Barang sudah pernah di stock awal di lokasi ini.',
+            ]);
+        }
         $item_id = $request->item_id;
         $warehouse_id = $request->warehouse_id;
         $stokAkhir = Stock::liveStock($item_id, $warehouse_id);

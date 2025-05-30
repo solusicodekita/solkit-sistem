@@ -14,7 +14,10 @@ class StokInController extends Controller
 {
     public function index()
     {
-        $model = StockTransaction::where('type', 'in')->where('is_adjustment', false)->orderBy('id', 'desc')->get();
+        $model = StockTransaction::where('type', 'in')->where(function($query) {
+            $query->where('is_adjustment', false)
+                  ->orWhereNull('is_adjustment');
+        })->orderBy('id', 'desc')->get();
         return view('admin.stock_in.index', compact('model'));
     }
 
