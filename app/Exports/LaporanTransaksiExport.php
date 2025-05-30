@@ -123,7 +123,7 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
         $modStock->warehouse_id = $stock->warehouse_id;
         $modStock->initial_stock = $stokAwal;
         $modStock->final_stock = $stokAkhir;
-        $modStock->date_opname = date('Y-m-d H:i:s');
+        $modStock->date_opname = $this->tglAkhir;
         $modStock->created_by = auth()->user()->id;
         $modStock->updated_by = auth()->user()->id;
         $modStock->save();
