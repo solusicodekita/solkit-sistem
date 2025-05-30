@@ -13,7 +13,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <a href="{{ route('admin.stock.create') }}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Tambah</a>
+                                            class="fas fa-plus"></i> Tambah Stok Opname Awal</a>
                                 </div>
                             </div>
                         </div>

@@ -29,6 +29,9 @@ class Stock extends Model
     public static function liveStock($item_id, $warehouse_id) {
 
         $model = Stock::where('item_id', $item_id)->where('warehouse_id', $warehouse_id)->latest('date_opname')->first();
+        if (!$model) {
+            return 0;
+        }
         
         $barangMasuk = StockTransactionDetail::leftJoin('stock_transactions', 'stock_transaction_details.stock_transaction_id', '=', 'stock_transactions.id')
             ->where('stock_transaction_details.item_id', $model->item_id)

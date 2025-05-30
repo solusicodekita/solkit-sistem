@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\WareHousesController;
+use App\Http\Controllers\LaporanTransaksiController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockOutController;
@@ -206,6 +207,12 @@ Route::middleware(['xss'])->group(function () {
             Route::post('store', [StockAdjustmentController::class, 'store'])->name('store');
             Route::get('cek_jumlah_terakhir', [StockAdjustmentController::class, 'cekJumlahTerakhir'])->name('cekJumlahTerakhir');
             Route::get('get_warehouse', [StockAdjustmentController::class, 'getWarehouse'])->name('getWarehouse');
+        });
+
+        Route::group(['prefix' => 'laporan_transaksi/', 'as' => 'laporan_transaksi.'], function () {
+            Route::get('index', [LaporanTransaksiController::class, 'index'])->name('index');
+            Route::get('create', [LaporanTransaksiController::class, 'create'])->name('create');
+            Route::get('download/{id}', [LaporanTransaksiController::class, 'download'])->name('download');
         });
     });
 

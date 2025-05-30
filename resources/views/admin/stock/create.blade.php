@@ -9,7 +9,7 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="card-title">Form Tambah Stok Opname</h3>
+                                    <h3 class="card-title">Form Tambah Stok Opname Awal</h3>
                                 </div>
                                 <div class="col-auto">
                                     <a href="{{ route('admin.stock.index') }}" class="btn btn-primary"><i
@@ -52,7 +52,7 @@
                                         placeholder="Ketikkan Stock Akhir" autocomplete="off">
                                 </div>
                                 <hr>
-                                <button type="button" class="btn btn-success" onclick="validasi()">
+                                <button type="button" class="btn btn-success" id="btnSimpan" onclick="validasi()">
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </form>
@@ -145,6 +145,7 @@
                     },
                     dataType: 'json',
                     success: function(response) {
+                        console.log(response);
                         if (response.status == 1) {
                             let stokAkhir = parseFloat(response.stokAkhir);
                             if (stokAkhir % 1 === 0) {
@@ -152,8 +153,20 @@
                             } else {
                                 $('#initial_stock').val(stokAkhir);
                             }
+                            $('#btnSimpan').prop('disabled', false);
+                        } else if (response.status == 2) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: response.msg,
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                            $('#initial_stock').val('0');
+                            $('#btnSimpan').prop('disabled', true);
                         } else {
                             $('#initial_stock').val('0');
+                            $('#btnSimpan').prop('disabled', false);
                         }
                     }
                 });
