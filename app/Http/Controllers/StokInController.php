@@ -12,12 +12,25 @@ use Illuminate\Support\Facades\DB;
 
 class StokInController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $model = StockTransaction::where('type', 'in')->where(function($query) {
-            $query->where('is_adjustment', false)
-                  ->orWhereNull('is_adjustment');
-        })->orderBy('id', 'desc')->get();
+        $query = StockTransaction::where('type', 'in')
+            ->where(function($query) {
+                $query->where('is_adjustment', false)
+                      ->orWhereNull('is_adjustment');
+            });
+
+        if ($request->start_date && $request->end_date) {
+            $start_date = date('Y-m-d 00:00:00', strtotime($request->start_date));
+            $end_date = date('Y-m-d 23:59:59', strtotime($request->end_date));
+            $query->whereBetween('date', [$start_date, $end_date]);
+        } else {
+            $start_date = date('Y-m-d 00:00:00');
+            $end_date = date('Y-m-d 23:59:59');
+            $query->whereBetween('date', [$start_date, $end_date]);
+        }
+
+        $model = $query->orderBy('id', 'desc')->get();
         return view('admin.stock_in.index', compact('model'));
     }
 
