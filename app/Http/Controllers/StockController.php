@@ -28,24 +28,32 @@ class StockController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'item_id' => 'required',
-            'warehouse_id' => 'required',
-            'initial_stock' => 'required|numeric',
-            'final_stock' => 'required|numeric',
-        ]);
-
-        $stock = new Stock();
-        $stock->item_id = $request->item_id;
-        $stock->warehouse_id = $request->warehouse_id;
-        $stock->initial_stock = $request->initial_stock;
-        $stock->final_stock = $request->final_stock;
-        $stock->date_opname = now();
-        $stock->created_by = Auth::user()->id;
-        $stock->updated_by = Auth::user()->id;
-        $stock->save();
-
-        return redirect()->route('admin.stock.index')->with('success', 'Data stok berhasil disimpan');
+        try {
+            $request->validate([
+                'item' => 'required|array',
+                'item.*.item_id' => 'required|exists:items,id',
+                'item.*.warehouse_id' => 'required|exists:warehouses,id', 
+                'item.*.initial_stock' => 'required|numeric',
+                'item.*.final_stock' => 'required|numeric',
+            ]);
+            
+            foreach ($request->item as $item) {
+                $stock = new Stock();
+                $stock->item_id = $item['item_id'];
+                $stock->warehouse_id = $item['warehouse_id']; 
+                $stock->initial_stock = $item['initial_stock'];
+                $stock->final_stock = $item['final_stock'];
+                $stock->date_opname = now();
+                $stock->created_by = Auth::user()->id;
+                $stock->updated_by = Auth::user()->id;
+                $stock->save();
+            }
+    
+            return redirect()->route('admin.stock.index')->with('success', 'Data stok berhasil disimpan');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.stock.index')->with('error', 'Data stok gagal disimpan: ' . $e->getMessage());
+        }
+        
     }
 
     public function cekStokAkhir(Request $request)
