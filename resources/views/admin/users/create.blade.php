@@ -44,6 +44,12 @@
             {!! Form::text('lastname', null, ['required', 'placeholder' => 'Nama Belakang', 'class' => 'form-control']) !!}
         </div>
     </div>
+     <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <div class="mb-2"><strong>Username : </strong></div>
+            {!! Form::text('username', null, ['required', 'placeholder' => 'Username', 'class' => 'form-control']) !!}
+        </div>
+    </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Email:</strong>

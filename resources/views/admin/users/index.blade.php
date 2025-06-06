@@ -14,11 +14,15 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">{{ trans('menu.user.title') }}</h3>
-            {{-- <div class="card-tools">
-                <a href="{{ route('admin.users.create') }}" class="btn btn-success btn-sm">{{ trans('global.add')." ".trans('menu.user.title') }}</a>
-            </div> --}}
-        </div>
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h3 class="card-title">{{ trans('menu.user.title') }}</h3>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="{{  route('admin.users.create')  }}" class="btn btn-outline-primary"><i class="fas fa-plus"></i> Tambah</a>
+                                </div>
+                            </div>
+                        </div>
         <!-- /.card-header -->
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
@@ -27,7 +31,7 @@
                         <th>{{ trans('menu.user.fields.no') }}</th>
                         <th>{{ trans('menu.user.fields.name') }}</th>
                         <th>{{ trans('menu.user.fields.email') }}</th>
-                        <th>{{ trans('menu.user.fields.roles') }}</th>
+                        {{-- <th>{{ trans('menu.user.fields.roles') }}</th> --}}
                         <th>{{ trans('menu.user.fields.created_at') }}</th>
                         <th>{{ trans('global.actions') }}</th>
                     </tr>
@@ -38,13 +42,13 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->fullname }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>
+                        {{-- <td>
                             @if(!empty($user->getRoleNames()))
                               @foreach($user->getRoleNames() as $v)
                                  <label class="badge badge-success">{{ $v }}</label>
                               @endforeach
                             @endif
-                        </td>
+                        </td> --}}
                         <td>{{ $user->updated_at ? $user->updated_at : $user->created_at }}</td>
                         <td class="text-center">
                             <form action="{{ route('admin.users.destroy', $user->id) }}" class="row" method="POST">
@@ -55,15 +59,18 @@
                                         <i class="fas fa-search"></i>
                                     </a>
                                 </div>
-                                {{-- <div class="col-md-4">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.users.edit', $user->id) }}">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                </div> --}}
+                                @if ($user->username !== 'superadmin' && $user->username !== 'admin' )                
                                 <div class="col-md-4">
-                                    <button class="btn btn-danger btn-sm" type="submit">
-                                        <i class="fas fa-trash"></i></button>
-                                </div>
+                                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.users.edit', $user->id) }}">
+                                                            <i class="fas fa-pencil-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <button class="btn btn-danger btn-sm" type="submit">
+                                                            <i class="fas fa-trash"></i></button>
+                                                    </div>
+                                @endif
+                               
                             </form>
                         </td>
                     </tr>
@@ -74,7 +81,7 @@
                         <th>{{ trans('menu.user.fields.no') }}</th>
                         <th>{{ trans('menu.user.fields.name') }}</th>
                         <th>{{ trans('menu.user.fields.email') }}</th>
-                        <th>{{ trans('menu.user.fields.roles') }}</th>
+                        {{-- <th>{{ trans('menu.user.fields.roles') }}</th> --}}
                         <th>{{ trans('menu.user.fields.created_at') }}</th>
                         <th>{{ trans('global.actions') }}</th>
                     </tr>

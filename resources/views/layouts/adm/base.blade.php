@@ -373,6 +373,12 @@
                     </a>
                 </div>
             </div>
+            @if (Auth::user()->username == 'superadmin')                
+                <a href="{{ route('admin.users.index') }}" class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-users"></i> <span>Users</span>
+                </a>
+            @endif
+
         </nav>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
