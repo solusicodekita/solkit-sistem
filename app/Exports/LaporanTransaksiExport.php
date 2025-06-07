@@ -80,13 +80,13 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
                 '',
                 '',
                 '',
-                $this->totalStokAwal,
+                '',
                 $this->totalHargaStokAwal,
-                $this->totalStokMasuk,
+                '',
                 $this->totalHargaStokMasuk, 
-                $this->totalStokKeluar,
+               '',
                 $this->totalHargaStokKeluar,
-                $this->totalStokAkhir,
+                '',
                 $this->totalHargaStokAkhir,
                 '',
             ];
@@ -99,14 +99,17 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
             ->latest('date_opname')
             ->first()->final_stock;
         
+        $hargaTertinggi = LaporanTransaksi::hargaTertinggi($stock->item_id, $stock->warehouse_id, $this->tglAwal, $this->tglAkhir);
+        
+        
         $masuk = LaporanTransaksi::transaksiMasuk($stock->item_id, $stock->warehouse_id, $this->tglAwal, $this->tglAkhir);
         $keluar = LaporanTransaksi::transaksiKeluar($stock->item_id, $stock->warehouse_id, $this->tglAwal, $this->tglAkhir);
         $stokAkhir = $stokAwal + $masuk - $keluar;
 
-        $totalHargaStokAwal = $stock->item->price * $stokAwal;
-        $totalHargaStokMasuk = $stock->item->price * $masuk;
-        $totalHargaStokKeluar = $stock->item->price * $keluar;
-        $totalHargaStokAkhir = $stock->item->price * $stokAkhir;
+        $totalHargaStokAwal = $hargaTertinggi * $stokAwal;
+        $totalHargaStokMasuk = $hargaTertinggi * $masuk;
+        $totalHargaStokKeluar = $hargaTertinggi * $keluar;
+        $totalHargaStokAkhir = $hargaTertinggi * $stokAkhir;
 
         $this->totalStokAwal += $stokAwal;
         $this->totalHargaStokAwal += $totalHargaStokAwal;
@@ -132,7 +135,7 @@ class LaporanTransaksiExport implements FromCollection, WithHeadings, WithMappin
             $this->no++,
             $stock->item->name,
             $stock->item->unit,
-            $stock->item->price,
+            $hargaTertinggi,
             $stokAwal,
             $totalHargaStokAwal,
             ($masuk == 0 ? '0' : $masuk),

@@ -29,6 +29,7 @@
                                         <th class="text-center">Item</th>
                                         <th class="text-center">Lokasi Item</th>
                                         <th class="text-center">Jumlah</th>
+                                        <th class="text-center">Harga Satuan</th>
                                         <th class="text-center">Satuan / Unit</th>
                                     </tr>
                                 </thead>
@@ -39,6 +40,7 @@
                                             <td>{{ $row->item->name }}</td>
                                             <td>{{ $row->warehouse->name }}</td>
                                             <td>{{ $row::liveStock($row->item_id, $row->warehouse_id) }}</td>
+                                            <td>Rp {{ number_format($row->item->price, 0, ',', '.') }}</td>
                                             <td>{{ $row->item->unit }}</td>
                                         </tr>
                                     @endforeach

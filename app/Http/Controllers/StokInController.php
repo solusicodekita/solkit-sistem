@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistoryHarga;
 use App\Models\Item;
 use App\Models\Stock;
 use App\Models\StockTransaction;
@@ -44,7 +45,8 @@ class StokInController extends Controller
     {
         $item = Item::find($request->item_id);
         $price = $item->price;
-        return response()->json(['harga_satuan' => $price]);
+        $unit = $item->unit;
+        return response()->json(['harga_satuan' => $price, 'unit' => $unit]);
     }
 
     public function store(Request $request)
@@ -84,9 +86,21 @@ class StokInController extends Controller
                 ]);
 
                 $modItem = Item::where('id', $value['item_id'])->first();
+                $hargaAwal = $modItem->price;
                 $modItem->price = $modDetail->harga_satuan;
                 $modItem->updated_by = Auth::user()->id;
                 $modItem->save();
+
+                if ($hargaAwal != $modItem->price) {
+                    HistoryHarga::create([
+                        'item_id' => $value['item_id'],
+                        'warehouse_id' => $value['warehouse_id'],
+                        'harga_awal' => $hargaAwal,
+                        'harga_baru' => $modItem->price,
+                        'created_by' => Auth::user()->id,
+                        'updated_by' => Auth::user()->id,
+                    ]);
+                }
             }
 
             DB::commit();

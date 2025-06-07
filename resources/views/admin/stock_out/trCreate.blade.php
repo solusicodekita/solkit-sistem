@@ -22,6 +22,9 @@
             placeholder="Ketikkan Jumlah Satuan" autocomplete="off">
     </td>
     <td>
+        <input type="text" class="form-control unit" name="item[{{ $no }}][unit]" id="unit" readonly>
+    </td>
+    <td>
         <input type="text" name="item[{{ $no }}][total_harga_item]" id="total_harga_item" value="0" class="form-control total_harga_item" value="0" readonly>
     </td>
     <td>

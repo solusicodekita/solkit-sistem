@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LiveStockExport;
+use App\Models\HistoryHarga;
 use App\Models\Item;
 use App\Models\Stock;
 use App\Models\Warehouse;
@@ -47,6 +48,15 @@ class StockController extends Controller
                 $stock->created_by = Auth::user()->id;
                 $stock->updated_by = Auth::user()->id;
                 $stock->save();
+                
+                HistoryHarga::create([
+                    'item_id' => $item['item_id'],
+                    'warehouse_id' => $item['warehouse_id'],
+                    'harga_awal' => 0,
+                    'harga_baru' => $stock->item->price,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ]);
             }
     
             return redirect()->route('admin.stock.index')->with('success', 'Data stok berhasil disimpan');
