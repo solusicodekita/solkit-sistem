@@ -31,6 +31,8 @@
                                         <th class="text-center">Jumlah</th>
                                         <th class="text-center">Harga Satuan</th>
                                         <th class="text-center">Satuan / Unit</th>
+                                        <th class="text-center">Dibuat Oleh</th>
+                                        <th class="text-center">Diperbarui Oleh</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,6 +44,8 @@
                                             <td>{{ $row::liveStock($row->item_id, $row->warehouse_id) }}</td>
                                             <td>Rp {{ number_format($row->item->price, 0, ',', '.') }}</td>
                                             <td>{{ $row->item->unit }}</td>
+                                            <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

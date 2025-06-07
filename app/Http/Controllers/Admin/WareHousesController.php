@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -71,6 +72,7 @@ class WareHousesController extends Controller
             $lokasi = new Warehouse();
             $lokasi->name = $request->input('name');
             $lokasi->code = $request->input('code');
+            $lokasi->created_by = Auth::user()->id;
             $lokasi->save();
             DB::commit();
             return response()->json([
@@ -158,6 +160,7 @@ class WareHousesController extends Controller
             $lokasi = Warehouse::find($request->input('id'));
             $lokasi->name = $request->input('name');
             $lokasi->code = $request->input('code');
+            $lokasi->updated_by = Auth::user()->id;
             $lokasi->save();
             DB::commit();
             return response()->json([

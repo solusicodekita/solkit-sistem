@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Imports\ItemImport;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
@@ -76,6 +77,7 @@ class ItemController extends Controller
             $bahan->name = $request->input('name');
             $bahan->unit = $request->input('unit');
             $bahan->price = (int) str_replace(['Rp', '.', ' '], '', $request->input('price'));
+            $bahan->created_by = Auth::user()->id;
             $bahan->save();
             DB::commit();
             return response()->json([
@@ -166,6 +168,7 @@ class ItemController extends Controller
             $bahan->name = $request->input('name');
             $bahan->unit = $request->input('unit');
             $bahan->price = (int) str_replace(['Rp', '.', ' '], '', $request->input('price'));
+            $bahan->updated_by = Auth::user()->id;
             $bahan->save();
             DB::commit();
             return response()->json([

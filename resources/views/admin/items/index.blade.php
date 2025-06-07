@@ -22,11 +22,13 @@
                                 <thead>
                                     <tr>
                                         <th width="5%" class="text-center">No</th>
-                                        <th width="15%" class="text-center">Kategori</th>
-                                        <th width="15%" class="text-center">Kode Bahan</th>
-                                        <th width="25%" class="text-center">Nama Bahan</th>
-                                        <th width="10%" class="text-center">Unit</th>
-                                        <th width="15%" class="text-center">Harga</th>
+                                        <th width="10%" class="text-center">Kategori</th>
+                                        <th width="10%" class="text-center">Kode Bahan</th>
+                                        <th width="15%" class="text-center">Nama Bahan</th>
+                                        <th width="5%" class="text-center">Unit</th>
+                                        <th width="10%" class="text-center">Harga</th>
+                                        <th width="15%" class="text-center">Dibuat Oleh</th>
+                                        <th width="15%" class="text-center">Diperbarui Oleh</th>
                                         <th width="15%" class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -37,8 +39,10 @@
                                             <td>{{ $item->category->name }}</td>
                                             <td class="text-center">{{ $item->code }}</td>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->unit }}</td>
+                                            <td class="text-center">{{ $item->unit }}</td>
                                             <td class="text-center">Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
+                                            <td>{{ $item->createdBy ? $item->createdBy->firstname . ' ' . $item->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ $item->updatedBy ? $item->updatedBy->firstname . ' ' . $item->updatedBy->lastname : ' ' }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('admin.items.edit', $item->id) }}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
                                                 <button onclick="hapus('{{ $item->id }}')" class="btn btn-outline-danger"><i

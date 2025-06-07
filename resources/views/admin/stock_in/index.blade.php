@@ -51,6 +51,8 @@
                                                 <th class="text-center">Item - Jumlah - Lokasi</th>
                                                 <th class="text-center">Total Transaksi</th>
                                                 <th class="text-center">Keterangan</th>
+                                                <th class="text-center">Dibuat Oleh</th>
+                                                <th class="text-center">Diperbarui Oleh</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -79,6 +81,8 @@
                                                             -
                                                         @endif
                                                     </td>
+                                                    <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
+                                                    <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
                                                 </tr>
                                             @empty
                                                 <tr>
