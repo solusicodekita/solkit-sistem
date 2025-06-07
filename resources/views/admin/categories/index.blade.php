@@ -22,9 +22,11 @@
                                     <tr>
                                         <th width="5%" class="text-center">No</th>
                                         <th width="10%" class="text-center">Kode</th>
-                                        <th width="35%" class="text-center">Nama Kategori</th>
-                                        <th width="35%" class="text-center">Slug</th>
-                                        <th width="15%" class="text-center">Aksi</th>
+                                        <th width="20%" class="text-center">Nama Kategori</th>
+                                        <th width="15%" class="text-center">Slug</th>
+                                        <th width="15%" class="text-center">Dibuat Oleh</th>
+                                        <th width="15%" class="text-center">Diperbarui Oleh</th>
+                                        <th width="20%" class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -34,6 +36,8 @@
                                             <td class="text-center">{{ $item->code }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->slug }}</td>
+                                            <td>{{ $item->createdBy ? $item->createdBy->firstname . ' ' . $item->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ $item->updatedBy ? $item->updatedBy->firstname . ' ' . $item->updatedBy->lastname : ' ' }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('admin.category.edit', $item->id) }}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
                                                 <button onclick="hapus('{{ $item->id }}')" class="btn btn-outline-danger"><i

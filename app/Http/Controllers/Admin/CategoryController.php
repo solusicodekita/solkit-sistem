@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -73,6 +74,7 @@ class CategoryController extends Controller
             $kategori->name = $request->input('name');
             $kategori->code = $request->input('code');
             $kategori->slug = strtolower(str_replace(' ', '-', $request->input('name')));
+            $kategori->created_by = Auth::user()->id;
             $kategori->save();
             DB::commit();
             return response()->json([
@@ -161,6 +163,7 @@ class CategoryController extends Controller
             $kategori->name = $request->input('name');
             $kategori->code = $request->input('code');
             $kategori->slug = strtolower(str_replace(' ', '-', $request->input('name')));
+            $kategori->updated_by = Auth::user()->id;
             $kategori->save();
             DB::commit();
             return response()->json([

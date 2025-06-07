@@ -28,6 +28,8 @@
                                         <th class="text-center">Satuan / Unit</th>
                                         <th class="text-center">Alasan Adjust</th>
                                         <th class="text-center">Tanggal</th>
+                                        <th class="text-center">Dibuat Oleh</th>
+                                        <th class="text-center">Diperbarui Oleh</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,6 +42,8 @@
                                             <td>{{ $row->item->unit }}</td>
                                             <td>{{ $row->description }}</td>
                                             <td>{{ date('d-m-Y H:i', strtotime($row->stockTransaction->date)) }}</td>
+                                            <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

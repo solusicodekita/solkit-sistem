@@ -354,22 +354,34 @@
                 </a>
                 <div id="transaksiMenu" class="collapse {{ Request::is('admin/stock*') || Request::is('admin/in_stock*') || Request::is('admin/live_stock*') || Request::is('admin/out_stock*') || Request::is('admin/adjustment_stock*') || Request::is('admin/laporan_transaksi*') ? 'show' : '' }}">
                     <a href="{{ route('admin.stock.index') }}" class="nav-link {{ Request::is('admin/stock*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-cart-shopping"></i> <span>Stok Opname</span>
+                        <i class="fa-solid fa-clipboard-list"></i> <span>Stok Opname</span>
                     </a>
                     <a href="{{ route('admin.live_stock.index') }}" class="nav-link {{ Request::is('admin/live_stock*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-cart-shopping"></i> <span>Live Stock</span>
+                        <i class="fa-solid fa-chart-line"></i> <span>Live Stock</span>
                     </a>
                     <a href="{{ route('admin.in_stock.index') }}" class="nav-link {{ Request::is('admin/in_stock*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-cart-shopping"></i> <span>Stok Masuk</span>
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Stok Masuk</span>
                     </a>
                     <a href="{{ route('admin.out_stock.index') }}" class="nav-link {{ Request::is('admin/out_stock*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-cart-shopping"></i> <span>Stok Keluar</span>
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Stok Keluar</span>
                     </a>
                     <a href="{{ route('admin.adjustment_stock.index') }}" class="nav-link {{ Request::is('admin/adjustment_stock*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-cart-shopping"></i> <span>Adjustment Stock</span>
+                        <i class="fa-solid fa-sliders"></i> <span>Adjustment Stock</span>
                     </a>
                     <a href="{{ route('admin.laporan_transaksi.index') }}" class="nav-link {{ Request::is('admin/laporan_transaksi*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-cart-shopping"></i> <span>Laporan Transaksi</span>
+                        <i class="fa-solid fa-file-lines"></i> <span>Laporan Transaksi</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link {{ Request::is('admin/pengaturan') ? 'active' : '' }}" onclick="toggleMenu('pengaturanMenu', event)">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Pengaturan</span>
+                    <i class="fa-solid fa-angle-down float-right mt-1"></i>
+                </a>
+                <div id="pengaturanMenu" class="collapse {{ Request::is('admin/pengaturan') || Request::is('admin/pengaturan/index') ? 'show' : '' }}">
+                    <a href="{{ route('admin.pengaturan.index') }}" class="nav-link {{ Request::is('admin/pengaturan/index') ? 'active' : '' }}">
+                        <i class="fa-solid fa-user"></i> <span>Profil</span>
                     </a>
                 </div>
             </div>

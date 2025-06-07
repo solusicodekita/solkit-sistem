@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\WareHousesController;
 use App\Http\Controllers\LaporanTransaksiController;
+use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockOutController;
@@ -213,6 +214,11 @@ Route::middleware(['xss'])->group(function () {
             Route::get('index', [LaporanTransaksiController::class, 'index'])->name('index');
             Route::get('create', [LaporanTransaksiController::class, 'create'])->name('create');
             Route::get('download/{id}', [LaporanTransaksiController::class, 'download'])->name('download');
+        });
+
+        Route::group(['prefix' => 'pengaturan/', 'as' => 'pengaturan.'], function () {
+            Route::get('index', [PengaturanController::class, 'index'])->name('index');
+            Route::post('update_password', [PengaturanController::class, 'updatePassword'])->name('updatePassword');
         });
     });
 

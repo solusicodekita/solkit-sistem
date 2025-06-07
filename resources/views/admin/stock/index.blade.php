@@ -28,6 +28,8 @@
                                         <th class="text-center">Stok Akhir</th>
                                         <th class="text-center">Satuan</th>
                                         <th class="text-center">Tanggal Opname</th>
+                                        <th class="text-center">Dibuat Oleh</th>
+                                        <th class="text-center">Diperbarui Oleh</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,6 +44,8 @@
                                             </td>
                                             <td>{{ $row->item->unit }}</td>
                                             <td>{{ date('d-m-Y H:i', strtotime($row->date_opname)) }}</td>
+                                            <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
                                         </tr>
                                     @empty
                                         <tr>

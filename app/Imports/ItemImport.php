@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class ItemImport implements ToCollection, WithHeadingRow 
@@ -70,6 +71,7 @@ class ItemImport implements ToCollection, WithHeadingRow
                     'name' => $row['nama_barang'],
                     'unit' => $row['unit'],
                     'price' => $row['harga'],
+                    'created_by' => Auth::user()->id,
                 ]);
                 
 
