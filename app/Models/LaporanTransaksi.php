@@ -51,4 +51,13 @@ class LaporanTransaksi extends Model
             ->sum('stock_transaction_details.quantity');
         return $barangKeluar;
     }
+
+    public static function hargaTertinggi($item_id, $warehouse_id, $tgl_awal, $tgl_akhir) {
+        $hargaTertinggi = HistoryHarga::where('item_id', $item_id)
+            ->where('warehouse_id', $warehouse_id)
+            ->whereDate('created_at', '>=', $tgl_awal)
+            ->whereDate('created_at', '<=', $tgl_akhir)
+            ->max('harga_baru');
+        return $hargaTertinggi;
+    }
 }

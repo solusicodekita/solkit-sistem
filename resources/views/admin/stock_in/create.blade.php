@@ -75,6 +75,7 @@
                                             <th class="text-center">Lokasi Item</th>
                                             <th class="text-center">Harga Satuan</th>
                                             <th class="text-center" style="width: 10%;">Jumlah Satuan</th>
+                                            <th class="text-center" style="width: 10%;">Unit</th>
                                             <th class="text-center">Total Harga Item</th>
                                             <th class="text-center">Keterangan</th>
                                             <th class="text-center">Aksi</th>
@@ -107,6 +108,9 @@
                                                     autocomplete="off">
                                             </td>
                                             <td>
+                                                <input type="text" class="form-control unit" name="item[1][unit]" id="unit" readonly>
+                                            </td>
+                                            <td>
                                                 <input type="text" name="item[1][total_harga_item]" id="total_harga_item"
                                                     value="0" class="form-control total_harga_item" value="0"
                                                     readonly>
@@ -123,12 +127,12 @@
                                     </tbody>
                                     <tbody id="trTotal">
                                         <tr>
-                                            <td colspan="4" style="text-align: right;vertical-align: middle;">Total</td>
+                                            <td colspan="6" style="text-align: right;vertical-align: middle;">Total</td>
                                             <td>
                                                 <input type="text" class="form-control" name="total_harga_keseluruhan"
                                                     id="total_harga_keseluruhan" value="0" readonly>
                                             </td>
-                                            <td colspan="3" style="text-align: left;vertical-align: middle;">
+                                            <td colspan="2" style="text-align: left;vertical-align: middle;">
                                                 <button type="button" class="btn btn-primary btn-sm"
                                                     onclick="simpanTransaksi()"><i class="fas fa-save"></i> Simpan</button>
                                             </td>
@@ -228,6 +232,7 @@
                             maximumFractionDigits: 2
                         }));
                     }
+                    $(obj).parents('tr').find('.unit').val(response.unit);
                     totalHargaItem(obj);
                     getWarehouse(obj)
                 }

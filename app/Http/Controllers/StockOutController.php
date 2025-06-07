@@ -43,7 +43,8 @@ class StockOutController extends Controller
     {
         $item = Item::find($request->item_id);
         $price = $item->price;
-        return response()->json(['harga_satuan' => $price]);
+        $unit = $item->unit;
+        return response()->json(['harga_satuan' => $price, 'unit' => $unit]);
     }
 
     public function store(Request $request)
