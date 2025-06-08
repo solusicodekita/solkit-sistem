@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Category;
 use App\Models\Item;
 use App\Http\Controllers\Admin\ItemController;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -72,6 +73,7 @@ class ItemImport implements ToCollection, WithHeadingRow
                     'unit' => $row['unit'],
                     'price' => $row['harga'],
                     'created_by' => Auth::user()->id,
+                    'created_at' => Carbon::now(),
                 ]);
                 
 

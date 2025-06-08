@@ -52,7 +52,9 @@
                                                 <th class="text-center">Total Transaksi</th>
                                                 <th class="text-center">Keterangan</th>
                                                 <th class="text-center">Dibuat Oleh</th>
+                                                <th class="text-center">Tanggal Dibuat</th>
                                                 <th class="text-center">Diperbarui Oleh</th>
+                                                <th class="text-center">Tanggal Diperbarui</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -84,11 +86,13 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
+                                                    <td>{{ !empty($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                                     <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
+                                                    <td>{{ !empty($row->updated_at) ? \Carbon\Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center">Tidak ada data</td>
+                                                    <td colspan="9" class="text-center">Tidak ada data</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>

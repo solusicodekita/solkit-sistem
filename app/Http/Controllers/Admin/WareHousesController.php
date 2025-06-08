@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Warehouse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -73,6 +74,7 @@ class WareHousesController extends Controller
             $lokasi->name = $request->input('name');
             $lokasi->code = $request->input('code');
             $lokasi->created_by = Auth::user()->id;
+            $lokasi->created_at = Carbon::now();
             $lokasi->save();
             DB::commit();
             return response()->json([
@@ -161,6 +163,7 @@ class WareHousesController extends Controller
             $lokasi->name = $request->input('name');
             $lokasi->code = $request->input('code');
             $lokasi->updated_by = Auth::user()->id;
+            $lokasi->updated_at = Carbon::now();
             $lokasi->save();
             DB::commit();
             return response()->json([

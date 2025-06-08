@@ -29,11 +29,13 @@
                                         <th class="text-center">Alasan Adjust</th>
                                         <th class="text-center">Tanggal</th>
                                         <th class="text-center">Dibuat Oleh</th>
+                                        <th class="text-center">Tanggal Dibuat</th>
                                         <th class="text-center">Diperbarui Oleh</th>
+                                        <th class="text-center">Tanggal Diperbarui</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($model as $row)
+                                    @forelse ($model as $row)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $row->item->name }}</td>
@@ -43,9 +45,15 @@
                                             <td>{{ $row->description }}</td>
                                             <td>{{ date('d-m-Y H:i', strtotime($row->stockTransaction->date)) }}</td>
                                             <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ !empty($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                             <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
+                                            <td>{{ !empty($row->updated_at) ? \Carbon\Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="11" class="text-center">Tidak ada data</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -57,6 +65,18 @@
 @endsection
 @push('scripts')
     <script>
-        
+         $(document).ready(function() {
+            @if (count($model) > 0)
+                $('#tabelStock').DataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true
+                });
+            @endif
+        });
     </script>
 @endpush

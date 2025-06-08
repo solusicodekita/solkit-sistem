@@ -11,6 +11,7 @@ class Warehouse extends Model
 
     protected $table = 'warehouses';
     protected $guarded = [];
+    public $timestamps = false;
 
     public function createdBy()
     {

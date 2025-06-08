@@ -97,8 +97,8 @@ class StockController extends Controller
 
     public function live_stock()
     {
-        $model = Stock::select('item_id', 'warehouse_id', 'created_by', 'updated_by')
-            ->groupBy('item_id', 'warehouse_id', 'created_by', 'updated_by')
+        $model = Stock::select('item_id', 'warehouse_id', 'created_by', 'updated_by', 'created_at', 'updated_at')
+            ->groupBy('item_id', 'warehouse_id', 'created_by', 'updated_by', 'created_at', 'updated_at')
             ->get();
         return view('admin.live_stock.index', compact('model'));
     }
