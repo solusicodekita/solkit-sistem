@@ -11,6 +11,7 @@ class Category extends Model
 
     protected $table = 'categories';
     protected $guarded = [];
+    public $timestamps = false;
 
     public function getRouteKeyName()
     {

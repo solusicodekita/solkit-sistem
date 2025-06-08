@@ -32,7 +32,9 @@
                                         <th class="text-center">Harga Satuan</th>
                                         <th class="text-center">Satuan / Unit</th>
                                         <th class="text-center">Dibuat Oleh</th>
+                                        <th class="text-center">Tanggal Dibuat</th>
                                         <th class="text-center">Diperbarui Oleh</th>
+                                        <th class="text-center">Tanggal Diperbarui</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,7 +47,9 @@
                                             <td>Rp {{ number_format($row->item->price, 0, ',', '.') }}</td>
                                             <td>{{ $row->item->unit }}</td>
                                             <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ !empty($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                             <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
+                                            <td>{{ !empty($row->updated_at) ? \Carbon\Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

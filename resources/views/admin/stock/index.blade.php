@@ -29,7 +29,9 @@
                                         <th class="text-center">Satuan</th>
                                         <th class="text-center">Tanggal Opname</th>
                                         <th class="text-center">Dibuat Oleh</th>
+                                        <th class="text-center">Tanggal Dibuat</th>
                                         <th class="text-center">Diperbarui Oleh</th>
+                                        <th class="text-center">Tanggal Diperbarui</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,11 +47,13 @@
                                             <td>{{ $row->item->unit }}</td>
                                             <td>{{ date('d-m-Y H:i', strtotime($row->date_opname)) }}</td>
                                             <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ !empty($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                             <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
+                                            <td>{{ !empty($row->updated_at) ? \Carbon\Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Tidak ada data</td>
+                                            <td colspan="11" class="text-center">Tidak ada data</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

@@ -20,13 +20,15 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="5%" class="text-center">No</th>
-                                        <th width="10%" class="text-center">Kode</th>
-                                        <th width="20%" class="text-center">Nama Kategori</th>
-                                        <th width="15%" class="text-center">Slug</th>
-                                        <th width="15%" class="text-center">Dibuat Oleh</th>
-                                        <th width="15%" class="text-center">Diperbarui Oleh</th>
-                                        <th width="20%" class="text-center">Aksi</th>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center">Kode</th>
+                                        <th class="text-center">Nama Kategori</th>
+                                        <th class="text-center">Slug</th>
+                                        <th class="text-center">Dibuat Oleh</th>
+                                        <th class="text-center">Tanggal Dibuat</th>
+                                        <th class="text-center">Diperbarui Oleh</th>
+                                        <th class="text-center">Tanggal Diperbarui</th>
+                                        <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -37,7 +39,9 @@
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->slug }}</td>
                                             <td>{{ $item->createdBy ? $item->createdBy->firstname . ' ' . $item->createdBy->lastname : ' ' }}</td>
+                                            <td>{{ !empty($item->created_at) ? \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                             <td>{{ $item->updatedBy ? $item->updatedBy->firstname . ' ' . $item->updatedBy->lastname : ' ' }}</td>
+                                            <td>{{ !empty($item->updated_at) ? \Carbon\Carbon::parse($item->updated_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('admin.category.edit', $item->id) }}" class="btn btn-outline-warning"><i class="fas fa-edit"></i></a>
                                                 <button onclick="hapus('{{ $item->id }}')" class="btn btn-outline-danger"><i
