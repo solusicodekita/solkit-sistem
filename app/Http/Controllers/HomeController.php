@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Models\OrderProduct;
 use App\Models\Warehouse;
 use App\Models\Stock;
+use App\Models\HistoryHarga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,6 +93,21 @@ class HomeController extends Controller
                 ->with('item', 'warehouse')
                 ->get();
 
+            // Ambil history harga untuk Micin di Gudang A
+            $history_harga_micin_gudang_a = \App\Models\HistoryHarga::with(['item', 'warehouse'])
+                ->where('item_id', 1)
+                ->where('warehouse_id', 1)
+                ->orderBy('created_at', 'asc')
+                ->get();
+
+            // Di HomeController.php, tambahkan query untuk mengambil data history harga
+            $history_harga = \App\Models\HistoryHarga::with(['item', 'warehouse'])
+                ->orderBy('created_at', 'asc')
+                ->get()
+                ->groupBy(function($row) {
+                    return $row->item->name . ' - ' . $row->warehouse->name;
+                });
+
             return view('admin.dashboard.index',[
                 'title' => 'Dashboard',
                 'products' => $products,
@@ -109,6 +125,8 @@ class HomeController extends Controller
                 'total_item' => $total_item,
                 'warehouse_stocks' => $warehouse_stocks,
                 'empty_items' => $empty_items,
+                'history_harga' => $history_harga,
+                'history_harga_micin_gudang_a' => $history_harga_micin_gudang_a,
             ]);
         }
         elseif (auth()->user()->hasRole('customer')) {

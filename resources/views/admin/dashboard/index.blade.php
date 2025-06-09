@@ -185,4 +185,133 @@
         </div>
     </div>
 </div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<button class="btn btn-success mb-3" onclick="downloadChart()">Download Grafik</button>
+<div class="card shadow-sm mb-12" style="border-radius:16px;">
+    <div class="card-header bg-light fw-bold" style="font-size:1.1rem;">
+        Grafik Perubahan Harga Semua Item & Gudang
+    </div>
+    <div class="card-body">
+        <div class="chart-container" style="position:relative;width:100vw;min-width:100%;height:750px;">
+            <canvas id="priceHistoryChart"></canvas>
+        </div>
+    </div>
+</div>
+@php
+    $datasets = [];
+    $allLabels = [];
+    foreach($history_harga as $key => $histories) {
+        $labels = $histories->pluck('created_at')->map(function($d) {
+            return \Carbon\Carbon::parse($d)->format('d M Y');
+        })->toArray();
+        $allLabels = array_merge($allLabels, $labels);
+        $data = $histories->pluck('harga_baru')->map(function($v) {
+            return (int)str_replace(',', '', $v);
+        })->toArray();
+        $datasets[] = [
+            'label' => $key,
+            'data' => $data,
+            'fill' => false,
+            'borderColor' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
+            'tension' => 0.3,
+            'pointRadius' => 4,
+        ];
+    }
+    $allLabels = array_values(array_unique($allLabels));
+@endphp
+<script>
+    const labels = @json($allLabels);
+    const datasets = @json($datasets);
+
+    const ctx = document.getElementById('priceHistoryChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        font: { size: 16 },
+                        usePointStyle: true,
+                        padding: 20
+                    },
+                },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        title: function(context) {
+                            return 'Tanggal: ' + context[0].label;
+                        },
+                        label: function(context) {
+                            return context.dataset.label + ': Rp ' + context.parsed.y.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: '#e0e0e0'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + new Intl.NumberFormat('id-ID', {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            }).format(value);
+                        },
+                        font: { size: 12 }
+                    }
+                },
+                x: {
+                    grid: {
+                        color: '#f5f5f5'
+                    },
+                    ticks: {
+                        font: { size: 12 }
+                    }
+                }
+            },
+            elements: {
+                point: {
+                    radius: 6,
+                    backgroundColor: '#fff',
+                    borderWidth: 3,
+                    borderColor: function(context) {
+                        return context.dataset.borderColor;
+                    },
+                    hoverRadius: 8
+                },
+                line: {
+                    borderWidth: 4
+                }
+            },
+            animation: {
+                duration: 1200,
+                easing: 'easeOutQuart'
+            }
+        }
+    });
+
+    function downloadChart() {
+        const link = document.createElement('a');
+        link.href = document.getElementById('priceHistoryChart').toDataURL('image/png');
+        link.download = 'grafik-perubahan-harga.png';
+        link.click();
+    }
+</script>
 @endsection
