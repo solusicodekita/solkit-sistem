@@ -186,126 +186,162 @@
     </div>
 </div>
 
+<!-- Dropdown Pilih Item -->
+<div class="mb-3">
+    <label for="itemSelect" class="form-label fw-bold">Pilih Item</label>
+    <select id="itemSelect" class="form-select" style="max-width:300px;">
+        @foreach($items as $item)
+            <option value="{{ $item->id }}">{{ $item->name }}</option>
+        @endforeach
+    </select>
+</div>
+
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <button class="btn btn-success mb-3" onclick="downloadChart()">Download Grafik</button>
 <div class="card shadow-sm mb-12" style="border-radius:16px;">
     <div class="card-header bg-light fw-bold" style="font-size:1.1rem;">
-        Grafik Perubahan Harga Semua Item & Gudang
+        Grafik Perubahan Harga per Item & Gudang
     </div>
     <div class="card-body">
-        <div class="chart-container" style="position:relative;width:100vw;min-width:100%;height:750px;">
+        <div class="chart-container" style="position:relative;width:100%;height:750px;">
             <canvas id="priceHistoryChart"></canvas>
         </div>
     </div>
 </div>
-@php
-    $datasets = [];
-    $allLabels = [];
-    foreach($history_harga as $key => $histories) {
-        $labels = $histories->pluck('created_at')->map(function($d) {
-            return \Carbon\Carbon::parse($d)->format('d M Y');
-        })->toArray();
-        $allLabels = array_merge($allLabels, $labels);
-        $data = $histories->pluck('harga_baru')->map(function($v) {
-            return (int)str_replace(',', '', $v);
-        })->toArray();
-        $datasets[] = [
-            'label' => $key,
-            'data' => $data,
-            'fill' => false,
-            'borderColor' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
-            'tension' => 0.3,
-            'pointRadius' => 4,
-        ];
-    }
-    $allLabels = array_values(array_unique($allLabels));
-@endphp
-<script>
-    const labels = @json($allLabels);
-    const datasets = @json($datasets);
 
-    const ctx = document.getElementById('priceHistoryChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: datasets
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        font: { size: 16 },
-                        usePointStyle: true,
-                        padding: 20
-                    },
-                },
-                tooltip: {
-                    enabled: true,
-                    callbacks: {
-                        title: function(context) {
-                            return 'Tanggal: ' + context[0].label;
+@php
+    $jsHistory = [];
+    foreach($history_harga_by_item as $itemId => $histories) {
+        $byGudang = [];
+        foreach($histories->groupBy('warehouse_id') as $gudangId => $rows) {
+            $gudangName = $rows->first()->warehouse->name ?? '-';
+            $labels = $rows->pluck('created_at')->map(function($d) {
+                return \Carbon\Carbon::parse($d)->format('d M Y');
+            })->toArray();
+            $data = $rows->pluck('harga_baru')->map(function($v) {
+                return (int)str_replace(',', '', $v);
+            })->toArray();
+            $byGudang[] = [
+                'label' => $gudangName,
+                'labels' => $labels,
+                'data' => $data,
+                'borderColor' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
+                'tension' => 0.3,
+                'pointRadius' => 4,
+                'fill' => false,
+            ];
+        }
+        $jsHistory[$itemId] = $byGudang;
+    }
+@endphp
+
+<script>
+    const historyHarga = @json($jsHistory);
+    const itemSelect = document.getElementById('itemSelect');
+    let chart;
+
+    function renderChart(itemId) {
+        const datasets = [];
+        let labels = [];
+        if(historyHarga[itemId]) {
+            historyHarga[itemId].forEach(ds => {
+                datasets.push({
+                    label: ds.label,
+                    data: ds.data,
+                    borderColor: ds.borderColor,
+                    tension: ds.tension,
+                    pointRadius: ds.pointRadius,
+                    fill: ds.fill,
+                });
+                // Gabungkan semua label tanggal
+                labels = labels.concat(ds.labels);
+            });
+        }
+        labels = [...new Set(labels)]; // Unikkan tanggal
+
+        const ctx = document.getElementById('priceHistoryChart').getContext('2d');
+        if(chart) chart.destroy();
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: { size: 12 },
+                            usePointStyle: true,
+                            padding: 10
                         },
-                        label: function(context) {
-                            return context.dataset.label + ': Rp ' + context.parsed.y.toLocaleString('id-ID');
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            title: function(context) {
+                                return 'Tanggal: ' + context[0].label;
+                            },
+                            label: function(context) {
+                                return context.dataset.label + ': Rp ' + context.parsed.y.toLocaleString('id-ID');
+                            }
                         }
                     }
-                }
-            },
-            interaction: {
-                mode: 'nearest',
-                axis: 'x',
-                intersect: false
-            },
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    grid: {
-                        color: '#e0e0e0'
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: { color: '#e0e0e0' },
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + new Intl.NumberFormat('id-ID', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                }).format(value);
+                            },
+                            font: { size: 12 }
+                        }
                     },
-                    ticks: {
-                        callback: function(value) {
-                            return 'Rp ' + new Intl.NumberFormat('id-ID', {
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0
-                            }).format(value);
+                    x: {
+                        grid: { color: '#f5f5f5' },
+                        ticks: { font: { size: 12 } }
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 6,
+                        backgroundColor: '#fff',
+                        borderWidth: 3,
+                        borderColor: function(context) {
+                            return context.dataset.borderColor;
                         },
-                        font: { size: 12 }
-                    }
-                },
-                x: {
-                    grid: {
-                        color: '#f5f5f5'
+                        hoverRadius: 8
                     },
-                    ticks: {
-                        font: { size: 12 }
-                    }
-                }
-            },
-            elements: {
-                point: {
-                    radius: 6,
-                    backgroundColor: '#fff',
-                    borderWidth: 3,
-                    borderColor: function(context) {
-                        return context.dataset.borderColor;
-                    },
-                    hoverRadius: 8
+                    line: { borderWidth: 4 }
                 },
-                line: {
-                    borderWidth: 4
+                animation: {
+                    duration: 1200,
+                    easing: 'easeOutQuart'
                 }
-            },
-            animation: {
-                duration: 1200,
-                easing: 'easeOutQuart'
             }
-        }
+        });
+    }
+
+    itemSelect.addEventListener('change', function() {
+        renderChart(this.value);
     });
+
+    // Render chart pertama kali
+    renderChart(itemSelect.value);
 
     function downloadChart() {
         const link = document.createElement('a');

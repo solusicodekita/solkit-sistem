@@ -101,12 +101,12 @@ class HomeController extends Controller
                 ->get();
 
             // Di HomeController.php, tambahkan query untuk mengambil data history harga
-            $history_harga = \App\Models\HistoryHarga::with(['item', 'warehouse'])
+            $history_harga_by_item = \App\Models\HistoryHarga::with(['item', 'warehouse'])
                 ->orderBy('created_at', 'asc')
                 ->get()
-                ->groupBy(function($row) {
-                    return $row->item->name . ' - ' . $row->warehouse->name;
-                });
+                ->groupBy('item_id');
+
+            $items = \App\Models\Item::whereIn('id', $history_harga_by_item->keys())->get();
 
             return view('admin.dashboard.index',[
                 'title' => 'Dashboard',
@@ -125,8 +125,10 @@ class HomeController extends Controller
                 'total_item' => $total_item,
                 'warehouse_stocks' => $warehouse_stocks,
                 'empty_items' => $empty_items,
-                'history_harga' => $history_harga,
+                'history_harga' => $history_harga_by_item,
                 'history_harga_micin_gudang_a' => $history_harga_micin_gudang_a,
+                'history_harga_by_item' => $history_harga_by_item,
+                'items' => $items,
             ]);
         }
         elseif (auth()->user()->hasRole('customer')) {
