@@ -30,6 +30,7 @@
                     <tr>
                         <th>{{ trans('menu.user.fields.no') }}</th>
                         <th>{{ trans('menu.user.fields.name') }}</th>
+                        <th>Username</th>
                         <th>{{ trans('menu.user.fields.email') }}</th>
                         {{-- <th>{{ trans('menu.user.fields.roles') }}</th> --}}
                         <th>{{ trans('menu.user.fields.created_at') }}</th>
@@ -41,6 +42,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->fullname }}</td>
+                        <td>{{ $user->username }}</td>
                         <td>{{ $user->email }}</td>
                         {{-- <td>
                             @if(!empty($user->getRoleNames()))
@@ -80,6 +82,7 @@
                     <tr>
                         <th>{{ trans('menu.user.fields.no') }}</th>
                         <th>{{ trans('menu.user.fields.name') }}</th>
+                        <th>Username</th>
                         <th>{{ trans('menu.user.fields.email') }}</th>
                         {{-- <th>{{ trans('menu.user.fields.roles') }}</th> --}}
                         <th>{{ trans('menu.user.fields.created_at') }}</th>

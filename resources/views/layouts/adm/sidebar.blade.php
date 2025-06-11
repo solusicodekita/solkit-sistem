@@ -9,12 +9,16 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="{{ asset('images/avatar/default.png').Auth::user()->avatar }}" class="img-circle elevation-2" alt="User Image">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex flex-column align-items-center">
+                    <div class="image mb-2">
+                        <img src="{{ asset('images/avatar/default.png') }}" class="img-circle elevation-2" alt="User Image" style="width:48px;height:48px;">
                     </div>
-                    <div class="info">
-                        <a href="" class="d-block">{{ Auth::user()->fullname }}</a>
+                    <div class="info text-center">
+                        <span class="d-block fw-bold" style="font-size:1.1rem;">{{ Auth::user()->fullname }}</span>
+                        <span class="d-block" style="font-size:0.95rem;color:#ffc107;">
+                            <i class="fas fa-user-circle me-1"></i>
+                            {{ '@' . Auth::user()->username }}
+                        </span>
                     </div>
                 </div>
 
