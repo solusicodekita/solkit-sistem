@@ -32,7 +32,10 @@
                                         <th class="text-center">Tanggal Dibuat</th>
                                         <th class="text-center">Diperbarui Oleh</th>
                                         <th class="text-center">Tanggal Diperbarui</th>
-                                        <th class="text-center">Status Verifikasi</th>
+                                        @if (Auth::user()->username == 'sidqi' || Auth::user()->username == 'superadmin')
+                                            <th class="text-center">Status Verifikasi</th>
+                                            <th class="text-center">Tanggal Verifikasi</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,17 +48,33 @@
                                             <td>{{ $row->item->unit }}</td>
                                             <td>{{ $row->description }}</td>
                                             <td>{{ date('d-m-Y H:i', strtotime($row->stockTransaction->date)) }}</td>
-                                            <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}</td>
-                                            <td>{{ !empty($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
-                                            <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
-                                            <td>{{ !empty($row->updated_at) ? \Carbon\Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
-                                            <td>
-                                                @if ($row->stockTransaction->is_verifikasi_adjustment)
-                                                    <button class="btn btn-success btn-sm fw-bold">Sudah Verifikasi</button>
-                                                @else
-                                                    <button class="btn btn-danger btn-sm fw-bold">Belum Verifikasi</button>
-                                                @endif
+                                            <td>{{ $row->createdBy ? $row->createdBy->firstname . ' ' . $row->createdBy->lastname : ' ' }}
                                             </td>
+                                            <td>{{ !empty($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->translatedFormat('d F Y H:i:s') : ' ' }}
+                                            </td>
+                                            <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}
+                                            </td>
+                                            <td>{{ !empty($row->updated_at) ? \Carbon\Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i:s') : ' ' }}
+                                            </td>
+                                            @if (Auth::user()->username == 'sidqi' || Auth::user()->username == 'superadmin')
+                                                <td>
+                                                    @if ($row->stockTransaction->is_verifikasi_adjustment)
+                                                        <button class="btn btn-success btn-sm fw-bold">Sudah
+                                                            Verifikasi</button>
+                                                    @else
+                                                        <button class="btn btn-danger btn-sm fw-bold"
+                                                            onclick="verifikasiAdjustment({{ $row->id }})">Belum
+                                                            Verifikasi</button>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($row->stockTransaction->is_verifikasi_adjustment)
+                                                        {{ !empty($row->stockTransaction->tanggal_verifikasi_adjusment) ? date('d-m-Y H:i', strtotime($row->stockTransaction->tanggal_verifikasi_adjusment)) : ' ' }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            @endif
                                         </tr>
                                     @empty
                                         <tr>
@@ -73,7 +92,7 @@
 @endsection
 @push('scripts')
     <script>
-         $(document).ready(function() {
+        $(document).ready(function() {
             @if (count($model) > 0)
                 $('#tabelStock').DataTable({
                     "paging": true,
@@ -86,5 +105,48 @@
                 });
             @endif
         });
+
+        @if (Auth::user()->username == 'sidqi' || Auth::user()->username == 'superadmin')
+            function verifikasiAdjustment(id) {
+                Swal.fire({
+                    title: 'Apakah anda yakin ingin memverifikasi data ini?',
+                    text: 'Data yang sudah di verifikasi tidak dapat diubah kembali',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            url: '{{ route('admin.adjustment_stock.verifikasi') }}',
+                            type: 'POST',
+                            data: {
+                                id: id
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                if (response.status == 1) {
+                                    Swal.fire({
+                                        title: 'Berhasil',
+                                        text: response.message,
+                                        icon: 'success'
+                                    });
+                                    $('#tabelStock').DataTable().ajax.reload();
+                                } else {
+                                    Swal.fire({
+                                        title: 'Gagal',
+                                        text: response.message,
+                                        icon: 'error'
+                                    });
+                                }
+                            }
+                        })
+                    }
+                })
+
+            }
+        @endif
     </script>
 @endpush

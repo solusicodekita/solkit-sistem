@@ -208,6 +208,7 @@ Route::middleware(['xss'])->group(function () {
             Route::post('store', [StockAdjustmentController::class, 'store'])->name('store');
             Route::get('cek_jumlah_terakhir', [StockAdjustmentController::class, 'cekJumlahTerakhir'])->name('cekJumlahTerakhir');
             Route::get('get_warehouse', [StockAdjustmentController::class, 'getWarehouse'])->name('getWarehouse');
+            Route::post('verifikasi', [StockAdjustmentController::class, 'verifikasi'])->name('verifikasi');
         });
 
         Route::group(['prefix' => 'laporan_transaksi/', 'as' => 'laporan_transaksi.'], function () {
