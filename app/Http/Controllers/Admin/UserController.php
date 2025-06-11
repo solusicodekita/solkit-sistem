@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -33,12 +34,12 @@ class UserController extends Controller
             'lastname' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'password' => 'required|same:confirm-password'
         ]);
 
       $input = $request->only(['firstname', 'lastname', 'username', 'email', 'password']);
         $input['password'] = Hash::make($input['password']);
+        $input['role'] = 'admin';
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
 
@@ -66,11 +67,8 @@ class UserController extends Controller
         $this->validate($request, [
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($id)],
             'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
         ]);
 
         $input = $request->all();
@@ -79,7 +77,7 @@ class UserController extends Controller
         }else{
             $input = Arr::except($input,array('password'));
         }
-
+        $input['role'] = 'admin';
         $user = User::find($id);
         $user->update($input);
         DB::table('model_has_roles')->where('model_id',$id)->delete();

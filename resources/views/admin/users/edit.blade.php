@@ -8,6 +8,17 @@
 @endpush
 
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> Ada masalah pada input Anda.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     {!! Form::model($user, ['method' => 'PATCH', 'route' => ['admin.users.update', $user->id]]) !!}
     <div class="card">
         <div class="card-header">
@@ -41,10 +52,10 @@
                 <div class="mb-2"><strong>Konfirmasi Password : </strong></div>
                 {!! Form::password('confirm-password', ['placeholder' => 'Confirm Password', 'class' => 'form-control']) !!}
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <div class="mb-2"><strong>Role : </strong></div>
                 {!! Form::select('roles[]', $roles, $userRole, ['class' => 'form-control', 'multiple']) !!}
-            </div>
+            </div> --}}
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>

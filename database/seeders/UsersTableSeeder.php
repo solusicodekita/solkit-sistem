@@ -49,6 +49,21 @@ class UsersTableSeeder extends Seeder
         // $roleAdmin->syncPermissions($permissionsAdmin);
         $superadmin->assignRole([$roleAdmin->id]);
 
+         $sidqi = User::create([
+            'firstname' => 'Sidqi',
+            'lastname' => 'Nita Jaya Catering',
+            'username' => 'sidqi',
+            'email' => 'sidqi@gmail.com',
+            'password' => bcrypt('12345678'),
+            'phone' => '85767113554',
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+        ]);
+        // $roleAdmin = Role::create(['name' => 'admin']);
+        // $permissionsAdmin = Permission::pluck('id','id')->all();
+        // $roleAdmin->syncPermissions($permissionsAdmin);
+        $sidqi->assignRole([$roleAdmin->id]);
+
 
 
 
