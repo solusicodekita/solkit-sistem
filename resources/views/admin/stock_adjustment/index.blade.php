@@ -133,7 +133,9 @@
                                         text: response.message,
                                         icon: 'success'
                                     });
-                                    $('#tabelStock').DataTable().ajax.reload();
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 1000);
                                 } else {
                                     Swal.fire({
                                         title: 'Gagal',
