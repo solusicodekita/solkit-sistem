@@ -32,6 +32,7 @@
                                         <th class="text-center">Tanggal Dibuat</th>
                                         <th class="text-center">Diperbarui Oleh</th>
                                         <th class="text-center">Tanggal Diperbarui</th>
+                                        <th class="text-center">Status Verifikasi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,6 +49,13 @@
                                             <td>{{ !empty($row->created_at) ? \Carbon\Carbon::parse($row->created_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
                                             <td>{{ $row->updatedBy ? $row->updatedBy->firstname . ' ' . $row->updatedBy->lastname : ' ' }}</td>
                                             <td>{{ !empty($row->updated_at) ? \Carbon\Carbon::parse($row->updated_at)->translatedFormat('d F Y H:i:s') : ' ' }}</td>
+                                            <td>
+                                                @if ($row->stockTransaction->is_verifikasi_adjustment)
+                                                    <button class="btn btn-success btn-sm fw-bold">Sudah Verifikasi</button>
+                                                @else
+                                                    <button class="btn btn-danger btn-sm fw-bold">Belum Verifikasi</button>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
