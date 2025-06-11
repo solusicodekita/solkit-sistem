@@ -37,6 +37,13 @@ class LaporanTransaksi extends Model
             ->where('stock_transactions.type', 'in')
             ->whereDate('stock_transactions.date', '>=', $tgl_awal)
             ->whereDate('stock_transactions.date', '<=', $tgl_akhir)
+            ->where(function ($query) {
+                $query->where('stock_transactions.is_adjustment', 0)
+                      ->orWhere(function ($query) {
+                          $query->where('stock_transactions.is_adjustment', 1)
+                                ->where('stock_transactions.is_verifikasi_adjustment', 1);
+                      });
+            })
             ->sum('stock_transaction_details.quantity');
         return $barangMasuk;
     }
@@ -48,6 +55,13 @@ class LaporanTransaksi extends Model
             ->where('stock_transactions.type', 'out')
             ->whereDate('stock_transactions.date', '>=', $tgl_awal)
             ->whereDate('stock_transactions.date', '<=', $tgl_akhir)
+            ->where(function ($query) {
+                $query->where('stock_transactions.is_adjustment', 0)
+                      ->orWhere(function ($query) {
+                          $query->where('stock_transactions.is_adjustment', 1)
+                                ->where('stock_transactions.is_verifikasi_adjustment', 1);
+                      });
+            })
             ->sum('stock_transaction_details.quantity');
         return $barangKeluar;
     }

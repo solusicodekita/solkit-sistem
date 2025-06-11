@@ -37,15 +37,29 @@ class Stock extends Model
             ->where('stock_transaction_details.item_id', $model->item_id)
             ->where('stock_transaction_details.warehouse_id', $model->warehouse_id)
             ->where('stock_transactions.type', 'in')
-            ->whereBetween('stock_transactions.date', [$model->date_opname, date('Y-m-d H:i:s')])
-            ->sum('stock_transaction_details.quantity');
+            ->whereBetween('stock_transactions.date', [$model->date_opname, date('Y-m-d H:i:s')]);
+            
+        $barangMasuk = $barangMasuk->where(function ($query) {
+            $query->where('stock_transactions.is_adjustment', 0)
+                    ->orWhere(function ($query) {
+                        $query->where('stock_transactions.is_adjustment', 1)
+                            ->where('stock_transactions.is_verifikasi_adjustment', 1);
+                    });
+        })->sum('stock_transaction_details.quantity');
         
         $barangKeluar = StockTransactionDetail::leftJoin('stock_transactions', 'stock_transaction_details.stock_transaction_id', '=', 'stock_transactions.id')
             ->where('stock_transaction_details.item_id', $model->item_id)
             ->where('stock_transaction_details.warehouse_id', $model->warehouse_id)
             ->where('stock_transactions.type', 'out')
-            ->whereBetween('stock_transactions.date', [$model->date_opname, date('Y-m-d H:i:s')])
-            ->sum('stock_transaction_details.quantity');
+            ->whereBetween('stock_transactions.date', [$model->date_opname, date('Y-m-d H:i:s')]);
+
+        $barangKeluar = $barangKeluar->where(function ($query) {
+            $query->where('stock_transactions.is_adjustment', 0)
+                  ->orWhere(function ($query) {
+                      $query->where('stock_transactions.is_adjustment', 1)
+                            ->where('stock_transactions.is_verifikasi_adjustment', 1);
+                  });
+        })->sum('stock_transaction_details.quantity');
             
         $jumlah = $model->final_stock + $barangMasuk - $barangKeluar;
         return $jumlah;
