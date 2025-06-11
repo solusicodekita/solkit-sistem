@@ -105,4 +105,17 @@ class StockAdjustmentController extends Controller
             return redirect()->back()->with('error', 'Gagal menyimpan data');
         }
     }
+
+    public function verifikasi(Request $request)
+    {
+        $stockTransaction = StockTransaction::find($request->id);
+        $stockTransaction->is_verifikasi_adjustment = 1;
+        $stockTransaction->tanggal_verifikasi_adjusment = now();
+        $stockTransaction->save();
+        $data = [
+            'status' => 1,
+            'message' => 'Data berhasil disimpan',
+        ];
+        return response()->json($data);
+    }
 }
