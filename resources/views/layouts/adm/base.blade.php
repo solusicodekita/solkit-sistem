@@ -97,6 +97,19 @@
         .sidebar .logo img:hover {
             transform: scale(1.07) rotate(-3deg);
         }
+        .sidebar .logo {
+            text-align: center;
+            padding: 2.5rem 0 1rem 0;
+        }
+        .sidebar .logo img {
+            height: 80px;
+            margin-bottom: 0.7rem;
+            filter: drop-shadow(0 2px 8px #ffc10788);
+            transition: transform 0.2s;
+        }
+        .sidebar .logo img:hover {
+            transform: scale(1.07) rotate(-3deg);
+        }
         .sidebar .brand {
             color: #ffc107;
             font-weight: bold;
@@ -105,6 +118,22 @@
             text-shadow: 0 2px 8px #ffc10755, 0 1px 0 #fff;
             margin-top: 0.5rem;
             font-family: 'Nunito', sans-serif;
+        }
+        .sidebar .sidebar-user-info {
+            margin-top: 1.2rem;
+            text-align: center;
+        }
+        .sidebar .sidebar-user-info span {
+            display: block;
+            font-weight: 700;
+            font-size: 1.08rem;
+            color: #fff;
+        }
+        .sidebar .sidebar-user-info span:last-child {
+            display: block;
+            font-size: 0.97rem;
+            color: #ffc107;
+            margin-top: 2px;
         }
         .sidebar nav {
             flex: 1 1 auto;
@@ -323,6 +352,12 @@
                 <img src="{{ asset('images/nitajaya.png') }}" alt="Logo Nita Jaya Catering">
             </div>
             <div class="brand">NITA JAYA CATERING</div>
+            <div class="sidebar-user-info" style="margin-top:1.2rem;text-align:center;">
+                <span style="display:block;font-weight:700;font-size:1.08rem;color:#fff;">{{ Auth::user()->fullname }}</span>
+                <span style="display:block;font-size:0.97rem;color:#ffc107;margin-top:2px;">
+                    <i class="fa-solid fa-user-circle me-1"></i> {{ Auth::user()->username }}
+                </span>
+            </div>
         </div>
         <nav>
             <a href="{{ route('home') }}" class="nav-link {{ Request::is('home*') ? 'active' : '' }}">
