@@ -18,6 +18,8 @@ class CreateStockTransactionsTable extends Migration
             $table->enum('type', ['in', 'out']);
             $table->boolean('is_adjustment')->nullable();
             $table->text('alasan_adjustment')->nullable();
+            $table->boolean('is_verifikasi_adjustment')->nullable();
+            $table->dateTime('tanggal_verifikasi_adjusment')->nullable();
             $table->dateTime('date');
             $table->decimal('total_harga_keseluruhan', 15, 2)->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
