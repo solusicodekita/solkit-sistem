@@ -37,11 +37,18 @@ class UserController extends Controller
             'password' => 'required|same:confirm-password'
         ]);
 
-      $input = $request->only(['firstname', 'lastname', 'username', 'email', 'password']);
+        $input = $request->only(['firstname', 'lastname', 'username', 'email', 'password']);
         $input['password'] = Hash::make($input['password']);
-        $input['role'] = 'admin';
+        
+        // Create user
         $user = User::create($input);
-        $user->assignRole($request->input('roles'));
+        
+        // Assign role admin by default
+        $roleAdmin = Role::where('name', 'admin')->first();
+        if (!$roleAdmin) {
+            $roleAdmin = Role::create(['name' => 'admin']);
+        }
+        $user->assignRole($roleAdmin);
 
         return redirect()->route('admin.users.index')
                         ->with('success','User created successfully');
