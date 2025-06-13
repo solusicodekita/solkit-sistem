@@ -25,6 +25,11 @@ class ItemImport implements ToCollection, WithHeadingRow
         foreach ($rows as $rowIndex => $row) {
             $row = $row->only(['nama_kategori', 'nama_barang', 'unit', 'harga']);
             try {
+                // Validasi jika semua field kosong, skip proses
+                if (empty($row['nama_kategori']) && empty($row['nama_barang']) && empty($row['unit']) && empty($row['harga'])) {
+                    continue;
+                }
+
                 // Validasi field tidak boleh kosong
                 if (empty($row['nama_kategori'])) {
                     $this->errors[] = "Nama Kategori tidak boleh kosong pada baris " . ($rowIndex + 2);
@@ -38,11 +43,6 @@ class ItemImport implements ToCollection, WithHeadingRow
 
                 if (empty($row['unit'])) {
                     $this->errors[] = "Unit tidak boleh kosong pada baris " . ($rowIndex + 2);
-                    continue;
-                }
-
-                if (empty($row['harga'])) {
-                    $this->errors[] = "Harga tidak boleh kosong pada baris " . ($rowIndex + 2);
                     continue;
                 }
 
