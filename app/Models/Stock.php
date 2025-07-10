@@ -40,7 +40,7 @@ class Stock extends Model
             ->whereBetween('stock_transactions.date', [$model->date_opname, date('Y-m-d H:i:s')]);
             
         $barangMasuk = $barangMasuk->where(function ($query) {
-            $query->where('stock_transactions.is_adjustment', 0)
+            $query->where('stock_transactions.is_adjustment', 0)->orWhere('stock_transactions.is_adjustment', null)
                     ->orWhere(function ($query) {
                         $query->where('stock_transactions.is_adjustment', 1)
                             ->where('stock_transactions.is_verifikasi_adjustment', 1);
@@ -54,7 +54,7 @@ class Stock extends Model
             ->whereBetween('stock_transactions.date', [$model->date_opname, date('Y-m-d H:i:s')]);
 
         $barangKeluar = $barangKeluar->where(function ($query) {
-            $query->where('stock_transactions.is_adjustment', 0)
+            $query->where('stock_transactions.is_adjustment', 0)->orWhere('stock_transactions.is_adjustment', null)
                   ->orWhere(function ($query) {
                       $query->where('stock_transactions.is_adjustment', 1)
                             ->where('stock_transactions.is_verifikasi_adjustment', 1);
