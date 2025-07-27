@@ -79,6 +79,8 @@ class StockOutController extends Controller
                     'total_harga' => str_replace([',', '.'], ['.', ''], $value['total_harga_item']),
                     'description' => $value['description'],
                     'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'stok_sebelumnya' => Stock::liveStock($value['item_id'], $value['warehouse_id'])
                 ]);
             }
 
