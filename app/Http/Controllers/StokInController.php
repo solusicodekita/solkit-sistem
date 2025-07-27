@@ -83,6 +83,7 @@ class StokInController extends Controller
                     'description' => $value['description'],
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
+                    'stok_sebelumnya' => Stock::liveStock($value['item_id'], $value['warehouse_id'])
                 ]);
 
                 $modItem = Item::where('id', $value['item_id'])->first();

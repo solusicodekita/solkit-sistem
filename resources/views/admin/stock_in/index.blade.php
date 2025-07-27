@@ -48,7 +48,7 @@
                                             <tr>
                                                 <th class="text-center">No</th>
                                                 <th class="text-center">Tanggal Transaksi</th>
-                                                <th class="text-center">Item - Jumlah - Lokasi</th>
+                                                <th class="text-center">Item - Jumlah (Stok Sebelumnya) - Lokasi</th>
                                                 <th class="text-center">Total Transaksi</th>
                                                 <th class="text-center">Keterangan</th>
                                                 <th class="text-center">Dibuat Oleh</th>
@@ -66,8 +66,8 @@
                                                         <ul>
                                                             @foreach ($row->stockTransactionDetails as $item)
                                                                 <li>{{ $item->item->name }} -
-                                                                    {{ floatval($item->quantity) }}
-                                                                    {{ $item->item->unit }} - {{ $item->warehouse->name }}
+                                                                    {{ floatval($item->quantity) }} {{ $item->item->unit }} {{ !empty($item->stok_sebelumnya) ? "(" . floatval($item->stok_sebelumnya) . ' ' . $item->item->unit . ")" : '' }} - 
+                                                                    {{ $item->warehouse->name }}
                                                                 </li>
                                                             @endforeach
                                                         </ul>
