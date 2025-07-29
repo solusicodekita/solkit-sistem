@@ -134,7 +134,7 @@
                                             </td>
                                             <td colspan="2" style="text-align: left;vertical-align: middle;">
                                                 <button type="button" class="btn btn-primary btn-sm"
-                                                    onclick="simpanTransaksi()"><i class="fas fa-save"></i> Simpan</button>
+                                                    onclick="simpanTransaksi(this)"><i class="fas fa-save"></i> Simpan</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -301,7 +301,8 @@
             }
         }
 
-        function simpanTransaksi() {
+        function simpanTransaksi(obj) {
+            $(obj).prop('disabled', true);
             let isValid = true;
             $('.item_id').each(function() {
                 if ($(this).val() == '' || $(this).val() == null) {

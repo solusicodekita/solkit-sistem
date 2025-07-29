@@ -25,12 +25,16 @@
                                             <div class="col-auto">
                                                 <label class="form-label">Tanggal Awal</label>
                                                 <input type="date" class="form-control" name="start_date"
-                                                    value="{{ request('start_date') }}">
+                                                    value="{{ request('start_date') ?? date('Y-m-d') }}">
                                             </div>
                                             <div class="col-auto">
                                                 <label class="form-label">Tanggal Akhir</label>
                                                 <input type="date" class="form-control" name="end_date"
-                                                    value="{{ request('end_date') }}">
+                                                    value="{{ request('end_date') ?? date('Y-m-d') }}">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="form-label">Item</label>
+                                                <input type="text" class="form-control" name="item_name" placeholder="Cari Item" value="{{ request('item_name') ?? '' }}">
                                             </div>
                                             <div class="col-auto" style="margin-top: 32px;">
                                                 <button type="submit" class="btn btn-primary">Filter</button>
