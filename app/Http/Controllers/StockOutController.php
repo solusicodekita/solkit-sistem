@@ -30,6 +30,14 @@ class StockOutController extends Controller
             $query->whereBetween('date', [$start_date, $end_date]);
         }
 
+        if ($request->item_name) {
+            $query->whereHas('stockTransactionDetails', function($query) use ($request) {
+                $query->whereHas('item', function($query) use ($request) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($request->item_name) . '%']);
+                });
+            });
+        }
+
         $model = $query->orderBy('id', 'desc')->get();
         return view('admin.stock_out.index', compact('model'));
     }

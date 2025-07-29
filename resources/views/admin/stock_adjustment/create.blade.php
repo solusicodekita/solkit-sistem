@@ -57,7 +57,7 @@
                                         id="alasan_adjustment" autocomplete="off" placeholder="..."></textarea>
                                 </div>
                                 <hr>
-                                <button type="button" class="btn btn-success" onclick="validasi()">
+                                <button type="button" class="btn btn-success" onclick="validasi(this)">
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </form>
@@ -155,7 +155,8 @@
             });
         }
 
-        function validasi() {
+        function validasi(obj) {
+            $(obj).prop('disabled', true);
             let item_id = $('#item_id').val();
             let warehouse_id = $('#warehouse_id').val();
             let jumlah_adjustment = $('#jumlah_adjustment').val();
